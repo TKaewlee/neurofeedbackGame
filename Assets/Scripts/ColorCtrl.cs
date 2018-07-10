@@ -13,7 +13,7 @@ public class ColorCtrl : MonoBehaviour {
 	void Start () {
 		matObject.color = Color.black;	
 
-        GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("GameController");
+        GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("UDPReciever");
         if (gameControllerObject != null)
         {
             read2UDP = gameControllerObject.GetComponent <Read2UDP>();

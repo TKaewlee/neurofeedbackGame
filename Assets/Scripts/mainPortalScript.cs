@@ -132,6 +132,7 @@ public class mainPortalScript : MonoBehaviour {
             Directory.CreateDirectory(gameDir);
             Debug.Log("Create log/Noname" +  "/ in home directory!");
         }
+        
         // check if file exists, if not create with header
         if (!File.Exists(gameCsv))
         {

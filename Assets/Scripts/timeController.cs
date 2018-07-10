@@ -26,24 +26,24 @@ public class timeController : MonoBehaviour {
 
     private int tempSettingsLifeTime = 5;
 
-    IEnumerator disableSettings()
-    {
-        GameObject[] tempSettings = GameObject.FindGameObjectsWithTag("tempSettings");
+    // IEnumerator disableSettings()
+    // {
+    //     GameObject[] tempSettings = GameObject.FindGameObjectsWithTag("tempSettings");
 
-        yield return new WaitForSeconds(tempSettingsLifeTime);
+    //     yield return new WaitForSeconds(tempSettingsLifeTime);
 
-        foreach (GameObject tempCanvas in tempSettings)
-        {
-            tempCanvas.GetComponent<CanvasGroup>().interactable = false;
-        }
-    }
+    //     foreach (GameObject tempCanvas in tempSettings)
+    //     {
+    //         tempCanvas.GetComponent<CanvasGroup>().interactable = false;
+    //     }
+    // }
 
-    // Use this for initialization
-    void Start () {
-        StartCoroutine(disableSettings());
+    // // Use this for initialization
+    // void Start () {
+    //     StartCoroutine(disableSettings());
 
-		startTime = Time.time;
-    }
+	// 	startTime = Time.time;
+    // }
 
 	// Update is called once per frame
 	void Update () {
@@ -68,7 +68,7 @@ public class timeController : MonoBehaviour {
                 // LogCollector.final_duration = Time.time - startTime;
                 // LogCollector.last_game = SceneManager.GetActiveScene().name; // send game name to logwriter
                 // Debug.Log("last_gameeee: " + SceneManager.GetActiveScene().name);
-                SceneManager.LoadScene("scoreReport");
+                // SceneManager.LoadScene("scoreReport");
             }
         }
         else
@@ -78,23 +78,23 @@ public class timeController : MonoBehaviour {
     		timeCountText.text = showMin.ToString() + " m " + showSec.ToString() + " s";
         }
 
-        if(SceneManager.GetActiveScene().name == "gmath" || SceneManager.GetActiveScene().name == "gmatch")
-        {
-            if (updateEachQTime)
-            {
-                // show it as 0 if it is at start of the game
-                if (eachQTime == 0)
-                {
-                    eachQTimeText.text = "0.0";
-                }
-                else
-                {
-                    eachQTimeText.text = (Time.time - eachQTime).ToString("f1");
-                }
-            }
-        }
-        else
-        {
+        // if(SceneManager.GetActiveScene().name == "gmath" || SceneManager.GetActiveScene().name == "gmatch")
+        // {
+        //     if (updateEachQTime)
+        //     {
+        //         // show it as 0 if it is at start of the game
+        //         if (eachQTime == 0)
+        //         {
+        //             eachQTimeText.text = "0.0";
+        //         }
+        //         else
+        //         {
+        //             eachQTimeText.text = (Time.time - eachQTime).ToString("f1");
+        //         }
+        //     }
+        // }
+        // else
+        // {
             // show it as 0 if it is at start of the game
             if (eachQTime == 0)
             {
@@ -104,7 +104,7 @@ public class timeController : MonoBehaviour {
             {
                 eachQTimeText.text = (Time.time - eachQTime).ToString("f1");
             }
-        }
+        // }
     }
 
     // void resetMotorStatus()
