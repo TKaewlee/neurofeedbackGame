@@ -27,6 +27,19 @@ public class pauseScript : MonoBehaviour {
 	// public CanvasGroup playtimeCanvas;
     // private GameController gameController;
 
+	// public Button startButton;
+    // private bool isContinue = false;
+
+    private float timeStart = 0;
+    
+    public InputField timeSetInput;
+    private int timeSet = 10;
+
+	// public Text timeTimeText;
+	// public Text timeStartText;
+    public GUIText timeCountText;
+    // public Text timeDownText;
+
     #region main events
     // pause window will pop up every time the level int is loaded (from another level)
     // this is to let user adjust the game settings before enter the game
@@ -83,6 +96,7 @@ public class pauseScript : MonoBehaviour {
 
     void Start()
     {
+        onPause();
         // set default playtime for each game [PT OT suggested]
         // if (isGameScene())
         // {
@@ -112,14 +126,12 @@ public class pauseScript : MonoBehaviour {
         //// settings before start game
         //pauseCanvas.alpha = 0;
         //confirmQuitCanvas.alpha = 0;
-        Button pauseBackBtn = pauseBack.GetComponent<Button>();
-        pauseBackBtn.onClick.AddListener(() => onBack());
-        Button pauseContinueBtn = pauseContinue.GetComponent<Button>();
-        pauseContinueBtn.onClick.AddListener(() => onPause());
-        Button promptYesBtn = promptYes.GetComponent<Button>();
-        promptYesBtn.onClick.AddListener(onPromptYes);
-        Button promptNoBtn = promptNo.GetComponent<Button>();
-        promptNoBtn.onClick.AddListener(onPromptNo);
+        timeStart = Time.time;
+        pauseBack.onClick.AddListener(() => onBack());
+        pauseContinue.onClick.AddListener(() => onPause());
+        promptYes.onClick.AddListener(onPromptYes);
+        promptNo.onClick.AddListener(onPromptNo);
+
 		// setPlaytime.onClick.AddListener(onSetTime);
 
         //pause game to let user adjust settings
@@ -136,7 +148,18 @@ public class pauseScript : MonoBehaviour {
             {
                 onPause();
             }
+            
+            timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
+                 + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
+
+            if (Time.time - timeStart >= timeSet)
+            {
+                isPause = true;
+                onPause();
+        } 
         }
+
+
 
 		// // detect playtime settings input
 		// if (!int.TryParse (playtimeSecText.text, out playtimeSec)) 
@@ -281,6 +304,10 @@ public class pauseScript : MonoBehaviour {
         }
         else
         {
+            timeStart = Time.time;
+            // timeStartText.text = Mathf.Floor(timeStart / 60).ToString("00") + " : " 
+            //     + Mathf.Floor(timeStart % 60).ToString("00");
+            timeSet = int.Parse(timeSetInput.text);
             Time.timeScale = 1;
             isPause = !isPause;
             pauseCanvas.alpha = 0;

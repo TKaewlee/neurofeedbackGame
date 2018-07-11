@@ -90,11 +90,11 @@ public class GameControl : MonoBehaviour {
         // }
     // }
 
-    public void onClickTest()
-	{
-		// Debug.Log ("current id is " + currentUserId); 
-		Debug.Log ("current name is " + currentUserName);
-	}
+    // public void onClickTest()
+	// {
+	// 	// Debug.Log ("current id is " + currentUserId); 
+	// 	Debug.Log ("current name is " + currentUserName);
+	// }
 
     // void Update()
     // {

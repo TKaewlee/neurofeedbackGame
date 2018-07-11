@@ -612,6 +612,8 @@ MonoBehaviour:
   promptNo: {fileID: 1902525048}
   pauseCanvas: {fileID: 269907818}
   confirmQuitCanvas: {fileID: 72225014}
+  timeSetInput: {fileID: 1941404727}
+  timeCountText: {fileID: 1980690852}
 --- !u!225 &269907818
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -807,7 +809,7 @@ GameObject:
   - component: {fileID: 431706823}
   - component: {fileID: 431706822}
   m_Layer: 5
-  m_Name: ContinueButton
+  m_Name: StartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1342,7 +1344,7 @@ GameObject:
   - component: {fileID: 561823147}
   - component: {fileID: 561823146}
   m_Layer: 5
-  m_Name: UserDataText
+  m_Name: GameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1398,7 +1400,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Setting
+  m_Text: Space Traveller
 --- !u!222 &561823147
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1669,6 +1671,7 @@ Transform:
   - {fileID: 959915789}
   - {fileID: 515466244}
   - {fileID: 1340241944}
+  - {fileID: 1980690851}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3544,6 +3547,8 @@ MonoBehaviour:
   promptNo: {fileID: 1902525048}
   pauseCanvas: {fileID: 1350705980}
   confirmQuitCanvas: {fileID: 72225014}
+  timeSetInput: {fileID: 0}
+  timeCountText: {fileID: 0}
 --- !u!1 &1378002500
 GameObject:
   m_ObjectHideFlags: 0
@@ -3589,7 +3594,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1378002500}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbec523557bf4b84f97da6142140c70f, type: 3}
   m_Name: 
@@ -4062,7 +4067,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Continue
+  m_Text: Start
 --- !u!222 &1482772848
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4861,6 +4866,58 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1941404725}
+--- !u!1 &1980690850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1980690851}
+  - component: {fileID: 1980690852}
+  m_Layer: 0
+  m_Name: Time Count Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1980690851
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1980690850}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0.98, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 636237303}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!132 &1980690852
+GUIText:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1980690850}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Text: '00 : 00'
+  m_Anchor: 1
+  m_Alignment: 1
+  m_PixelOffset: {x: 0, y: 0}
+  m_LineSpacing: 1
+  m_TabSize: 4
+  m_Font: {fileID: 0}
+  m_Material: {fileID: 0}
+  m_FontSize: 50
+  m_FontStyle: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_PixelCorrect: 1
+  m_RichText: 1
 --- !u!1 &2051848220
 GameObject:
   m_ObjectHideFlags: 0

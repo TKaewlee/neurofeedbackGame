@@ -10,7 +10,7 @@ public class mainPortalScript : MonoBehaviour {
 	// public Button timeStartButton;
     // public Button timeResetButton;
     // public Text timePresentDisplay;
-    public Button SaveButton;
+    public Button saveButton;
     public Text welcomeText;
     public InputField nameInputField;
     public InputField birthdayInputField;
@@ -52,8 +52,8 @@ public class mainPortalScript : MonoBehaviour {
         welcomeText.text = GameControl.currentUserName;
         
         // nameInputField.onEndEdit.AddListener (AcceptStringInput);
-        Button saveBtn = SaveButton.GetComponent<Button>();
-        saveBtn.onClick.AddListener(() => onSave());
+        // Button saveBtn = saveButton.GetComponent<Button>();
+        saveButton.onClick.AddListener(() => onSave());
         // }
         
         // timer = 0;							// Set the time limit for this round based on the RoundData object	
