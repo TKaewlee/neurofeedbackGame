@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class timeController : MonoBehaviour {
 
@@ -14,13 +15,17 @@ public class timeController : MonoBehaviour {
     private float timeStart = 0;
     
     public InputField timeSetInput;
-    private int timeSet = 10;
+    private int timeSet;
 
 	public Text timeTimeText;
 	public Text timeStartText;
     public Text timeCountText;
     public Text timeDownText;
     public CanvasGroup settingCanvas;
+
+    public static bool isTimeSet = false;
+
+    public static List<float> timeUsedEachSession = new List<float>();
 
     // Use this for initialization
     void Start () 
@@ -40,20 +45,38 @@ public class timeController : MonoBehaviour {
 	void Update () {
         if (isContinue)
         {
-            timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
-             + Mathf.Floor(Time.time % 60).ToString("00"); 
-            timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
-             + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
+            if (isTimeSet)
+            {
+                timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
+                + Mathf.Floor(Time.time % 60).ToString("00"); 
+                timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
+                + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
 
-            timeDownText.text = Mathf.Floor(timeSet / 60).ToString("00") + " : "
-             + Mathf.Floor(timeSet % 60).ToString("00");  
-             if (Time.time - timeStart > timeSet)
-             {
+                timeDownText.text = Mathf.Floor(timeSet / 60).ToString("00") + " : "
+                + Mathf.Floor(timeSet % 60).ToString("00");  
+
+                if (Time.time - timeStart > timeSet)
+                {
+                    
+                    isContinue = !isContinue;
+                    settingCanvas.alpha = 1;
+                    settingCanvas.interactable = true;
+                    settingCanvas.blocksRaycasts = true;                 
+                }
+            }
+            else
+            {
+                timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
+                + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");                        
+            }
+
+            if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
+            {
                 isContinue = !isContinue;
                 settingCanvas.alpha = 1;
                 settingCanvas.interactable = true;
-                settingCanvas.blocksRaycasts = true;                 
-             }
+                settingCanvas.blocksRaycasts = true;  
+            }            
         }            
     }
 
@@ -65,7 +88,17 @@ public class timeController : MonoBehaviour {
         timeStart = Time.time;
         timeStartText.text = Mathf.Floor(timeStart / 60).ToString("00") + " : " 
             + Mathf.Floor(timeStart % 60).ToString("00");
-        timeSet = int.Parse(timeSetInput.text);
+
+        if (timeSetInput.text == "")
+        {
+            isTimeSet = false;
+        }
+        else
+        {
+            isTimeSet = true;
+            timeSet = int.Parse(timeSetInput.text);
+        }
+        
         isContinue = !isContinue;
         settingCanvas.alpha = 0;
         settingCanvas.interactable = false;
