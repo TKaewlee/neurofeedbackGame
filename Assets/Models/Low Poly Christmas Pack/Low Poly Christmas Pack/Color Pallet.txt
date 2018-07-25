@@ -1,0 +1,10 @@
+White = FFFFFF
+Black = 000000
+Red Orange = FF6600
+Red = FF0000
+Brown = 8B4513
+Yellow = ffff00
+ForestGreen = 228B22
+Green = 008000
+Blue = 0000FF
+Lime = 00FF00

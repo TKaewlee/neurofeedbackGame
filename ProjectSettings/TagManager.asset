@@ -7,6 +7,23 @@ TagManager:
   - Boundary
   - Enemy
   - UDPReciever
+  - ReadUDP
+  - TimeController
+  - Calibration
+  - Black
+  - FallObject
+  - Green
+  - Orange
+  - Red
+  - White
+  - Grey
+  - Blue
+  - Sky
+  - Yellow
+  - Magenta
+  - Cyan
+  - SpaceController
+  - UDPReceiver
   layers:
   - Default
   - TransparentFX
@@ -16,17 +33,17 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Ground
+  - Climbing
+  - Player
+  - Background
+  - Enemy
+  - Harzards
+  - Interactable
+  - Decoration
+  - sky
+  - fgdecoration
+  - bgdecoration
   - 
   - 
   - 
@@ -43,4 +60,37 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: sky
+    uniqueID: 3033400695
+    locked: 0
+  - name: forest
+    uniqueID: 633426259
+    locked: 0
+  - name: background
+    uniqueID: 3270265285
+    locked: 0
+  - name: bgDecoration
+    uniqueID: 843654317
+    locked: 0
+  - name: Climbing
+    uniqueID: 1063502457
+    locked: 0
+  - name: Enemy
+    uniqueID: 746702063
+    locked: 0
+  - name: Hazards
+    uniqueID: 2300593623
+    locked: 0
+  - name: player
+    uniqueID: 2319210453
+    locked: 0
+  - name: foreground
+    uniqueID: 4032675661
+    locked: 0
+  - name: Interactable
+    uniqueID: 2459619865
+    locked: 0
+  - name: fgdecoration
+    uniqueID: 959601583
     locked: 0

@@ -6,6 +6,7 @@ public class ColorCtrl : MonoBehaviour {
 
 	public Material matObject;
 	public float Alpha = 1.0f;
+	public float baseAlpha = 1.0f;
 	public KeyCode changeCol;
 	private Read2UDP read2UDP;
 	
@@ -26,8 +27,8 @@ public class ColorCtrl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Alpha = (float)read2UDP.dataChanged;
-		matObject.color = new Color(0f, 0f, 0f, Alpha);
+		// Alpha = (float)read2UDP.dataTempChanged;
+		matObject.color = new Color(0f, 0f, 0f, 1-(baseAlpha-Alpha));
 	}
 
 	// public void AdjustAlpha (float newAlpha) {

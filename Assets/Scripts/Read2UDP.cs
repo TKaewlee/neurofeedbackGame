@@ -76,9 +76,7 @@ public class Read2UDP : MonoBehaviour
 	// Receive data, update packets received
 	private  void ReceiveData ()
 	{
-
-		while (onRecieve) 
-		{
+		do {
 			try {
 				IPEndPoint IP8000 = new IPEndPoint (IPAddress.Any, portLocal);
 				IPEndPoint IP8001 = new IPEndPoint (IPAddress.Any, portLocal1);
@@ -92,7 +90,7 @@ public class Read2UDP : MonoBehaviour
 			} catch (Exception err) {
 				print (err.ToString ());	
 			}
-		}
+		}while (onRecieve);
 	}
 
 	//Prevent crashes - close clients and threads properly!

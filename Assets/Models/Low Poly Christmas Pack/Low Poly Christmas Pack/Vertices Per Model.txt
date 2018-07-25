@@ -1,0 +1,13 @@
+Snowman V1 = 499
+Snowman V2 = 591
+SnowTree = 230
+SantaHat = 162
+CandyCane = 282 (have lots of vertices because of the color areas on model)
+ChristmasSock = 132
+ChristmasBulbDecoration = 74
+ChristmasLightDecorations = 218
+ChristmasStarDecoration = 66
+Ribbon = 238
+ChristmasTree = 2991
+Mistletoe = 656
+Wreath = 418

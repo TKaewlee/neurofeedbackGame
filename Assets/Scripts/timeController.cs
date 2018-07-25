@@ -8,6 +8,7 @@ public class timeController : MonoBehaviour {
 
     public Dropdown modeDropdown;
     private int modeIndex;
+    public static string modeName;
 
 	public Button startButton;
     private bool isContinue;
@@ -24,6 +25,8 @@ public class timeController : MonoBehaviour {
     public CanvasGroup settingCanvas;
 
     public static bool isTimeSet = false;
+    public static bool isOnSave = false;
+    public static bool isSaving = false;
 
     public static List<float> timeUsedEachSession = new List<float>();
 
@@ -45,6 +48,8 @@ public class timeController : MonoBehaviour {
 	void Update () {
         if (isContinue)
         {
+            isSaving = true;
+            // Read2UDP.startRecieve();
             if (isTimeSet)
             {
                 timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
@@ -57,11 +62,12 @@ public class timeController : MonoBehaviour {
 
                 if (Time.time - timeStart > timeSet)
                 {
-                    
                     isContinue = !isContinue;
                     settingCanvas.alpha = 1;
                     settingCanvas.interactable = true;
-                    settingCanvas.blocksRaycasts = true;                 
+                    settingCanvas.blocksRaycasts = true;
+                    isSaving = false;
+                    isOnSave = true;                 
                 }
             }
             else
@@ -76,12 +82,15 @@ public class timeController : MonoBehaviour {
                 settingCanvas.alpha = 1;
                 settingCanvas.interactable = true;
                 settingCanvas.blocksRaycasts = true;  
+                isSaving = false;
+                isOnSave = true;  
             }            
         }            
     }
 
     private void actionDropdownValueChanged(Dropdown actionTarget){
         modeIndex = actionTarget.value;
+        // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
     }
 
     public void continueOnClick(){
@@ -98,7 +107,7 @@ public class timeController : MonoBehaviour {
             isTimeSet = true;
             timeSet = int.Parse(timeSetInput.text);
         }
-        
+        modeName = modeDropdown.options[modeIndex].text;
         isContinue = !isContinue;
         settingCanvas.alpha = 0;
         settingCanvas.interactable = false;

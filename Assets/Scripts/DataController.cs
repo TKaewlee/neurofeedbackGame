@@ -5,24 +5,26 @@ using CsvHelper;
 
 public class DataController : MonoBehaviour
 {
-    public static class GameLogData
+	// declare singleton
+	public static DataController dataController;
+
+    public static class GameDataController
     {
 		private static string gameDir;
 		private static string gameCsv;
 
 		public static Dictionary<string, string> dataCollector = new Dictionary<string, string>();
 		
-
 		public static void updateGamePath()
 		{
-			// gameDir = @"log/" + LogCollector.last_game + "/";
-			// gameCsv = @"log/" + LogCollector.last_game + "/" + GameControl.currentUserId + ".csv";
+			gameDir = @"log/Noname"  + "/";
+			gameCsv = @"log/Noname" + "/" + timeController.modeName + ".csv";
 		}
 
 		public static void getData()
 		{
 			dataCollector.Clear();
-			// dataCollector = LogCollector.getLogDictionary(LogCollector.last_game);
+			// dataCollector = Read2UDP.tempData;
 		}
 
 		public static void writeData()
