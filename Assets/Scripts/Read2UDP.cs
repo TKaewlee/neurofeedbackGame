@@ -18,6 +18,8 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
 
 public class Read2UDP : MonoBehaviour
 {
@@ -33,9 +35,13 @@ public class Read2UDP : MonoBehaviour
 	// Receiving Thread
 	Thread receiveThread;
 	private bool onRecieve = true;
-	public double dataChanged;
 
-    // private ColorCtrl colorCtrl;
+	private float timeshift = 0;
+	public float dataTempChanged;
+	public float timeTempChanged;
+	private static List<float> dataChanged = new List<float>();
+	private static List<float> timeChanged = new List<float>();
+	public static Dictionary<string, string> tempData = new Dictionary<string, string>();
 
 	// start from Unity3d
 	public void Start ()
@@ -53,16 +59,6 @@ public class Read2UDP : MonoBehaviour
 		// Create local client
 		client = new UdpClient (portLocal);
 		client1 = new UdpClient (portLocal1);
-
-        // GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("GameController");
-        // if (gameControllerObject != null)
-        // {
-        //     colorCtrl = gameControllerObject.GetComponent <ColorCtrl>();
-        // }
-        // if (colorCtrl == null)
-        // {
-        //     Debug.Log("Cannot find 'ColorCtrl' script");
-        // }
 
 		// local endpoint define (where messages are received)
 		// Create a new thread for reception of incoming messages
@@ -82,16 +78,45 @@ public class Read2UDP : MonoBehaviour
 				IPEndPoint IP8001 = new IPEndPoint (IPAddress.Any, portLocal1);
 				byte[] data = client.Receive (ref IP8000);
 				byte[] data1 = client1.Receive (ref IP8001);
-				// print("> " + BitConverter.ToString(data));
-				print(">> " + BitConverter.ToDouble(data, 0));
-				print("TT " + BitConverter.ToDouble(data1, 0));
-				dataChanged = BitConverter.ToDouble(data, 0);
+				dataTempChanged = (float)BitConverter.ToDouble(data, 0);
+				timeTempChanged = (float)BitConverter.ToDouble(data1, 0);
+				
+				if (timeTempChanged >= timeshift)
+				{
+					timeshift = timeTempChanged + 1;
+					if (timeController.isSaving)
+					{
+						timeChanged.Add(timeTempChanged);
+						dataChanged.Add(dataTempChanged);
+					}
+				}
+
+				if(timeController.isOnSave)
+				{
+					float timeStartSave = Time.time;
+					print(">> " + dataChanged.Average() + " Length: " + dataChanged.Count());	
+					tempData["time"] = DataController.GameDataController.getAppendString(timeChanged);
+					tempData["data"] = DataController.GameDataController.getAppendString(dataChanged);
+
+					print(">> Start Saving");
+					// DataController.GameDataController.updateGamePath();
+					// DataController.GameDataController.getData();
+					// DataController.GameDataController.writeData();
+					// DataController.GameDataController.clearData();
+
+					timeChanged.Clear();
+					dataChanged.Clear();
+					timeController.isOnSave = false;
+					tempData.Clear();
+					print("TimeConsumed: " + (timeStartSave - Time.time));
+				}
 
 			} catch (Exception err) {
 				print (err.ToString ());	
 			}
 		}while (onRecieve);
 	}
+
 
 	//Prevent crashes - close clients and threads properly!
 	void OnDisable ()

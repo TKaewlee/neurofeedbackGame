@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 public class ColorCtrl : MonoBehaviour {
 
 	public Material matObject;
@@ -9,7 +9,10 @@ public class ColorCtrl : MonoBehaviour {
 	public float baseAlpha = 1.0f;
 	public KeyCode changeCol;
 	private Read2UDP read2UDP;
-	
+
+	private static List<float> dataAvgChanged = new List<float>();
+	private
+
 	// Use this for initialization
 	void Start () {
 		matObject.color = Color.black;	
@@ -27,7 +30,12 @@ public class ColorCtrl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		// Alpha = (float)read2UDP.dataTempChanged;
+		Alpha = read2UDP.dataTempChanged;
+		// dataAvgChanged.Add(Alpha);
+		// if(timeController.isOnSave)
+		// {
+		// 	print(dataAvgChanged.Average());
+		// }
 		matObject.color = new Color(0f, 0f, 0f, 1-(baseAlpha-Alpha));
 	}
 

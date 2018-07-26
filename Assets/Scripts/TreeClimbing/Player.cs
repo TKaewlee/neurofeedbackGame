@@ -40,7 +40,7 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!isAlive){ return; }
-		x = (float)read2UDP.dataChanged;
+		// x = (float)read2UDP.dataChanged;
 		Run();
 		Jump();
 		FlipSprite();

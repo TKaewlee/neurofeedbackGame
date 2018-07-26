@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using CsvHelper;
+using System.Linq;
+using System.Text;
 
 public class DataController : MonoBehaviour
 {
@@ -24,7 +26,7 @@ public class DataController : MonoBehaviour
 		public static void getData()
 		{
 			dataCollector.Clear();
-			// dataCollector = Read2UDP.tempData;
+			dataCollector = Read2UDP.tempData;
 		}
 
 		public static void writeData()
@@ -81,6 +83,33 @@ public class DataController : MonoBehaviour
 		{
 			dataCollector.Clear();
 			// LogCollector.clearStaticLogs();
+		}
+		public static string getAppendString(List<float> floatEnum)
+		{
+			StringBuilder temp = new StringBuilder();
+
+			try
+			{
+				float last = floatEnum.Last();
+
+				foreach (float i in floatEnum)
+				{
+					if (!i.Equals(last))
+					{
+						temp.Append(i.ToString("f2")).Append(" ");
+					}
+					else
+					{
+						temp.Append(i.ToString("f2"));
+					}
+				}
+			}
+			catch 
+			{
+				return null;
+			}
+
+			return temp.ToString();
 		}
 	}
 }

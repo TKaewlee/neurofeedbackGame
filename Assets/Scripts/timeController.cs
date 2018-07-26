@@ -18,10 +18,10 @@ public class timeController : MonoBehaviour {
     public InputField timeSetInput;
     private int timeSet;
 
-	public Text timeTimeText;
-	public Text timeStartText;
+	// public Text timeTimeText;
+	// public Text timeStartText;
     public Text timeCountText;
-    public Text timeDownText;
+    // public Text timeDownText;
     public CanvasGroup settingCanvas;
 
     public static bool isTimeSet = false;
@@ -52,13 +52,13 @@ public class timeController : MonoBehaviour {
             // Read2UDP.startRecieve();
             if (isTimeSet)
             {
-                timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
-                + Mathf.Floor(Time.time % 60).ToString("00"); 
+                // timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
+                // + Mathf.Floor(Time.time % 60).ToString("00"); 
                 timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                 + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
 
-                timeDownText.text = Mathf.Floor(timeSet / 60).ToString("00") + " : "
-                + Mathf.Floor(timeSet % 60).ToString("00");  
+                // timeDownText.text = Mathf.Floor(timeSet / 60).ToString("00") + " : "
+                // + Mathf.Floor(timeSet % 60).ToString("00");  
 
                 if (Time.time - timeStart > timeSet)
                 {
@@ -95,8 +95,8 @@ public class timeController : MonoBehaviour {
 
     public void continueOnClick(){
         timeStart = Time.time;
-        timeStartText.text = Mathf.Floor(timeStart / 60).ToString("00") + " : " 
-            + Mathf.Floor(timeStart % 60).ToString("00");
+        // timeStartText.text = Mathf.Floor(timeStart / 60).ToString("00") + " : " 
+        //     + Mathf.Floor(timeStart % 60).ToString("00");
 
         if (timeSetInput.text == "")
         {

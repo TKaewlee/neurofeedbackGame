@@ -41213,6 +41213,46 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1 &1683414047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1683414049}
+  - component: {fileID: 1683414048}
+  m_Layer: 0
+  m_Name: GameControl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1683414048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1683414047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b9b28c65f959b14a97fd9edb7539bf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1683414049
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1683414047}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 446.60226, y: 192.91942, z: 12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1783591239
 GameObject:
   m_ObjectHideFlags: 3
@@ -46710,24 +46750,24 @@ Prefab:
     - target: {fileID: 20586758060198008, guid: 8c654a51006d2764ba461924ae0ee801,
         type: 2}
       propertyPath: field of view
-      value: 40
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 20586758060198008, guid: 8c654a51006d2764ba461924ae0ee801,
         type: 2}
       propertyPath: orthographic size
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4998684659713396, guid: 8c654a51006d2764ba461924ae0ee801, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 20.152668
       objectReference: {fileID: 0}
     - target: {fileID: 4998684659713396, guid: 8c654a51006d2764ba461924ae0ee801, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 40.3849
       objectReference: {fileID: 0}
     - target: {fileID: 4998684659713396, guid: 8c654a51006d2764ba461924ae0ee801, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -10.113281
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c654a51006d2764ba461924ae0ee801, type: 2}
