@@ -93,22 +93,22 @@ public class Read2UDP : MonoBehaviour
 
 				if(timeController.isOnSave)
 				{
-					float timeStartSave = Time.time;
+					// float timeStartSave = Time.time;
 					print(">> " + dataChanged.Average() + " Length: " + dataChanged.Count());	
 					tempData["time"] = DataController.GameDataController.getAppendString(timeChanged);
 					tempData["data"] = DataController.GameDataController.getAppendString(dataChanged);
 
 					print(">> Start Saving");
-					// DataController.GameDataController.updateGamePath();
-					// DataController.GameDataController.getData();
-					// DataController.GameDataController.writeData();
-					// DataController.GameDataController.clearData();
+					DataController.GameDataController.updateGamePath();
+					DataController.GameDataController.getData();
+					DataController.GameDataController.writeData();
+					DataController.GameDataController.clearData();
 
 					timeChanged.Clear();
 					dataChanged.Clear();
 					timeController.isOnSave = false;
 					tempData.Clear();
-					print("TimeConsumed: " + (timeStartSave - Time.time));
+					// print("TimeConsumed: " + (timeStartSave - Time.time));
 				}
 
 			} catch (Exception err) {

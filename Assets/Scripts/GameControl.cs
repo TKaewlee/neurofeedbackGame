@@ -34,11 +34,9 @@ public class GameControl : MonoBehaviour {
 
     // static variables
     // user info
+    public static string currentUserName;
 
-    // public static string currentUserId = "tester00";
-    public static string currentUserName = "NoName";
-
-    public static int userStatus = 0; // 0 for new, 1 for old
+    // public static int userStatus = 0; // 0 for new, 1 for old
 
     // public static int[] calibValues = new int[4] { -20, -35, 20, 35 }; // [Left Roll, Left Yaw, Right Roll, Right Yaw]
     // public static int currentGamePortalPage = 1;
