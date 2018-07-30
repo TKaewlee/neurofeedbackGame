@@ -276,7 +276,7 @@ public class pauseScript : MonoBehaviour {
 
         // if quit game without setting elapsed time
         // it still moves to scoreReport scene
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("_MainMenu");
     }
 	
 	public void onPromptNo()
@@ -289,7 +289,6 @@ public class pauseScript : MonoBehaviour {
         confirmQuitCanvas.alpha = 0;
         confirmQuitCanvas.blocksRaycasts = false;
 		confirmQuitCanvas.blocksRaycasts = false;
-
     }
 
     public void onPause()

@@ -6,12 +6,18 @@ using System.Collections.Generic;
 
 public class timeController : MonoBehaviour {
 
+    public CanvasGroup settingCanvas;
+    public CanvasGroup confirmBackCanvas;
     public Dropdown modeDropdown;
     private int modeIndex;
     public static string modeName;
 
 	public Button startButton;
     private bool isContinue;
+
+    public Button backButton;
+    public Button promptYes;
+    public Button promptNo;
 
     private float timeStart = 0;
     
@@ -22,7 +28,7 @@ public class timeController : MonoBehaviour {
 	// public Text timeStartText;
     public Text timeCountText;
     // public Text timeDownText;
-    public CanvasGroup settingCanvas;
+    
 
     public static bool isTimeSet = false;
     public static bool isStart = false;
@@ -36,9 +42,13 @@ public class timeController : MonoBehaviour {
     void Start () 
     {
         print("Time Start");
-        Time.timeScale = 1;
+        Time.timeScale = 0;
         timeStart = Time.time;
         startButton.onClick.AddListener(() => startOnClick()); 
+        backButton.onClick.AddListener(() => onBack());
+        promptYes.onClick.AddListener(onPromptYes);
+        promptNo.onClick.AddListener(onPromptNo);
+
         modeDropdown.onValueChanged.AddListener(delegate {
             actionDropdownValueChanged(modeDropdown);
         });
@@ -65,13 +75,7 @@ public class timeController : MonoBehaviour {
 
                 if (Time.time - timeStart > timeSet)
                 {
-                    isContinue = !isContinue;
-                    settingCanvas.alpha = 1;
-                    settingCanvas.interactable = true;
-                    settingCanvas.blocksRaycasts = true;
-                    isSaving = false;
-                    isOnSave = true; 
-                    isSetAvg = true;                
+                    onSetting();
                 }
             }
             else
@@ -82,15 +86,24 @@ public class timeController : MonoBehaviour {
 
             if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
             {
-                isContinue = !isContinue;
-                settingCanvas.alpha = 1;
-                settingCanvas.interactable = true;
-                settingCanvas.blocksRaycasts = true;  
-                isSaving = false;
-                isOnSave = true;  
-                isSetAvg = true;
+                onSetting();
             }            
         }            
+    }
+
+    public void onSetting()
+    {
+        Time.timeScale = 0;
+        isContinue = !isContinue;
+        settingCanvas.alpha = 1;
+        settingCanvas.interactable = true;
+        settingCanvas.blocksRaycasts = true;  
+        isSaving = false;
+        isOnSave = true; 
+        if(isCalScene())
+        {
+            isSetAvg = true;
+        } 
     }
 
     private void actionDropdownValueChanged(Dropdown actionTarget){
@@ -98,8 +111,21 @@ public class timeController : MonoBehaviour {
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
     }
 
+    private bool isCalScene()
+    {
+        // string[] scenesList = new string[] {"spaceShooter", "cognitiveRun", "tetris", "gdrive", "gmath", "gmatch", "ordering", "grouping", "matching"};
+        // foreach (string i in scenesList)
+        // {
+        if(SceneManager.GetActiveScene().name == "_Calibration")
+        {
+            return true;
+        }
+        // }
+        return false;
+    }
+
     private void startOnClick(){
-        print("fuckkkk");
+        Time.timeScale = 1;
         timeStart = Time.time;
         // timeStartText.text = Mathf.Floor(timeStart / 60).ToString("00") + " : " 
         //     + Mathf.Floor(timeStart % 60).ToString("00");
@@ -120,4 +146,37 @@ public class timeController : MonoBehaviour {
         settingCanvas.blocksRaycasts = false;  
         isStart = true;      
     }
+
+    public void onBack()
+    {
+        settingCanvas.alpha = 0;
+        settingCanvas.interactable = false;
+        settingCanvas.blocksRaycasts = false;
+        confirmBackCanvas.alpha = 1;
+        confirmBackCanvas.interactable = true; 
+		confirmBackCanvas.blocksRaycasts = true; // blocksRaycasts if true is interactable false is not
+    }
+
+    public void onPromptYes()
+    {
+        Time.timeScale = 1;
+
+        // if quit game without setting elapsed time
+        // it still moves to scoreReport scene
+        SceneManager.LoadScene("_MainMenu");
+    }
+
+	public void onPromptNo()
+    {
+        // if not exit, hide canvas
+        //confirmQuit.SetActive(false); // obsolated
+        settingCanvas.alpha = 1;
+        settingCanvas.interactable = true;
+        settingCanvas.blocksRaycasts = true;
+
+        confirmBackCanvas.alpha = 0;
+        confirmBackCanvas.blocksRaycasts = false;
+		confirmBackCanvas.blocksRaycasts = false;
+    }
+
 }

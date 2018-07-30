@@ -35,6 +35,8 @@ public class GameControl : MonoBehaviour {
     // static variables
     // user info
     public static string currentUserName = "test";
+    public static float currentBaselineAvg = 0;
+    public static float currentThresholdAvg = 0;
     
 
     // public static int userStatus = 0; // 0 for new, 1 for old
