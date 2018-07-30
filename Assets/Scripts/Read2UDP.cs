@@ -42,6 +42,7 @@ public class Read2UDP : MonoBehaviour
 	private static List<float> dataChanged = new List<float>();
 	private static List<float> timeChanged = new List<float>();
 	public static Dictionary<string, string> tempData = new Dictionary<string, string>();
+	// public static Dictionary<string, string> tempTrigger = new Dictionary<string, string>();
 
 	// start from Unity3d
 	public void Start ()
@@ -81,6 +82,21 @@ public class Read2UDP : MonoBehaviour
 				dataTempChanged = (float)BitConverter.ToDouble(data, 0);
 				timeTempChanged = (float)BitConverter.ToDouble(data1, 0);
 				
+				if(timeController.isStart)
+				{
+					tempData["date"] = DateTime.Now.ToString();
+					if(timeController.isTimeSet)
+					{
+						tempData["timeset"] = timeController.timeSet.ToString();
+					}
+					else
+					{
+						tempData["timeset"] = "None";
+					}
+					tempData["start"] = timeTempChanged.ToString("f2");
+					timeController.isStart = false;
+				}
+				
 				if (timeTempChanged >= timeshift)
 				{
 					timeshift = timeTempChanged + 1;
@@ -93,8 +109,7 @@ public class Read2UDP : MonoBehaviour
 
 				if(timeController.isOnSave)
 				{
-					// float timeStartSave = Time.time;
-					print(">> " + dataChanged.Average() + " Length: " + dataChanged.Count());	
+					tempData["stop"] = timeTempChanged.ToString("f2");	
 					tempData["time"] = DataController.GameDataController.getAppendString(timeChanged);
 					tempData["data"] = DataController.GameDataController.getAppendString(dataChanged);
 
@@ -108,7 +123,6 @@ public class Read2UDP : MonoBehaviour
 					dataChanged.Clear();
 					timeController.isOnSave = false;
 					tempData.Clear();
-					// print("TimeConsumed: " + (timeStartSave - Time.time));
 				}
 
 			} catch (Exception err) {

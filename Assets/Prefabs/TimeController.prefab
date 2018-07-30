@@ -9,49 +9,50 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1398165911973196}
+  m_RootGameObject: {fileID: 1532181723877528}
   m_IsPrefabParent: 1
---- !u!1 &1398165911973196
+--- !u!1 &1532181723877528
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4944427658533198}
-  - component: {fileID: 114838335582905448}
+  - component: {fileID: 4544672182963034}
+  - component: {fileID: 114444592661184020}
   m_Layer: 0
-  m_Name: udpReceiver
-  m_TagString: UDPReciever
+  m_Name: TimeController
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4944427658533198
+--- !u!4 &4544672182963034
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1398165911973196}
+  m_GameObject: {fileID: 1532181723877528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 317.57007, y: 476.72983, z: -9.177327}
+  m_LocalPosition: {x: 446.60226, y: 192.91942, z: 12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114838335582905448
+--- !u!114 &114444592661184020
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1398165911973196}
+  m_GameObject: {fileID: 1532181723877528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a9d2f53eb9dbab42bd16afe622c811d, type: 3}
+  m_Script: {fileID: 11500000, guid: ca6eba35282d558489ebfd623708f2a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portLocal: 8000
-  portLocal1: 8001
-  dataTempChanged: 0
-  timeTempChanged: 0
+  modeDropdown: {fileID: 0}
+  startButton: {fileID: 0}
+  timeSetInput: {fileID: 0}
+  timeCountText: {fileID: 0}
+  settingCanvas: {fileID: 0}

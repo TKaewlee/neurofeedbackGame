@@ -19,7 +19,7 @@ public class mainPortalScript : MonoBehaviour {
     private static bool isInfoExisted = false;
     private static string gameDir;
     private static string gameCsv;
-    public static Dictionary<string, string> dataCollector = new Dictionary<string, string>();
+    private static Dictionary<string, string> infoCollector = new Dictionary<string, string>();
 
     private static List<string> birthdays = new List<string>();
     private static List<string> informations = new List<string>();
@@ -28,37 +28,46 @@ public class mainPortalScript : MonoBehaviour {
     void Start()
     {   
         saveButton.onClick.AddListener(() => onSave());
+
+        if(GameControl.currentUserName != "")
+        {
+            welcomeText.text = GameControl.currentUserName;
+            
+            playCanvas.alpha = 1;
+            playCanvas.interactable = true; 
+            playCanvas.blocksRaycasts = true;              
+        }
+        else
+        {
+            welcomeText.text = "Name, Please!";
+
+            playCanvas.alpha = 0.7f;
+            playCanvas.interactable = false; 
+            playCanvas.blocksRaycasts = false;  
+        }
     }
 
-    public void clearData()
+    private void clearData()
     {
         nameInputField.text = "";
         birthdayInputField.text = "";
         informationInputField.text = "";
         statusInfoText.text = "Please input your name : )";
-        dataCollector.Clear();
-
-        GameControl.currentUserName = "";
-        welcomeText.text = "Name, Please!";
-
-        playCanvas.alpha = 0.7f;
-        playCanvas.interactable = false; 
-        playCanvas.blocksRaycasts = false;  
-
+        infoCollector.Clear();
     }
 
     public void onSave()
     {
         Debug.Log("call onSave()");
-        dataCollector["date"] = DateTime.Now.ToString();
-        dataCollector["name"] = nameInputField.text.ToLower();       
+        infoCollector["date"] = DateTime.Now.ToString();
+        infoCollector["name"] = nameInputField.text.ToLower();       
         
         if (nameInputField.text != "")
         {
             updateGamePath();
             if(isInfoExisted)
             {
-                statusInfoText.text = "Welcome back, " + dataCollector["name"];
+                statusInfoText.text = "Welcome back, " + infoCollector["name"];
                 if (File.Exists(gameCsv))
                 {
                     using (var ftr = new FileStream(gameCsv, FileMode.Open))
@@ -94,26 +103,35 @@ public class mainPortalScript : MonoBehaviour {
             }
             else
             {
-                statusInfoText.text = "Hello " + dataCollector["name"] + ", data saved";
+                statusInfoText.text = "Hello " + infoCollector["name"] + ", data saved";
             }
 
-            dataCollector["birthday"] = birthdayInputField.text;
-            dataCollector["information"] = informationInputField.text;
+            infoCollector["birthday"] = birthdayInputField.text;
+            infoCollector["information"] = informationInputField.text;
             writeData();
 
             playCanvas.alpha = 1;
             playCanvas.interactable = true; 
             playCanvas.blocksRaycasts = true;            
 
-            GameControl.currentUserName = dataCollector["name"];
+            GameControl.currentUserName = infoCollector["name"];
             welcomeText.text = GameControl.currentUserName;
+        }
+        else
+        {
+            welcomeText.text = "Name, Please!";
+            GameControl.currentUserName = "";
+            
+            playCanvas.alpha = 0.7f;
+            playCanvas.interactable = false; 
+            playCanvas.blocksRaycasts = false;              
         }
     }
 
-    public static void updateGamePath()
+    private static void updateGamePath()
     {
-        gameDir = @"log/" + dataCollector["name"] + "/";
-        gameCsv = @"log/" + dataCollector["name"] + "/" + "infomation.csv";
+        gameDir = @"log/" + infoCollector["name"] + "/";
+        gameCsv = @"log/" + infoCollector["name"] + "/" + "infomation.csv";
         if (Directory.Exists(gameDir))
         { 
             isInfoExisted = true;
@@ -124,13 +142,13 @@ public class mainPortalScript : MonoBehaviour {
         }
     }    
 
-    public static void writeData()
+    private static void writeData()
     {
         // check if directory exist
         if (!isInfoExisted)
         {
             Directory.CreateDirectory(gameDir);
-            Debug.Log("Create log/" + dataCollector["name"] +  "/ in home directory!");
+            Debug.Log("Create log/" + infoCollector["name"] +  "/ in home directory!");
         }
         
         // check if file exists, if not create with header
@@ -141,7 +159,7 @@ public class mainPortalScript : MonoBehaviour {
             using (var sw = new StreamWriter(ftw))
             using (var wt = new CsvWriter(sw))
             {
-                foreach (string key in dataCollector.Keys)
+                foreach (string key in infoCollector.Keys)
                 {
                     wt.WriteField(key);
                 }
@@ -161,7 +179,7 @@ public class mainPortalScript : MonoBehaviour {
         using (var sw = new StreamWriter(ftw))
         using (var wt = new CsvWriter(sw))
         {
-            foreach (string val in dataCollector.Values)
+            foreach (string val in infoCollector.Values)
             {
                 wt.WriteField(val);
             }

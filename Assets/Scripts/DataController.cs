@@ -25,7 +25,6 @@ public class DataController : MonoBehaviour
 
 		public static void getData()
 		{
-			dataCollector.Clear();
 			dataCollector = Read2UDP.tempData;
 		}
 
@@ -82,7 +81,6 @@ public class DataController : MonoBehaviour
 		public static void clearData()
 		{
 			dataCollector.Clear();
-			// LogCollector.clearStaticLogs();
 		}
 		public static string getAppendString(List<float> floatEnum)
 		{

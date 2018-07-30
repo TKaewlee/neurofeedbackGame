@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;               // ui objects
+
 public class ColorCtrl : MonoBehaviour {
 
 	public Material matObject;
 	public float Alpha = 1.0f;
 	public float baseAlpha = 1.0f;
-	public KeyCode changeCol;
+	// public KeyCode changeCol;
 	private Read2UDP read2UDP;
 
 	private static List<float> dataAvgChanged = new List<float>();
-	private
+	public Text baselineSetText;
+	public Text thresholdSetText;
 
 	// Use this for initialization
 	void Start () {
@@ -30,13 +33,30 @@ public class ColorCtrl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Alpha = read2UDP.dataTempChanged;
-		// dataAvgChanged.Add(Alpha);
-		// if(timeController.isOnSave)
-		// {
-		// 	print(dataAvgChanged.Average());
-		// }
-		matObject.color = new Color(0f, 0f, 0f, 1-(baseAlpha-Alpha));
+		if(timeController.isSaving)
+		{
+			Alpha = read2UDP.dataTempChanged;
+			dataAvgChanged.Add(Alpha);
+		}
+		else
+		{	
+			if(timeController.isSetAvg)
+			{
+				if(timeController.modeName == "Baseline")
+				{
+					baselineSetText.text = dataAvgChanged.Average().ToString();
+				}
+				else
+				{
+					thresholdSetText.text = dataAvgChanged.Average().ToString();
+					matObject.color = new Color(0f, 0f, 0f, 1-(baseAlpha-Alpha));
+				}
+				dataAvgChanged.Clear();
+				timeController.isSetAvg = false;	
+			}
+
+		}
+
 	}
 
 	// public void AdjustAlpha (float newAlpha) {

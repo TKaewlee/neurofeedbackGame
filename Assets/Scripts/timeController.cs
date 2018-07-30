@@ -16,7 +16,7 @@ public class timeController : MonoBehaviour {
     private float timeStart = 0;
     
     public InputField timeSetInput;
-    private int timeSet;
+    public static int timeSet;
 
 	// public Text timeTimeText;
 	// public Text timeStartText;
@@ -25,6 +25,8 @@ public class timeController : MonoBehaviour {
     public CanvasGroup settingCanvas;
 
     public static bool isTimeSet = false;
+    public static bool isStart = false;
+    public static bool isSetAvg = false;
     public static bool isOnSave = false;
     public static bool isSaving = false;
 
@@ -33,9 +35,10 @@ public class timeController : MonoBehaviour {
     // Use this for initialization
     void Start () 
     {
+        print("Time Start");
         Time.timeScale = 1;
         timeStart = Time.time;
-        startButton.onClick.AddListener(() => continueOnClick()); 
+        startButton.onClick.AddListener(() => startOnClick()); 
         modeDropdown.onValueChanged.AddListener(delegate {
             actionDropdownValueChanged(modeDropdown);
         });
@@ -67,7 +70,8 @@ public class timeController : MonoBehaviour {
                     settingCanvas.interactable = true;
                     settingCanvas.blocksRaycasts = true;
                     isSaving = false;
-                    isOnSave = true;                 
+                    isOnSave = true; 
+                    isSetAvg = true;                
                 }
             }
             else
@@ -84,6 +88,7 @@ public class timeController : MonoBehaviour {
                 settingCanvas.blocksRaycasts = true;  
                 isSaving = false;
                 isOnSave = true;  
+                isSetAvg = true;
             }            
         }            
     }
@@ -93,7 +98,8 @@ public class timeController : MonoBehaviour {
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
     }
 
-    public void continueOnClick(){
+    private void startOnClick(){
+        print("fuckkkk");
         timeStart = Time.time;
         // timeStartText.text = Mathf.Floor(timeStart / 60).ToString("00") + " : " 
         //     + Mathf.Floor(timeStart % 60).ToString("00");
@@ -111,6 +117,7 @@ public class timeController : MonoBehaviour {
         isContinue = !isContinue;
         settingCanvas.alpha = 0;
         settingCanvas.interactable = false;
-        settingCanvas.blocksRaycasts = false;        
+        settingCanvas.blocksRaycasts = false;  
+        isStart = true;      
     }
 }
