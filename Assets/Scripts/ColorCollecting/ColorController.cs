@@ -22,7 +22,7 @@ public class ColorController : MonoBehaviour
 	public float con;
 	public int index;
 	private bool gameOver;
-	private ReadUDP readUDP;
+	// private ReadUDP readUDP;
 	private Color col;
 	//public double a,b;
 	public double thresh;
@@ -30,15 +30,15 @@ public class ColorController : MonoBehaviour
     {
 		gameOver=false;
         StartCoroutine(ColorWaves());
-		GameObject readUDPObject = GameObject.FindWithTag("ReadUDP");
-		if(readUDPObject!=null)
-		{
-			readUDP=readUDPObject.GetComponent<ReadUDP>();
-		}
-		if(readUDPObject==null)
-		{
-			print("ColorController cannot find 'ReadUDP' script");
-		}
+		// GameObject readUDPObject = GameObject.FindWithTag("ReadUDP");
+		// if(readUDPObject!=null)
+		// {
+		// 	readUDP=readUDPObject.GetComponent<ReadUDP>();
+		// }
+		// if(readUDPObject==null)
+		// {
+		// 	print("ColorController cannot find 'ReadUDP' script");
+		// }
     }
 	// void Update()
 	// {

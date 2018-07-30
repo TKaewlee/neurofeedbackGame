@@ -18,12 +18,12 @@ public class GameController : MonoBehaviour
     private bool gameOver;
     private ReadUDP readUDP;
     private BaselineTBR baselineTBR;
-    private TimeController timeControll;
+    // private TimeController timeControll;
     public Material fallObjectMat;
-    public double a,thresh;
+    // public double a,thresh;
     private Color col;
     public double i;
-    private float time,limitTime;
+    private float time, limitTime;
 
     void Start()
     {
@@ -33,34 +33,37 @@ public class GameController : MonoBehaviour
         state=1;
         UpdateScore();
         StartCoroutine(SpawnWaves());
-        GameObject readUDPObject = GameObject.FindWithTag("ReadUDP");
-        if(readUDPObject != null)
-        {
-            readUDP = readUDPObject.GetComponent<ReadUDP>();
-        }
-        if(readUDPObject==null)
-        {
-            Debug.Log("GameController cannot find 'ReadUDP' script");
-        }
-        GameObject calibrationObject = GameObject.FindWithTag("Calibration");
-        if(calibrationObject != null)
-        {
-            baselineTBR = calibrationObject.GetComponent<BaselineTBR>();
-        }
-        if(calibrationObject==null)
-        {
-            Debug.Log("GameController cannot find 'Calibration' script");
-        }
-        GameObject timeControllerObject = GameObject.FindWithTag("TimeController");
-        if(timeControllerObject != null)
-        {
-            timeControll = timeControllerObject.GetComponent<TimeController>();
-            limitTime=timeControll.countValue;
-        }
-        if(timeControllerObject==null)
-        {
-            Debug.Log("GameController cannot find 'TimeController' script");
-        }
+
+        // GameObject readUDPObject = GameObject.FindWithTag("ReadUDP");
+        // if(readUDPObject != null)
+        // {
+        //     readUDP = readUDPObject.GetComponent<ReadUDP>();
+        // }
+        // if(readUDPObject==null)
+        // {
+        //     Debug.Log("GameController cannot find 'ReadUDP' script");
+        // }
+
+        // GameObject calibrationObject = GameObject.FindWithTag("Calibration");
+        // if(calibrationObject != null)
+        // {
+        //     baselineTBR = calibrationObject.GetComponent<BaselineTBR>();
+        // }
+        // if(calibrationObject==null)
+        // {
+        //     Debug.Log("GameController cannot find 'Calibration' script");
+        // }
+        
+        // GameObject timeControllerObject = GameObject.FindWithTag("TimeController");
+        // if(timeControllerObject != null)
+        // {
+        //     timeControll = timeControllerObject.GetComponent<TimeController>();
+        limitTime=timeController.timeSet;
+        // }
+        // if(timeControllerObject==null)
+        // {
+        //     Debug.Log("GameController cannot find 'TimeController' script");
+        // }
     }
     void Update()
     {
@@ -86,8 +89,8 @@ public class GameController : MonoBehaviour
             player.transform.position=tmp;
             state++;
         }*/
-        time=timeControll.currentTime;
-        if(time==0.75*limitTime && state==1)
+        time = Time.time - timeController.timeStart;
+        if(time==0.25*limitTime && state==1)
         {
             tmp=player.transform.position;
             tmp.x=110;
@@ -101,7 +104,7 @@ public class GameController : MonoBehaviour
             player.transform.position=tmp;
             state++;
         }
-        if(time==0.25*limitTime && state==3)
+        if(time==0.75*limitTime && state==3)
         {
             tmp=player.transform.position;
             tmp.x=325;
@@ -113,33 +116,33 @@ public class GameController : MonoBehaviour
         //falled object color changing
         // a=read2UDP.dataTempChanged;
         //calculate with thresh
-        thresh=baselineTBR.min;
-        a=(2*baselineTBR.baseline-thresh-a)/(2*(baselineTBR.baseline-thresh));
-        if(baselineTBR.baseline!=0f)
-        {
-            if(a>=i)
-            {
-                while(a>i)
-                {
-                    i+=0.01;
-                    col=fallObjectMat.color;
-                    col.a=(float)i;
-                    fallObjectMat.color=col;
-                }
-                print("Intensity UP");
-            }
-            else if(a<i)
-            {
-                while(a<i)
-                {
-                    i-=0.01;
-                    col=fallObjectMat.color;
-                    col.a=(float)i;
-                    fallObjectMat.color=col;
-                }
-                print("Intensity DOWN");
-            }
-        }
+        // thresh=baselineTBR.min;
+        // a=(2*baselineTBR.baseline-thresh-a)/(2*(baselineTBR.baseline-thresh));
+        // if(baselineTBR.baseline!=0f)
+        // {
+        //     if(a>=i)
+        //     {
+        //         while(a>i)
+        //         {
+        //             i+=0.01;
+        //             col=fallObjectMat.color;
+        //             col.a=(float)i;
+        //             fallObjectMat.color=col;
+        //         }
+        //         print("Intensity UP");
+        //     }
+        //     else if(a<i)
+        //     {
+        //         while(a<i)
+        //         {
+        //             i-=0.01;
+        //             col=fallObjectMat.color;
+        //             col.a=(float)i;
+        //             fallObjectMat.color=col;
+        //         }
+        //         print("Intensity DOWN");
+        //     }
+        // }
     }
     IEnumerator SpawnWaves()
     {

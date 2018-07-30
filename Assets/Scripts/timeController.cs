@@ -19,15 +19,12 @@ public class timeController : MonoBehaviour {
     public Button promptYes;
     public Button promptNo;
 
-    private float timeStart = 0;
+    public static float timeStart = 0;
     
     public InputField timeSetInput;
     public static int timeSet;
 
-	// public Text timeTimeText;
-	// public Text timeStartText;
     public Text timeCountText;
-    // public Text timeDownText;
     
 
     public static bool isTimeSet = false;
