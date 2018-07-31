@@ -13,13 +13,18 @@ public class ColorCtrl : MonoBehaviour {
 	private Read2UDP read2UDP;
 
 	private static List<float> dataAvgChanged = new List<float>();
+	private float dataAvg;
 	public Text baselineSetText;
 	public Text thresholdSetText;
+
+	private bool isSaved;
+
+	public static Dictionary<string, string> tempCalibation = new Dictionary<string, string>();
 
 	// Use this for initialization
 	void Start () {
 		matObject.color = Color.black;	
-
+		isSaved = false;
         GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("UDPReciever");
         if (gameControllerObject != null)
         {
@@ -42,25 +47,27 @@ public class ColorCtrl : MonoBehaviour {
 		{	
 			if(timeController.isSetAvg)
 			{
+				dataAvg = dataAvgChanged.Average();
 				if(timeController.modeName == "Baseline")
 				{
-					baselineSetText.text = dataAvgChanged.Average().ToString();
+					baselineSetText.text = dataAvg.ToString();
 				}
 				else
 				{
-					thresholdSetText.text = dataAvgChanged.Average().ToString();
+					thresholdSetText.text = dataAvg.ToString();
 					matObject.color = new Color(0f, 0f, 0f, 1-(baseAlpha-Alpha));
 				}
+
+				Read2UDP.tempData["average"] = dataAvg.ToString();
+
 				dataAvgChanged.Clear();
 				timeController.isSetAvg = false;	
 			}
-
 		}
-
+		// if(timeController.isConfirmExit)
+		// {
+		// 	print("saved specific");
+		// 	timeController.isConfirmExit = false;
+		// }
 	}
-
-	// public void AdjustAlpha (float newAlpha) {
-	// 	// Alpha = newAlpha;
-		
-	// }
 }

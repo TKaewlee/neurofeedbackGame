@@ -42,7 +42,7 @@ public class Read2UDP : MonoBehaviour
 	private static List<float> dataChanged = new List<float>();
 	private static List<float> timeChanged = new List<float>();
 	public static Dictionary<string, string> tempData = new Dictionary<string, string>();
-	// public static Dictionary<string, string> tempTrigger = new Dictionary<string, string>();
+	
 
 	// start from Unity3d
 	public void Start ()

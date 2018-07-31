@@ -26,20 +26,19 @@ public class timeController : MonoBehaviour {
 
     public Text timeCountText;
     
-
+    // public static bool isConfirmExit;
     public static bool isTimeSet = false;
     public static bool isStart = false;
     public static bool isSetAvg = false;
     public static bool isOnSave = false;
     public static bool isSaving = false;
 
-    public static List<float> timeUsedEachSession = new List<float>();
-
     // Use this for initialization
     void Start () 
     {
         print("Time Start");
         Time.timeScale = 0;
+        // isConfirmExit = false;
         timeStart = Time.time;
         startButton.onClick.AddListener(() => startOnClick()); 
         backButton.onClick.AddListener(() => onBack());
@@ -157,6 +156,7 @@ public class timeController : MonoBehaviour {
     public void onPromptYes()
     {
         Time.timeScale = 1;
+        // isConfirmExit = true;
 
         // if quit game without setting elapsed time
         // it still moves to scoreReport scene
