@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;               // ui objects
 
 public class SpaceController : MonoBehaviour {
 	public GameObject[] hazards;
@@ -13,23 +14,24 @@ public class SpaceController : MonoBehaviour {
 
 	public GUIText scoreText;
 	public GUIText distanceText;
-	public GUIText restartText;
-	public GUIText gameOverText;
+	// public GUIText restartText;
+	// public GUIText gameOverText;
 
 	private int score;
 	private int distance;
-	private bool gameOver;
-	private bool restart;
+	public Text[] distanceTexts;
+	// private bool gameOver;
+	// private bool restart;
 
 
 	void Start ()
 	{
 		score = 0;
 		distance = 0;
-		gameOver = false;
-		restart = false;
-		restartText.text = "";
-		gameOverText.text = "";
+		// gameOver = false;
+		// restart = false;
+		// restartText.text = "";
+		// gameOverText.text = "";
 		
 		UpdateScore ();
 		UpdateDistance ();
@@ -38,14 +40,14 @@ public class SpaceController : MonoBehaviour {
 
 	void Update ()
 	{
-		if (restart)
-		{
-			if (Input.GetKeyDown (KeyCode.R))
-			{
-				Debug.Log(Application.loadedLevel);
-				Application.LoadLevel (Application.loadedLevel);
-			}
-		}
+		// if (restart)
+		// {
+		// 	if (Input.GetKeyDown (KeyCode.R))
+		// 	{
+		// 		Debug.Log(Application.loadedLevel);
+		// 		Application.LoadLevel (Application.loadedLevel);
+		// 	}
+		// }
 		AddDistance();
 	}
 
@@ -64,18 +66,18 @@ public class SpaceController : MonoBehaviour {
 			}
 			yield return new WaitForSeconds (waveWait);
 
-			if (gameOver)
-			{
-				restartText.text = "Press 'R' for Restart";
-				restart = true;
-				break;
-			}
+			// if (gameOver)
+			// {
+			// 	// restartText.text = "Press 'R' for Restart";
+			// 	restart = true;
+			// 	break;
+			// }
 		}
 	}
 
-	public void AddScore (int newScoreValue)
+	public void minusScore (int newScoreValue)
 	{
-		score += newScoreValue;
+		score -= newScoreValue;
 		UpdateScore ();
 	}
 
@@ -87,6 +89,21 @@ public class SpaceController : MonoBehaviour {
 	private void AddDistance ()
 	{
 		distance += 1;
+		if(distance % 35 == 0)
+		{
+			for (int i = 0; i < distanceTexts.Length; i++)
+			{
+				if(((distance / 35)-i) % 10 == 0)
+				{
+					distanceTexts[i].fontSize = 50;
+				}
+				else
+				{
+					distanceTexts[i].fontSize = 20;
+				}
+				distanceTexts[i].text = ((distance / 35)-i).ToString();
+			}
+		}
 		UpdateDistance ();
 	}
 
@@ -95,9 +112,9 @@ public class SpaceController : MonoBehaviour {
 		distanceText.text = "Distance: " + distance;
 	}
 
-	public void GameOver ()
-	{
-		gameOverText.text = "Game Over";
-		gameOver = true;
-	}
+	// public void GameOver ()
+	// {
+	// 	gameOverText.text = "Game Over";
+	// 	gameOver = true;
+	// }
 }
