@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour
     // public double a,thresh;
     private Color col;
     public double i;
-    private float time, limitTime;
+    public float time, limitTime;
 
     void Start()
     {
@@ -58,7 +58,7 @@ public class GameController : MonoBehaviour
         // if(timeControllerObject != null)
         // {
         //     timeControll = timeControllerObject.GetComponent<TimeController>();
-        limitTime=timeController.timeSet;
+        //limitTime=timeController.timeSet;
         // }
         // if(timeControllerObject==null)
         // {
@@ -67,6 +67,7 @@ public class GameController : MonoBehaviour
     }
     void Update()
     {
+        limitTime=timeController.timeSet;
         /*if(score==changeStage && state==1)
         {
             tmp=player.transform.position;
@@ -90,21 +91,21 @@ public class GameController : MonoBehaviour
             state++;
         }*/
         time = Time.time - timeController.timeStart;
-        if(time==0.25*limitTime && state==1)
+        if(time>=0.25*limitTime && state==1)
         {
             tmp=player.transform.position;
             tmp.x=110;
             player.transform.position=tmp;
             state++;
         }
-        if(time==0.5*limitTime && state==2)
+        if(time>=0.5*limitTime && state==2)
         {
             tmp=player.transform.position;
             tmp.x=220;
             player.transform.position=tmp;
             state++;
         }
-        if(time==0.75*limitTime && state==3)
+        if(time>=0.75*limitTime && state==3)
         {
             tmp=player.transform.position;
             tmp.x=325;
