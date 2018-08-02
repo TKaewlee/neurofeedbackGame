@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 public class barGague : MonoBehaviour {
+	
 	public Transform gaugeBar;
 	public Slider gaugeFill;
 	public float currentGauge;
 	public float maxGauge;
 	// Update is called once per frame
-	void Update () {
-		controlGauge();
-	}
+	// void Update () {
+	// 	controlGauge();
+	// }
 
 	public void ChangeGauge(int amount){
 		currentGauge += amount;
@@ -19,7 +20,7 @@ public class barGague : MonoBehaviour {
 
 		gaugeFill.value = currentGauge / maxGauge;
 	}
-	private void controlGauge(){
+	public void controlGauge(){
 		float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal");
 		ChangeGauge((int)controlThrow);
 	}

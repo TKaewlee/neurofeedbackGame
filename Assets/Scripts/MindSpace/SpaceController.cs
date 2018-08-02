@@ -5,6 +5,7 @@ using UnityEngine.UI;               // ui objects
 
 public class SpaceController : MonoBehaviour {
 	public GameObject[] hazards;
+	public GameObject[] rewards;
 	public Vector3 SpawnValues;
 	public int hazardCount;
 	public float spawnWait;
@@ -12,14 +13,16 @@ public class SpaceController : MonoBehaviour {
 	public float waveWait;
 	public float distanceCount;
 
-	public GUIText scoreText;
-	public GUIText distanceText;
+	public Text scoreText;
+	// public GUIText distanceText;
 	// public GUIText restartText;
 	// public GUIText gameOverText;
 
 	private int score;
 	private int distance;
 	public Text[] distanceTexts;
+	public CanvasGroup distanceCanvas;
+	public CanvasGroup slideCanvas;
 	// private bool gameOver;
 	// private bool restart;
 
@@ -27,19 +30,43 @@ public class SpaceController : MonoBehaviour {
 	void Start ()
 	{
 		score = 0;
-		distance = 0;
+		distance = 350;
 		// gameOver = false;
 		// restart = false;
 		// restartText.text = "";
 		// gameOverText.text = "";
 		
 		UpdateScore ();
-		UpdateDistance ();
+		// UpdateDistance ();
 		StartCoroutine (SpawnWaves ());
+		// StartCoroutine (RewardWaves ());
 	}
 
 	void Update ()
 	{
+		if(timeController.isContinue)
+		{
+			if(timeController.modeName == "without NF")
+			{
+				distanceCanvas.alpha = 1;
+				AddDistance();
+			}
+			else if(timeController.modeName == "NF with slider")
+			{
+				slideCanvas.alpha = 1;
+				
+			}
+			else if(timeController.modeName == "NF with moving object")
+			{
+				print("Hello");
+			}
+		}
+		else
+		{
+			distanceCanvas.alpha = 0;
+			slideCanvas.alpha = 0;
+		}
+
 		// if (restart)
 		// {
 		// 	if (Input.GetKeyDown (KeyCode.R))
@@ -48,8 +75,24 @@ public class SpaceController : MonoBehaviour {
 		// 		Application.LoadLevel (Application.loadedLevel);
 		// 	}
 		// }
-		AddDistance();
 	}
+
+	// IEnumerator RewardWaves ()
+	// {
+	// 	// yield return new WaitForSeconds (startWait);
+	// 	while((distance / 35) % 10 == 0)
+	// 	{
+	// 		// for (int i = 0; i < hazardCount; i++)
+	// 		// {
+	// 			// GameObject hazard = hazards [Random.Range (0, hazards.Length)];
+	// 		// 	Vector3 spawnPosition = new Vector3 (Random.Range (-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
+	// 		// 	Quaternion spawnRotation = Quaternion.identity;
+	// 		// 	Instantiate (hazard, spawnPosition, spawnRotation);
+	// 		// 	yield return new WaitForSeconds (spawnWait);
+	// 		// }
+	// 		yield return new WaitForSeconds (waveWait);
+	// 	}
+	// }
 
 	IEnumerator SpawnWaves ()
 	{
@@ -103,14 +146,13 @@ public class SpaceController : MonoBehaviour {
 				}
 				distanceTexts[i].text = ((distance / 35)-i).ToString();
 			}
+			if((distance % 350) == 0)
+			{
+				minusScore(-10);
+			}
 		}
-		UpdateDistance ();
 	}
 
-	void UpdateDistance ()
-	{
-		distanceText.text = "Distance: " + distance;
-	}
 
 	// public void GameOver ()
 	// {

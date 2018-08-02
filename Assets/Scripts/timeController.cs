@@ -13,7 +13,7 @@ public class timeController : MonoBehaviour {
     public static string modeName;
 
 	public Button startButton;
-    private bool isContinue;
+    public static bool isContinue;
 
     public Button backButton;
     public Button promptYes;
