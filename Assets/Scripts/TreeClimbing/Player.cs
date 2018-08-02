@@ -18,7 +18,8 @@ public class Player : MonoBehaviour {
 	PolygonCollider2D myWeapon;
 	float gravityScaleAtStart;
 	float x;
-	//float timer;
+	float timer;
+	private float TimeClimbing;
 	//float[] timeCollect;
 	private Read2UDP read2UDP;
 	public float Alpha = 1.0f;
@@ -86,10 +87,11 @@ public class Player : MonoBehaviour {
 		if(!myCirclebody.IsTouchingLayers(LayerMask.GetMask("Climbing"))){
 			myAnimator.SetBool("Climbing", false);
 			myRigidBody.gravityScale = gravityScaleAtStart;
-			//if(timer == 1){
+			if(timer == 1){
+				Read2UDP.tempData["notFocus"] = TimeClimbing.ToString();
 			//	timeCollect = new float[] {Time.timeSinceLevelLoad};
-			//	timer = 0;
-			//}
+				timer = 0;
+			}
 			return;
 		}
 		
@@ -102,9 +104,9 @@ public class Player : MonoBehaviour {
 
 		bool playerHasHorizontalSpeed = Mathf.Abs(myRigidBody.velocity.y) > Mathf.Epsilon;
 		myAnimator.SetBool("Climbing", playerHasHorizontalSpeed);
-
+		Read2UDP.tempData["Focus"] = TimeClimbing.ToString();
 		//timeCollect = new float[] {Time.timeSinceLevelLoad};
-		//timer = 1;
+		timer = 1;
 
 	}
 	private void Jump(){
