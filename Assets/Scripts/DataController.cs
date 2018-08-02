@@ -21,7 +21,7 @@ public class DataController : MonoBehaviour
 		public static void updateGamePath()
 		{
 			gameDir = @"log/" + GameControl.currentUserName  + "/";
-			gameCsv = @"log/" + GameControl.currentUserName  + "/" + SceneManager.GetActiveScene().name + "_" + timeController.modeName + ".csv";
+			gameCsv = @"log/" + GameControl.currentUserName  + "/" +  timeController.modeName + ".csv";
 		}
 
 		public static void getData()

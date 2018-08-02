@@ -3601,7 +3601,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   matObject: {fileID: 2100000, guid: 3a537953ba69a8348890232e88bbfbc2, type: 2}
   Alpha: 0
-  baseAlpha: 0
   baselineSetText: {fileID: 1663648585}
   thresholdSetText: {fileID: 827003965}
 --- !u!4 &1781770273

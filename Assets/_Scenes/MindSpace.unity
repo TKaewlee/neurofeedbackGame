@@ -406,6 +406,7 @@ MonoBehaviour:
   - {fileID: 1292120074606028, guid: 2f051baffd824d249b25ba3a196aa5cb, type: 2}
   - {fileID: 1209769890982234, guid: b57c0f166ebc32443b23c3db71710b17, type: 2}
   - {fileID: 1193529347319408, guid: ee292d6102166b649bb67b2bcc5cec29, type: 2}
+  rewards: []
   SpawnValues: {x: 6, y: 0, z: 16}
   hazardCount: 3
   spawnWait: 1.2
