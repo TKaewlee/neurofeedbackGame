@@ -21,10 +21,22 @@ public class ColorChanging : MonoBehaviour {
 
 	public static Dictionary<string, string> tempCalibation = new Dictionary<string, string>();
 	private Color col;
-	public float a,i=0.0f;
+	public float a,i;
 
     public float baseline;
     public float threshold;
+	public GameObject fallBlack;public Material blackMat;
+	public GameObject fallBlue;public Material blueMat;
+	public GameObject fallCyan;public Material cyanMat;
+	public GameObject fallGreen;public Material greenMat;
+	public GameObject fallGrey;public Material greyMat;
+	public GameObject fallMagenta;public Material magentaMat;
+	public GameObject fallOrange;public Material orangeMat;
+	public GameObject fallSky;public Material skyMat;
+	public GameObject fallRed;public Material redMat;
+	public GameObject fallWhite;public Material whiteMat;
+	public GameObject fallYellow;public Material yellowMat;
+	public float hardFactor,helpFactor;
 
 	// Use this for initialization
 	void Start () {
@@ -45,6 +57,11 @@ public class ColorChanging : MonoBehaviour {
         {
             Debug.Log("Cannot find 'read2UDP' script");
         }
+
+		i=0.2f; // initial smooth color changing
+
+		hardFactor=1;
+		helpFactor=0;
 	}
 	
 	// Update is called once per frame
@@ -71,15 +88,23 @@ public class ColorChanging : MonoBehaviour {
 
 
             //smooth color changing
-            a=1-((baseline-Alpha)/threshold);
-            if(a>=i)
+            a=((Alpha-baseline)/(hardFactor*(threshold-baseline)))+helpFactor;
+            if(a>i)
             {
                 while(a>i)
                 {
                     i+=0.01f;
-                    col=matObject.color;
-                    col.a=(float)i;
-                    matObject.color=col;
+                    col=blackMat.color;    col.a=(float)i;     blackMat.color=col;
+					col=blueMat.color;     col.a=(float)i;     blueMat.color=col;
+					col=cyanMat.color;     col.a=(float)i;     cyanMat.color=col;
+					col=greenMat.color;    col.a=(float)i;     greenMat.color=col;
+					col=greyMat.color;     col.a=(float)i;     greyMat.color=col;
+					col=magentaMat.color;  col.a=(float)i;     magentaMat.color=col;
+					col=orangeMat.color;   col.a=(float)i;     orangeMat.color=col;
+					col=skyMat.color;      col.a=(float)i;     skyMat.color=col;
+					col=redMat.color;      col.a=(float)i;     redMat.color=col;
+					col=whiteMat.color;    col.a=(float)i;     whiteMat.color=col;
+					col=yellowMat.color;   col.a=(float)i;     yellowMat.color=col;
                 }
                 print("Intensity UP");
             }
@@ -88,9 +113,17 @@ public class ColorChanging : MonoBehaviour {
                 while(a<i)
                 {
                     i-=0.01f;
-                    col=matObject.color;
-                    col.a=(float)i;
-                    matObject.color=col;
+                    col=blackMat.color;    col.a=(float)i;     blackMat.color=col;
+					col=blueMat.color;     col.a=(float)i;     blueMat.color=col;
+					col=cyanMat.color;     col.a=(float)i;     cyanMat.color=col;
+					col=greenMat.color;    col.a=(float)i;     greenMat.color=col;
+					col=greyMat.color;     col.a=(float)i;     greyMat.color=col;
+					col=magentaMat.color;  col.a=(float)i;     magentaMat.color=col;
+					col=orangeMat.color;   col.a=(float)i;     orangeMat.color=col;
+					col=skyMat.color;      col.a=(float)i;     skyMat.color=col;
+					col=redMat.color;      col.a=(float)i;     redMat.color=col;
+					col=whiteMat.color;    col.a=(float)i;     whiteMat.color=col;
+					col=yellowMat.color;   col.a=(float)i;     yellowMat.color=col;
                 }
                 print("Intensity DOWN");
             }

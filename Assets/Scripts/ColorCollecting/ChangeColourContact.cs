@@ -99,6 +99,13 @@ public class ChangeColourContact : MonoBehaviour
             ad.Play();
             gameController.AddScore(scoreValue);
         }
+        if (other.tag == "Orange")
+        {
+            rend.material.color=new Color32(255,122,0,255);
+            Destroy(other.gameObject);
+            ad.Play();
+            gameController.AddScore(scoreValue);
+        }
     }
 
 }
