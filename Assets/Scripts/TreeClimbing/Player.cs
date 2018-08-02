@@ -35,8 +35,8 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		baseline = 10.0f;
-        threshold = 15.0f;
+		baseline = GameControl.currentBaselineAvg;
+        threshold = GameControl.currentThresholdAvg;
 		isSaved = false;
         GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("UDPReciever");
         if (gameControllerObject != null)
