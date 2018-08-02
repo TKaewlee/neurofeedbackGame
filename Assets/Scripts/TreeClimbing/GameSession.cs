@@ -11,14 +11,15 @@ public class GameSession : MonoBehaviour {
 	//[SerializeField] Text livesText;
 	[SerializeField] float coincollections = 1;
 	private void Awake(){
-		int numGameSessions = FindObjectsOfType<GameSession>().Length;
-		if(numGameSessions > 1)
+		/*var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+		//int numGameSessions = FindObjectsOfType<GameSession>().Length;
+		if(currentSceneIndex != 4)
 		{
 			Destroy(gameObject);
 		}
 		else{
 			DontDestroyOnLoad(gameObject);
-		}
+		}*/
 	}
 
 	// Use this for initialization
@@ -27,7 +28,15 @@ public class GameSession : MonoBehaviour {
 		scoreText.text = score.ToString();
 	}
 	void update(){
-		
+		var currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+		//int numGameSessions = FindObjectsOfType<GameSession>().Length;
+		if(currentSceneIndex != 4)
+		{
+			Destroy(gameObject);
+		}
+		else{
+			DontDestroyOnLoad(gameObject);
+		}
 	}
 	public void AddToScore (int pointsToAdd){
 		score = score + pointsToAdd;
