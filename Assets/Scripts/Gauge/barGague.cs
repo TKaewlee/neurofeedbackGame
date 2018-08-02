@@ -58,7 +58,7 @@ public class barGague : MonoBehaviour {
 	}
 	private void controlGauge(){
 		//float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal");
-		float controlThrow = a
+		float controlThrow = a;
 		ChangeGauge((int)controlThrow);
 	}
 }
