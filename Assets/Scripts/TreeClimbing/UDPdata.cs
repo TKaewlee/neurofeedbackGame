@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;               // ui objects
 
-public class ColorChanging : MonoBehaviour {
+public class UDPdata : MonoBehaviour {
 
 	public Material matObject;
 	public float Alpha = 1.0f;
