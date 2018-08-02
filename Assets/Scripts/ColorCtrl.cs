@@ -20,10 +20,12 @@ public class ColorCtrl : MonoBehaviour {
 	private bool isSaved;
 
 	public static Dictionary<string, string> tempCalibation = new Dictionary<string, string>();
+	private Color col;
+	public float a,i=0.5f;
 
 	// Use this for initialization
 	void Start () {
-		matObject.color = Color.black;	
+		//matObject.color = Color.black;	
 		isSaved = false;
         GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("UDPReciever");
         if (gameControllerObject != null)
@@ -55,7 +57,32 @@ public class ColorCtrl : MonoBehaviour {
 				else
 				{
 					thresholdSetText.text = dataAvg.ToString();
-					matObject.color = new Color(0f, 0f, 0f, 1-(baseAlpha-Alpha));
+					//matObject.color = new Color(0f, 0f, 0f, 1-(baseAlpha-Alpha));
+					
+					//smooth color changing
+					a=1-(baseAlpha-Alpha);
+					if(a>=i)
+             		{
+                 		while(a>i)
+                 		{
+                    		i+=0.01f;
+                     		col=matObject.color;
+                     		col.a=(float)i;
+                     		matObject.color=col;
+                 		}
+                 		print("Intensity UP");
+             		}
+             		else if(a<i)
+             		{
+                 		while(a<i)
+                 		{
+                    		i-=0.01f;
+                     		col=matObject.color;
+                     		col.a=(float)i;
+                     		matObject.color=col;
+                 		}
+                 		print("Intensity DOWN");
+               		}
 				}
 
 				Read2UDP.tempData["average"] = dataAvg.ToString();
