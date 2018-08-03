@@ -131,7 +131,7 @@ public class mainPortalScript : MonoBehaviour {
     private static void updateGamePath()
     {
         gameDir = @"log/" + infoCollector["name"] + "/";
-        gameCsv = @"log/" + infoCollector["name"] + "/" + "infomation.csv";
+        gameCsv = gameDir + "infomation.csv";
         if (Directory.Exists(gameDir))
         { 
             isInfoExisted = true;
