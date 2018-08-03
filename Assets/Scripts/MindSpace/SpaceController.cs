@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;               // ui objects
 
 public class SpaceController : MonoBehaviour {
+	
 	public GameObject[] hazards;
 	public GameObject[] rewards;
 	public Vector3 SpawnValues;
@@ -13,22 +14,50 @@ public class SpaceController : MonoBehaviour {
 	public float waveWait;
 	public float distanceCount;
 
-	public Text scoreText;
-	// public GUIText distanceText;
-	// public GUIText restartText;
-	// public GUIText gameOverText;
-
 	private int score;
+	public Text scoreText;
+	
 	private int distance;
 	public Text[] distanceTexts;
 	public CanvasGroup distanceCanvas;
-	public CanvasGroup slideCanvas;
-	// private bool gameOver;
-	// private bool restart;
 
+	public CanvasGroup slideCanvas;
+	public Slider gaugeFill;
+
+	public Material[] matObject;
+
+	private Read2UDP read2UDP;
+	private float Alpha = 1.0f;
+
+	public float a;
+
+    public float baseline;
+    public float threshold;
+
+	public float difficult;
+	public float offset;
 
 	void Start ()
 	{
+		baseline = GameControl.currentBaselineAvg;
+        threshold = GameControl.currentThresholdAvg;
+		
+        GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("UDPReciever");
+        if (gameControllerObject != null)
+        {
+            read2UDP = gameControllerObject.GetComponent <Read2UDP>();
+        }
+        if (read2UDP == null)
+        {
+            Debug.Log("Cannot find 'read2UDP' script");
+        }
+
+		for (int i = 0; i < matObject.Length; i++)
+		{
+			matObject[i].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			matObject[i].SetFloat("_Metallic", 1.0f);
+		}
+
 		score = 0;
 		distance = 350;
 		// gameOver = false;
@@ -51,14 +80,26 @@ public class SpaceController : MonoBehaviour {
 				distanceCanvas.alpha = 1;
 				AddDistance();
 			}
-			else if(timeController.modeName == "NF with slider")
+			else 
 			{
-				slideCanvas.alpha = 1;
-				
-			}
-			else if(timeController.modeName == "NF with moving object")
-			{
-				print("Hello");
+				Alpha = read2UDP.dataTempChanged;
+				// dataAvgChanged.Add(Alpha);
+				a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;				
+				if(timeController.modeName == "NF with slider")
+				{
+					slideCanvas.alpha = 1;
+					// currentGauge += (int)a;
+					// currentGauge = Mathf.Clamp(currentGauge, 0, maxGauge);
+					gaugeFill.value = a; //currentGauge / maxGauge;
+				}
+				else if(timeController.modeName == "NF with moving object")
+				{
+					for (int i = 0; i < matObject.Length; i++)
+					{
+						matObject[i].color = new Color(1f, 1f, 1f, a);
+						matObject[i].SetFloat("_Metallic", a);
+					}
+				}
 			}
 		}
 		else
@@ -66,7 +107,7 @@ public class SpaceController : MonoBehaviour {
 			distanceCanvas.alpha = 0;
 			slideCanvas.alpha = 0;
 		}
-
+		
 		// if (restart)
 		// {
 		// 	if (Input.GetKeyDown (KeyCode.R))
@@ -76,6 +117,19 @@ public class SpaceController : MonoBehaviour {
 		// 	}
 		// }
 	}
+
+
+	// public void ChangeGauge(int amount){
+	// 	currentGauge += amount;
+	// 	currentGauge = Mathf.Clamp(currentGauge, 0, maxGauge);
+
+	// 	gaugeFill.value = currentGauge / maxGauge;
+	// }
+	// private void controlGauge(){
+	// 	//float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal");
+	// 	float controlThrow = a;
+	// 	ChangeGauge((int)controlThrow);
+	// }
 
 	// IEnumerator RewardWaves ()
 	// {
