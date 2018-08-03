@@ -17,6 +17,7 @@ public class GameControl : MonoBehaviour {
     // the member of this class could be static because we don't 
     // initiate to use each members anyway (better be static)
     public static GameControl controller; 
+    public static string currentScene;
 
     void Awake()
     {
@@ -37,12 +38,11 @@ public class GameControl : MonoBehaviour {
     public static string currentUserName = ""; // = "test";
     public static float currentBaselineAvg = 0;
     public static float currentThresholdAvg = 1;
-    
 
     // public static int userStatus = 0; // 0 for new, 1 for old
 
     // public static int[] calibValues = new int[4] { -20, -35, 20, 35 }; // [Left Roll, Left Yaw, Right Roll, Right Yaw]
-    public static int currentGamePage = 1;
+    // public static int currentGamePage = 1;
 
     // private motorComm motorControl;
 
@@ -56,8 +56,12 @@ public class GameControl : MonoBehaviour {
     //     public static float RIGHT_YAW = 35f/90f;
     // }
 
-    // void Start()
-    // {
+    void Start()
+    {
+        currentScene = SceneManager.GetActiveScene().name;
+        print(currentScene);
+    }
+
         // != because this is supposed to call only when run game scene directly 
         // (not login from main)
         // if(SceneManager.GetActiveScene().buildIndex != 0)
