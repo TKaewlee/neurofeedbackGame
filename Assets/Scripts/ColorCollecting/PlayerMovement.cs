@@ -23,17 +23,17 @@ public class PlayerMovement : MonoBehaviour
         b.y = 0f;
         rb.velocity = a;
         rb.angularVelocity = b;
-        if (Input.GetKey("d") && con==0)
+        if ((Input.GetKey("d")||Input.GetKey("right")) && con==0)
         {
             a.x = v;
             rb.velocity = a;
         }
-        if (Input.GetKey("a") && con==0)
+        if ((Input.GetKey("a")||Input.GetKey("left")) && con==0)
         {
             a.x = -v;
             rb.velocity = a;
         }
-        if (Input.GetKey("w") && Time.time > nextMove)
+        if ((Input.GetKey("w")||Input.GetKey("up")) && Time.time > nextMove)
         {
             con = 1;
             nextMove = Time.time + moveRate;
