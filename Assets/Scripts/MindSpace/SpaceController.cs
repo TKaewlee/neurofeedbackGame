@@ -39,6 +39,8 @@ public class SpaceController : MonoBehaviour {
 	private float difficult;
 	private float offset;
 
+	// private bool isPass = false;
+
 	void Start ()
 	{
 		baseline = GameControl.currentBaselineAvg;
@@ -66,7 +68,6 @@ public class SpaceController : MonoBehaviour {
 		UpdateScore ();
 		// UpdateDistance ();
 		StartCoroutine (SpawnWaves ());
-		// StartCoroutine (RewardWaves ());
 	}
 
 	void Update ()
@@ -109,7 +110,13 @@ public class SpaceController : MonoBehaviour {
 			{
 				Alpha = read2UDP.dataTempChanged;
 				// dataAvgChanged.Add(Alpha);
-				a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;				
+				a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;		
+				// if(a > 0.5)
+				// {
+				// 	isPass = true;
+				// 	print("pass");
+				// }		
+
 				if(timeController.modeName == "NF with slider")
 				{
 					slideCanvas.alpha = 1;
@@ -138,21 +145,12 @@ public class SpaceController : MonoBehaviour {
 		}
 	}
 
-	// IEnumerator RewardWaves ()
+	// private void RewardWaves ()
 	// {
-	// 	// yield return new WaitForSeconds (startWait);
-	// 	while((distance / 35) % 10 == 0)
-	// 	{
-	// 		// for (int i = 0; i < hazardCount; i++)
-	// 		// {
-	// 			// GameObject hazard = hazards [Random.Range (0, hazards.Length)];
-	// 		// 	Vector3 spawnPosition = new Vector3 (Random.Range (-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
-	// 		// 	Quaternion spawnRotation = Quaternion.identity;
-	// 		// 	Instantiate (hazard, spawnPosition, spawnRotation);
-	// 		// 	yield return new WaitForSeconds (spawnWait);
-	// 		// }
-	// 		yield return new WaitForSeconds (waveWait);
-	// 	}
+	// 	GameObject reward = rewards [Random.Range (0, rewards.Length)];
+	// 	Vector3 spawnPosition = new Vector3 (Random.Range (-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
+	// 	Quaternion spawnRotation = Quaternion.Euler(90, 0, 0);
+	// 	Instantiate (reward, spawnPosition, spawnRotation);
 	// }
 
 	IEnumerator SpawnWaves ()
@@ -176,6 +174,7 @@ public class SpaceController : MonoBehaviour {
 	{
 		score -= newScoreValue;
 		UpdateScore ();
+		// StartCoroutine (RewardWaves ());
 	}
 
 	void UpdateScore ()
@@ -203,6 +202,7 @@ public class SpaceController : MonoBehaviour {
 			if((distance % 350) == 0)
 			{
 				minusScore(-10);
+				// RewardWaves ();
 			}
 		}
 	}
