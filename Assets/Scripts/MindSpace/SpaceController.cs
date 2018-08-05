@@ -34,8 +34,10 @@ public class SpaceController : MonoBehaviour {
     public float baseline;
     public float threshold;
 
-	public float difficult;
-	public float offset;
+	public InputField difficultInputField;
+	public InputField offsetInputField;
+	private float difficult;
+	private float offset;
 
 	void Start ()
 	{
@@ -60,10 +62,6 @@ public class SpaceController : MonoBehaviour {
 
 		score = 0;
 		distance = 350;
-		// gameOver = false;
-		// restart = false;
-		// restartText.text = "";
-		// gameOverText.text = "";
 		
 		UpdateScore ();
 		// UpdateDistance ();
@@ -75,6 +73,33 @@ public class SpaceController : MonoBehaviour {
 	{
 		if(timeController.isContinue)
 		{
+			if(timeController.isStart)
+			{
+				if(difficultInputField.text != "")
+				{
+					difficult = float.Parse(difficultInputField.text);
+				}
+				else
+				{
+					difficult = 1;
+				}
+
+				if(offsetInputField.text != "")
+				{
+					offset = float.Parse(offsetInputField.text);
+				}
+				else
+				{
+					offset = 0;
+				}
+				Read2UDP.tempData["difficult"] = difficult.ToString();
+				Read2UDP.tempData["offset"] = offset.ToString();
+				Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
+				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
+				// timeController.isStart = false;
+			}
+
+
 			if(timeController.modeName == "without NF")
 			{
 				distanceCanvas.alpha = 1;
@@ -104,32 +129,14 @@ public class SpaceController : MonoBehaviour {
 		}
 		else
 		{
+			score = 0;
+			distance = 350;
+			UpdateScore ();
+			AddDistance();
 			distanceCanvas.alpha = 0;
 			slideCanvas.alpha = 0;
 		}
-		
-		// if (restart)
-		// {
-		// 	if (Input.GetKeyDown (KeyCode.R))
-		// 	{
-		// 		Debug.Log(Application.loadedLevel);
-		// 		Application.LoadLevel (Application.loadedLevel);
-		// 	}
-		// }
 	}
-
-
-	// public void ChangeGauge(int amount){
-	// 	currentGauge += amount;
-	// 	currentGauge = Mathf.Clamp(currentGauge, 0, maxGauge);
-
-	// 	gaugeFill.value = currentGauge / maxGauge;
-	// }
-	// private void controlGauge(){
-	// 	//float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal");
-	// 	float controlThrow = a;
-	// 	ChangeGauge((int)controlThrow);
-	// }
 
 	// IEnumerator RewardWaves ()
 	// {
@@ -162,13 +169,6 @@ public class SpaceController : MonoBehaviour {
 				yield return new WaitForSeconds (spawnWait);
 			}
 			yield return new WaitForSeconds (waveWait);
-
-			// if (gameOver)
-			// {
-			// 	// restartText.text = "Press 'R' for Restart";
-			// 	restart = true;
-			// 	break;
-			// }
 		}
 	}
 
@@ -206,11 +206,4 @@ public class SpaceController : MonoBehaviour {
 			}
 		}
 	}
-
-
-	// public void GameOver ()
-	// {
-	// 	gameOverText.text = "Game Over";
-	// 	gameOver = true;
-	// }
 }
