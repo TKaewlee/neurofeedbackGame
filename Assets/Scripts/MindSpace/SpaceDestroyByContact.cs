@@ -9,7 +9,7 @@ public class SpaceDestroyByContact : MonoBehaviour
 
 	public int scoreValue;
 	private SpaceController gameController;
-	
+
 	void Start ()
 	{
 		GameObject gameControllerObject = GameObject.FindWithTag("SpaceController");
@@ -44,7 +44,11 @@ public class SpaceDestroyByContact : MonoBehaviour
 		}
 		else
 		{
-			// print("Destroy");
+			if(gameObject.tag == "Reward" && other.tag == "Bolt")
+			{
+				gameController.trigger = 1;
+				gameController.minusScore (scoreValue);
+			}
 			Destroy(gameObject);
 			Instantiate(explosion, transform.position, transform.rotation); 
 		}

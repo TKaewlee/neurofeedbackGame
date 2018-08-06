@@ -12,7 +12,6 @@ public class SpaceController : MonoBehaviour {
 	public float spawnWait;
 	public float startWait;
 	public float waveWait;
-	public float distanceCount;
 
 	private int score;
 	public Text scoreText;
@@ -44,6 +43,9 @@ public class SpaceController : MonoBehaviour {
 	private bool isStart = false;
 
 	private GameObject[] gameObjects;
+	private static List<float> gameTime = new List<float>();
+	private static List<int> gameTrigger = new List<int>();
+	public int trigger = 0; 
 
 	void Start ()
 	{
@@ -101,9 +103,10 @@ public class SpaceController : MonoBehaviour {
 					difficult = 0.5f;
 				}
 				Read2UDP.tempData["difficult"] = scale.ToString();
-				Read2UDP.tempData["offset"] = difficult.ToString();
+				Read2UDP.tempData["scale"] = difficult.ToString();
 				Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
 				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
+				print("Send to tempData");
 				// timeController.isStart = false;
 			}
 
@@ -117,7 +120,7 @@ public class SpaceController : MonoBehaviour {
 			{
 				Alpha = read2UDP.dataTempChanged;
 				// dataAvgChanged.Add(Alpha);
-				// a = (Alpha-baseline)/(scale*(threshold-baseline));
+				a = (Alpha-baseline)/(scale*(threshold-baseline));
 
 				if(a > difficult)
 				{
@@ -191,7 +194,9 @@ public class SpaceController : MonoBehaviour {
 	{
 		score -= newScoreValue;
 		UpdateScore ();
-		// StartCoroutine (RewardWaves ());
+		// gameTrigger.Add(-1*newScoreValue);
+		// gameTime.Add(read2UDP.timeTempChanged);
+		// print(">>" + (-1*newScoreValue) + " - " + read2UDP.timeTempChanged);
 	}
 
 	void UpdateScore ()
