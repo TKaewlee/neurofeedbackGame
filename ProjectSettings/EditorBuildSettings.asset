@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/_Scenes/_MainMenu.unity
     guid: 0d47895d3d253ef4db37401f293e6a4b
   - enabled: 1
-    path: Assets/_Scenes/_Calibration.unity
+    path: Assets/_Scenes/Calibration.unity
     guid: 403b35ebc6cd6d345af094cc3e809262
   - enabled: 1
     path: Assets/_Scenes/MindSpace.unity

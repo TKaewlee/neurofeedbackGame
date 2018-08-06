@@ -12,7 +12,6 @@ public class SpaceController : MonoBehaviour {
 	public float spawnWait;
 	public float startWait;
 	public float waveWait;
-	public float distanceCount;
 
 	private int score;
 	public Text scoreText;
@@ -34,8 +33,19 @@ public class SpaceController : MonoBehaviour {
     public float baseline;
     public float threshold;
 
-	public float difficult;
-	public float offset;
+	public InputField scaleInputField;
+	public InputField difficultInputField;
+	private float scale;
+	private float difficult;
+	public float timeDuration;
+
+	private float timeStart = 0;
+	private bool isStart = false;
+
+	private GameObject[] gameObjects;
+	private static List<float> gameTime = new List<float>();
+	private static List<int> gameTrigger = new List<int>();
+	public int trigger = 0; 
 
 	void Start ()
 	{
@@ -60,21 +70,47 @@ public class SpaceController : MonoBehaviour {
 
 		score = 0;
 		distance = 350;
-		// gameOver = false;
-		// restart = false;
-		// restartText.text = "";
-		// gameOverText.text = "";
-		
+
+		distanceCanvas.alpha = 0;
+		slideCanvas.alpha = 0;
+		AddDistance();
 		UpdateScore ();
 		// UpdateDistance ();
 		StartCoroutine (SpawnWaves ());
-		// StartCoroutine (RewardWaves ());
 	}
 
 	void Update ()
 	{
 		if(timeController.isContinue)
 		{
+			if(timeController.isStart)
+			{
+				if(scaleInputField.text != "")
+				{
+					scale = float.Parse(scaleInputField.text);
+				}
+				else
+				{
+					scale = 1;
+				}
+
+				if(difficultInputField.text != "")
+				{
+					difficult = float.Parse(difficultInputField.text);
+				}
+				else
+				{
+					difficult = 0.5f;
+				}
+				Read2UDP.tempData["difficult"] = scale.ToString();
+				Read2UDP.tempData["scale"] = difficult.ToString();
+				Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
+				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
+				print("Send to tempData");
+				// timeController.isStart = false;
+			}
+
+
 			if(timeController.modeName == "without NF")
 			{
 				distanceCanvas.alpha = 1;
@@ -84,7 +120,28 @@ public class SpaceController : MonoBehaviour {
 			{
 				Alpha = read2UDP.dataTempChanged;
 				// dataAvgChanged.Add(Alpha);
-				a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;				
+				a = (Alpha-baseline)/(scale*(threshold-baseline));
+
+				if(a > difficult)
+				{
+					if(isStart)
+					{
+						timeStart = Time.time;
+						isStart = false;
+					}
+
+					if(Time.time - timeStart >= timeDuration)
+					{
+						RewardWaves ();
+						isStart = true;
+					}
+				}	
+				else
+				{
+					isStart = true;
+				}	
+
+
 				if(timeController.modeName == "NF with slider")
 				{
 					slideCanvas.alpha = 1;
@@ -104,49 +161,17 @@ public class SpaceController : MonoBehaviour {
 		}
 		else
 		{
-			distanceCanvas.alpha = 0;
-			slideCanvas.alpha = 0;
+			restartGame();
 		}
-		
-		// if (restart)
-		// {
-		// 	if (Input.GetKeyDown (KeyCode.R))
-		// 	{
-		// 		Debug.Log(Application.loadedLevel);
-		// 		Application.LoadLevel (Application.loadedLevel);
-		// 	}
-		// }
 	}
 
-
-	// public void ChangeGauge(int amount){
-	// 	currentGauge += amount;
-	// 	currentGauge = Mathf.Clamp(currentGauge, 0, maxGauge);
-
-	// 	gaugeFill.value = currentGauge / maxGauge;
-	// }
-	// private void controlGauge(){
-	// 	//float controlThrow = CrossPlatformInputManager.GetAxis("Horizontal");
-	// 	float controlThrow = a;
-	// 	ChangeGauge((int)controlThrow);
-	// }
-
-	// IEnumerator RewardWaves ()
-	// {
-	// 	// yield return new WaitForSeconds (startWait);
-	// 	while((distance / 35) % 10 == 0)
-	// 	{
-	// 		// for (int i = 0; i < hazardCount; i++)
-	// 		// {
-	// 			// GameObject hazard = hazards [Random.Range (0, hazards.Length)];
-	// 		// 	Vector3 spawnPosition = new Vector3 (Random.Range (-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
-	// 		// 	Quaternion spawnRotation = Quaternion.identity;
-	// 		// 	Instantiate (hazard, spawnPosition, spawnRotation);
-	// 		// 	yield return new WaitForSeconds (spawnWait);
-	// 		// }
-	// 		yield return new WaitForSeconds (waveWait);
-	// 	}
-	// }
+	private void RewardWaves ()
+	{
+		GameObject reward = rewards [Random.Range (0, rewards.Length)];
+		Vector3 spawnPosition = new Vector3 (Random.Range (-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
+		Quaternion spawnRotation = Quaternion.Euler(90, 0, 0);
+		Instantiate (reward, spawnPosition, spawnRotation);
+	}
 
 	IEnumerator SpawnWaves ()
 	{
@@ -162,13 +187,6 @@ public class SpaceController : MonoBehaviour {
 				yield return new WaitForSeconds (spawnWait);
 			}
 			yield return new WaitForSeconds (waveWait);
-
-			// if (gameOver)
-			// {
-			// 	// restartText.text = "Press 'R' for Restart";
-			// 	restart = true;
-			// 	break;
-			// }
 		}
 	}
 
@@ -176,6 +194,9 @@ public class SpaceController : MonoBehaviour {
 	{
 		score -= newScoreValue;
 		UpdateScore ();
+		// gameTrigger.Add(-1*newScoreValue);
+		// gameTime.Add(read2UDP.timeTempChanged);
+		// print(">>" + (-1*newScoreValue) + " - " + read2UDP.timeTempChanged);
 	}
 
 	void UpdateScore ()
@@ -202,15 +223,28 @@ public class SpaceController : MonoBehaviour {
 			}
 			if((distance % 350) == 0)
 			{
-				minusScore(-10);
+				RewardWaves ();
 			}
 		}
 	}
+	
+	private void restartGame()
+	{
+		score = 0;
+		distance = 350;
+		UpdateScore ();
+		AddDistance();
+		distanceCanvas.alpha = 0;
+		slideCanvas.alpha = 0;
+		DestroyObjectswithTag("Asteroid");
+		DestroyObjectswithTag("Reward");
+	}
 
+	private void DestroyObjectswithTag(string tag)
+	{
+		gameObjects =  GameObject.FindGameObjectsWithTag (tag);
 
-	// public void GameOver ()
-	// {
-	// 	gameOverText.text = "Game Over";
-	// 	gameOver = true;
-	// }
+		for(int i = 0 ; i < gameObjects.Length; i++)
+			Destroy(gameObjects[i]);
+	}
 }
