@@ -24,15 +24,19 @@ public class GameController : MonoBehaviour
     private Color col;
     public double i;
     public float time, limitTime;
+    public Dropdown environmentDropdown;
+    public int environmentIndex;
+    //public static string environmentName;
 
     void Start()
     {
         i=1f;
         gameOver=false;
-        score=0;
-        state=1;
         UpdateScore();
         StartCoroutine(SpawnWaves());
+        environmentDropdown.onValueChanged.AddListener(delegate {
+            actionDropdownValueChanged(environmentDropdown);
+        });
 
         // GameObject readUDPObject = GameObject.FindWithTag("ReadUDP");
         // if(readUDPObject != null)
@@ -65,6 +69,11 @@ public class GameController : MonoBehaviour
         //     Debug.Log("GameController cannot find 'TimeController' script");
         // }
     }
+    private void actionDropdownValueChanged(Dropdown actionTarget)
+    {
+        environmentIndex = actionTarget.value;
+        // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
+    }
     void Update()
     {
         limitTime=timeController.timeSet;
@@ -91,32 +100,80 @@ public class GameController : MonoBehaviour
             state++;
         }*/
         time = Time.time - timeController.timeStart;
-        if(time>=0.25*limitTime && state==1)
+        if(time==0){state=0; score=0; UpdateScore();}
+        if(environmentIndex==0)
         {
-            tmp=player.transform.position;
-            tmp.x=110;
-            player.transform.position=tmp;
-            state++;
+            if(time>=0*limitTime && state==0)
+            {
+                tmp=player.transform.position;
+                tmp.x=16;
+                player.transform.position=tmp;
+                state++;
+            }
+            if(time>=0.25*limitTime && state==1)
+            {
+                tmp=player.transform.position;
+                tmp.x=110;
+                player.transform.position=tmp;
+                state++;
+            }
+            if(time>=0.5*limitTime && state==2)
+            {
+                tmp=player.transform.position;
+                tmp.x=220; tmp.y=3;
+                player.transform.position=tmp;
+                state++;
+            }
+            if(time>=0.75*limitTime && state==3)
+            {
+                tmp=player.transform.position;
+                tmp.x=325; tmp.y=3;
+                player.transform.position=tmp;
+                state++;
+            }
         }
-        if(time>=0.5*limitTime && state==2)
+        else if(environmentIndex==1)
         {
-            tmp=player.transform.position;
-            tmp.x=220;
-            player.transform.position=tmp;
-            state++;
+            if(time==0)
+            {
+                tmp=player.transform.position;
+                tmp.x=16;
+                player.transform.position=tmp;
+            }
         }
-        if(time>=0.75*limitTime && state==3)
+        else if(environmentIndex==2)
         {
-            tmp=player.transform.position;
-            tmp.x=325;
-            tmp.y=3;
-            player.transform.position=tmp;
-            state++;
+            if(time==0)
+            {
+                tmp=player.transform.position;
+                tmp.x=110;
+                player.transform.position=tmp;
+            }
+        }
+        else if(environmentIndex==3)
+        {
+            if(time==0)
+            {
+                tmp=player.transform.position;
+                tmp.x=220; tmp.y=3;
+                player.transform.position=tmp;
+            }
+        }
+        else if(environmentIndex==4)
+        {
+            if(time==0)
+            {
+                tmp=player.transform.position;
+                tmp.x=325; tmp.y=3;
+                player.transform.position=tmp;
+            }
         }
 
-        //falled object color changing
+        //DOMESTIC COLOR CHANGING
+
+        //Falled object color changing
         // a=read2UDP.dataTempChanged;
-        //calculate with thresh
+        //Calculate with thresh
         // thresh=baselineTBR.min;
         // a=(2*baselineTBR.baseline-thresh-a)/(2*(baselineTBR.baseline-thresh));
         // if(baselineTBR.baseline!=0f)
