@@ -1,0 +1,3 @@
+average,date,timeset,start,FocusingTime,stop,time,data
+0,8/6/2018 3:46:18 PM,None,1540.19,System.Collections.Generic.List`1[System.Single],1544.60,1540.598 1541.598 1542.598 1543.598,26.303 50.00050.00050.000
+0,8/6/2018 3:47:26 PM,None,1608.41,1610.41,System.Collections.Generic.List`1[System.Single],1609.379 1610.379,28.722 50.000
