@@ -4,7 +4,7 @@ using System.IO;
 using CsvHelper;
 using System.Linq;
 using System.Text;
-using UnityEngine.SceneManagement;
+
 
 public class DataController : MonoBehaviour
 {
@@ -20,8 +20,9 @@ public class DataController : MonoBehaviour
 		
 		public static void updateGamePath()
 		{
+			
 			gameDir = @"log/" + GameControl.currentUserName  + "/";
-			gameCsv = @"log/" + GameControl.currentUserName  + "/" +  timeController.modeName + ".csv";
+			gameCsv = gameDir + GameControl.currentScene + "_" + timeController.modeName + ".csv";
 		}
 
 		public static void getData()

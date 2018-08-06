@@ -25,7 +25,7 @@ public class Player : MonoBehaviour {
 	public float Alpha = 1.0f;
 	public float baseAlpha = 1.0f;
 	private static List<float> dataAvgChanged = new List<float>();
-	private float dataAvg;
+	// private float dataAvg;
 	private bool isSaved;
 	public static Dictionary<string, string> tempCalibation = new Dictionary<string, string>();
 	public float a,i=0.0f;
@@ -69,13 +69,13 @@ public class Player : MonoBehaviour {
 			ClimbLadder();
 			Hurt();	
         }
-        Read2UDP.tempData["average"] = dataAvg.ToString();
-        dataAvgChanged.Clear();
-        timeController.isSetAvg = false;
+        // Read2UDP.tempData["average"] = dataAvg.ToString();
+        // dataAvgChanged.Clear();
+        // timeController.isSetAvg = false;
 		if (!isAlive){ return; }
 		if(timeController.isOnSave)
 		{
-			Read2UDP.tempData["FocusingTime"] = timefocus.ToString();
+			Read2UDP.tempData["FocusingTime"] = DataController.GameDataController.getAppendString(timefocus);
 		}
 	}
 

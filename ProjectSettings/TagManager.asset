@@ -24,6 +24,10 @@ TagManager:
   - Cyan
   - SpaceController
   - UDPReceiver
+  - Asteroid
+  - Reward
+  - Undefined
+  - Bolt
   layers:
   - Default
   - TransparentFX

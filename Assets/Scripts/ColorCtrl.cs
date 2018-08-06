@@ -19,8 +19,6 @@ public class ColorCtrl : MonoBehaviour {
 
 	private bool isSaved;
 
-	public static Dictionary<string, string> tempCalibation = new Dictionary<string, string>();
-
 	// Use this for initialization
 	void Start () {
 		matObject.color = new Color(0f, 0f, 0f, 255f);
@@ -45,6 +43,7 @@ public class ColorCtrl : MonoBehaviour {
 			dataAvgChanged.Add(Alpha);
 			if(timeController.modeName != "Baseline")
 			{
+				// a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;
 				matObject.color = new Color(0f, 0f, 0f, 1-((baseAlpha-Alpha)/10));
 			}
 			
@@ -63,44 +62,13 @@ public class ColorCtrl : MonoBehaviour {
 				{
 					thresholdSetText.text = dataAvg.ToString();
 					GameControl.currentThresholdAvg = dataAvg;
-					
-					
-					//smooth color changing
-				// 	a=1-(baseAlpha-Alpha);
-				// 	if(a>=i)
-             	// 	{
-                //  		while(a>i)
-                //  		{
-                //     		i+=0.01f;
-                //      		col=matObject.color;
-                //      		col.a=(float)i;
-                //      		matObject.color=col;
-                //  		}
-                //  		print("Intensity UP");
-             	// 	}
-             	// 	else if(a<i)
-             	// 	{
-                //  		while(a<i)
-                //  		{
-                //     		i-=0.01f;
-                //      		col=matObject.color;
-                //      		col.a=(float)i;
-                //      		matObject.color=col;
-                //  		}
-                //  		print("Intensity DOWN");
-               	// 	}
-				}
 
 				Read2UDP.tempData["average"] = dataAvg.ToString();
 
 				dataAvgChanged.Clear();
 				timeController.isSetAvg = false;	
+				}
 			}
 		}
-		// if(timeController.isConfirmExit)
-		// {
-		// 	print("saved specific");
-		// 	timeController.isConfirmExit = false;
-		// }
 	}
 }
