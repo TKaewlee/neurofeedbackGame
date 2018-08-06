@@ -26,6 +26,8 @@ TagManager:
   - UDPReceiver
   - Asteroid
   - Reward
+  - Undefined
+  - Bolt
   layers:
   - Default
   - TransparentFX

@@ -56,10 +56,11 @@ public class GameControl : MonoBehaviour {
     //     public static float RIGHT_YAW = 35f/90f;
     // }
 
-    void Start()
+    void Update()
     {
-        currentScene = SceneManager.GetActiveScene().name;
-        print(currentScene);
+        if (currentScene != SceneManager.GetActiveScene().name){
+            currentScene = SceneManager.GetActiveScene().name;
+        }
     }
 
         // != because this is supposed to call only when run game scene directly 

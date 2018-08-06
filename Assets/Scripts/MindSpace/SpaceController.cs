@@ -106,7 +106,7 @@ public class SpaceController : MonoBehaviour {
 				Read2UDP.tempData["scale"] = difficult.ToString();
 				Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
 				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
-				print("Send to tempData");
+				// print("Send to tempData");
 				// timeController.isStart = false;
 			}
 
