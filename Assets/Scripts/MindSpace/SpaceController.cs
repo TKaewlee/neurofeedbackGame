@@ -34,12 +34,16 @@ public class SpaceController : MonoBehaviour {
     public float baseline;
     public float threshold;
 
+	public InputField scaleInputField;
 	public InputField difficultInputField;
-	public InputField offsetInputField;
+	private float scale;
 	private float difficult;
-	private float offset;
+	public float timeDuration;
 
-	// private bool isPass = false;
+	private float timeStart = 0;
+	private bool isStart = false;
+
+	private GameObject[] gameObjects;
 
 	void Start ()
 	{
@@ -64,7 +68,10 @@ public class SpaceController : MonoBehaviour {
 
 		score = 0;
 		distance = 350;
-		
+
+		distanceCanvas.alpha = 0;
+		slideCanvas.alpha = 0;
+		AddDistance();
 		UpdateScore ();
 		// UpdateDistance ();
 		StartCoroutine (SpawnWaves ());
@@ -76,25 +83,25 @@ public class SpaceController : MonoBehaviour {
 		{
 			if(timeController.isStart)
 			{
+				if(scaleInputField.text != "")
+				{
+					scale = float.Parse(scaleInputField.text);
+				}
+				else
+				{
+					scale = 1;
+				}
+
 				if(difficultInputField.text != "")
 				{
 					difficult = float.Parse(difficultInputField.text);
 				}
 				else
 				{
-					difficult = 1;
+					difficult = 0.5f;
 				}
-
-				if(offsetInputField.text != "")
-				{
-					offset = float.Parse(offsetInputField.text);
-				}
-				else
-				{
-					offset = 0;
-				}
-				Read2UDP.tempData["difficult"] = difficult.ToString();
-				Read2UDP.tempData["offset"] = offset.ToString();
+				Read2UDP.tempData["difficult"] = scale.ToString();
+				Read2UDP.tempData["offset"] = difficult.ToString();
 				Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
 				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
 				// timeController.isStart = false;
@@ -110,12 +117,27 @@ public class SpaceController : MonoBehaviour {
 			{
 				Alpha = read2UDP.dataTempChanged;
 				// dataAvgChanged.Add(Alpha);
-				a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;		
-				// if(a > 0.5)
-				// {
-				// 	isPass = true;
-				// 	print("pass");
-				// }		
+				// a = (Alpha-baseline)/(scale*(threshold-baseline));
+
+				if(a > difficult)
+				{
+					if(isStart)
+					{
+						timeStart = Time.time;
+						isStart = false;
+					}
+
+					if(Time.time - timeStart >= timeDuration)
+					{
+						RewardWaves ();
+						isStart = true;
+					}
+				}	
+				else
+				{
+					isStart = true;
+				}	
+
 
 				if(timeController.modeName == "NF with slider")
 				{
@@ -136,22 +158,17 @@ public class SpaceController : MonoBehaviour {
 		}
 		else
 		{
-			score = 0;
-			distance = 350;
-			UpdateScore ();
-			AddDistance();
-			distanceCanvas.alpha = 0;
-			slideCanvas.alpha = 0;
+			restartGame();
 		}
 	}
 
-	// private void RewardWaves ()
-	// {
-	// 	GameObject reward = rewards [Random.Range (0, rewards.Length)];
-	// 	Vector3 spawnPosition = new Vector3 (Random.Range (-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
-	// 	Quaternion spawnRotation = Quaternion.Euler(90, 0, 0);
-	// 	Instantiate (reward, spawnPosition, spawnRotation);
-	// }
+	private void RewardWaves ()
+	{
+		GameObject reward = rewards [Random.Range (0, rewards.Length)];
+		Vector3 spawnPosition = new Vector3 (Random.Range (-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
+		Quaternion spawnRotation = Quaternion.Euler(90, 0, 0);
+		Instantiate (reward, spawnPosition, spawnRotation);
+	}
 
 	IEnumerator SpawnWaves ()
 	{
@@ -201,9 +218,28 @@ public class SpaceController : MonoBehaviour {
 			}
 			if((distance % 350) == 0)
 			{
-				minusScore(-10);
-				// RewardWaves ();
+				RewardWaves ();
 			}
 		}
+	}
+	
+	private void restartGame()
+	{
+		score = 0;
+		distance = 350;
+		UpdateScore ();
+		AddDistance();
+		distanceCanvas.alpha = 0;
+		slideCanvas.alpha = 0;
+		DestroyObjectswithTag("Asteroid");
+		DestroyObjectswithTag("Reward");
+	}
+
+	private void DestroyObjectswithTag(string tag)
+	{
+		gameObjects =  GameObject.FindGameObjectsWithTag (tag);
+
+		for(int i = 0 ; i < gameObjects.Length; i++)
+			Destroy(gameObjects[i]);
 	}
 }

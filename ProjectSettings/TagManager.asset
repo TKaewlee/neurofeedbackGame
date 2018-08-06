@@ -24,6 +24,8 @@ TagManager:
   - Cyan
   - SpaceController
   - UDPReceiver
+  - Asteroid
+  - Reward
   layers:
   - Default
   - TransparentFX

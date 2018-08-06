@@ -20,11 +20,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4296084980144708}
   - component: {fileID: 212692029503176392}
-  - component: {fileID: 114727971658043684}
   - component: {fileID: 54986357246404900}
+  - component: {fileID: 114727971658043684}
+  - component: {fileID: 114079912615017446}
+  - component: {fileID: 136678385145753990}
   m_Layer: 0
   m_Name: Red-Planet-With-Ice
-  m_TagString: Untagged
+  m_TagString: Reward
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,6 +59,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114079912615017446
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1160145264652030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d431ceeb44c2baf4ebaee0c6e9ebe3b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 100012, guid: 384371afbb4354cc9a3fc68eab303756, type: 2}
+  playerExplosion: {fileID: 100008, guid: a93496017806b7740910df5fd946f306, type: 2}
+  scoreValue: -10
 --- !u!114 &114727971658043684
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -69,6 +85,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: -3
+--- !u!136 &136678385145753990
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1160145264652030}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 2.5
+  m_Height: 10.24
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!212 &212692029503176392
 SpriteRenderer:
   m_ObjectHideFlags: 1

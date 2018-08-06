@@ -24,18 +24,29 @@ public class SpaceDestroyByContact : MonoBehaviour
 		
 	}
 	void OnTriggerEnter(Collider other){
-		if (other.tag == "Boundary"){
+		if (other.tag == "Boundary")
+		{
 			return;
 		}
-		Instantiate(explosion, transform.position, transform.rotation); 
-		
-		if (other.tag == "Player"){
+
+		if (other.tag == "Player")
+		{
 			Instantiate(playerExplosion, other.transform.position, other.transform.rotation); 
 			gameController.minusScore (scoreValue);
 			// gameController.GameOver ();
 		}
 		// gameController.AddScore (scoreValue);
 		// Destroy(other.gameObject);
-		Destroy(gameObject);
+
+		if (other.tag == "Asteroid" || other.tag == "Reward")
+		{
+			return;
+		}
+		else
+		{
+			// print("Destroy");
+			Destroy(gameObject);
+			Instantiate(explosion, transform.position, transform.rotation); 
+		}
 	}
 }
