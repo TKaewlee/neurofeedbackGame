@@ -112,7 +112,7 @@ public class timeController : MonoBehaviour {
         // string[] scenesList = new string[] {"spaceShooter", "cognitiveRun", "tetris", "gdrive", "gmath", "gmatch", "ordering", "grouping", "matching"};
         // foreach (string i in scenesList)
         // {
-        if(SceneManager.GetActiveScene().name == "_Calibration")
+        if(SceneManager.GetActiveScene().name == "Calibration")
         {
             return true;
         }
