@@ -121,7 +121,8 @@ public class SpaceController : MonoBehaviour {
 				Alpha = read2UDP.dataTempChanged;
 				// dataAvgChanged.Add(Alpha);
 				a = (Alpha-baseline)/(scale*(threshold-baseline));
-
+				if(a < 0){a = 0;} else if (a > 1){a = 1;}
+				
 				if(a > difficult)
 				{
 					if(isStart)
@@ -140,7 +141,6 @@ public class SpaceController : MonoBehaviour {
 				{
 					isStart = true;
 				}	
-
 
 				if(timeController.modeName == "NF with slider")
 				{
