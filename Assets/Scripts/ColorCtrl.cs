@@ -7,7 +7,7 @@ using UnityEngine.UI;               // ui objects
 public class ColorCtrl : MonoBehaviour {
 
 	public Material matObject;
-	public float Alpha = 1.0f;
+	public float Alpha = 1.0f, a;
 	private float baseAlpha = 10.0f;
 	// public KeyCode changeCol;
 	private Read2UDP read2UDP;
@@ -44,13 +44,15 @@ public class ColorCtrl : MonoBehaviour {
 			if(timeController.modeName != "Baseline")
 			{
 				// a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;
-				matObject.color = new Color(0f, 0f, 0f, 1-((baseAlpha-Alpha)/10));
+				a = 1-((Alpha - baseAlpha)/10);
+				if(a < 0){a = 0;} else if (a > 1){a = 1;}
+				matObject.color = new Color(0f, 0f, 0f, a);
+				
 			}
-			
 		}
 		else
 		{	
-			if(timeController.isSetAvg)
+			if(timeController.isFinish)
 			{
 				dataAvg = dataAvgChanged.Average();
 				if(timeController.modeName == "Baseline")
@@ -62,12 +64,13 @@ public class ColorCtrl : MonoBehaviour {
 				{
 					thresholdSetText.text = dataAvg.ToString();
 					GameControl.currentThresholdAvg = dataAvg;
+				}
 
 				Read2UDP.tempData["average"] = dataAvg.ToString();
-
+				
 				dataAvgChanged.Clear();
-				timeController.isSetAvg = false;	
-				}
+				timeController.isFinish = false;	
+				
 			}
 		}
 	}

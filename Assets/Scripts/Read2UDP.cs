@@ -113,18 +113,20 @@ public class Read2UDP : MonoBehaviour
 					tempData["time"] = DataController.GameDataController.getAppendString(timeChanged);
 					tempData["data"] = DataController.GameDataController.getAppendString(dataChanged);
 
-					print(">> Start Saving");
-					DataController.GameDataController.updateGamePath();
-					DataController.GameDataController.getData();
-					DataController.GameDataController.writeData();
-					DataController.GameDataController.clearData();
+					if(timeController.isFinish == false)
+					{
+						print(">> Start Saving");
+						DataController.GameDataController.updateGamePath();
+						DataController.GameDataController.getData();
+						DataController.GameDataController.writeData();
+						DataController.GameDataController.clearData();
 
-					timeChanged.Clear();
-					dataChanged.Clear();
-					timeController.isOnSave = false;
-					tempData.Clear();
+						timeChanged.Clear();
+						dataChanged.Clear();
+						timeController.isOnSave = false;
+						tempData.Clear();
+					}
 				}
-
 			} catch (Exception err) {
 				print (err.ToString ());	
 			}

@@ -26,7 +26,7 @@ public class SpaceController : MonoBehaviour {
 	public Material[] matObject;
 
 	private Read2UDP read2UDP;
-	private float Alpha = 1.0f;
+	private float Alpha;
 
 	public float a;
 
@@ -44,8 +44,8 @@ public class SpaceController : MonoBehaviour {
 
 	private GameObject[] gameObjects;
 	private static List<float> gameTime = new List<float>();
-	private static List<int> gameTrigger = new List<int>();
-	public int trigger = 0; 
+	private static List<float> gameTrigger = new List<float>();
+	public float trigger = 0; 
 
 	void Start ()
 	{
@@ -102,10 +102,6 @@ public class SpaceController : MonoBehaviour {
 				{
 					difficult = 0.5f;
 				}
-				Read2UDP.tempData["difficult"] = scale.ToString();
-				Read2UDP.tempData["scale"] = difficult.ToString();
-				Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
-				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
 				// print("Send to tempData");
 				// timeController.isStart = false;
 			}
@@ -120,7 +116,7 @@ public class SpaceController : MonoBehaviour {
 			{
 				Alpha = read2UDP.dataTempChanged;
 				// dataAvgChanged.Add(Alpha);
-				a = (Alpha-baseline)/(scale*(threshold-baseline));
+				a = (Alpha-baseline)/(scale*Mathf.Abs(threshold-baseline));
 				if(a < 0){a = 0;} else if (a > 1){a = 1;}
 				
 				if(a > difficult)
@@ -161,6 +157,20 @@ public class SpaceController : MonoBehaviour {
 		}
 		else
 		{
+			if(timeController.isFinish)
+			{
+				Read2UDP.tempData["difficult"] = scale.ToString();
+				Read2UDP.tempData["scale"] = difficult.ToString();
+				Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
+				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
+				Read2UDP.tempData["gametime"] = DataController.GameDataController.getAppendString(gameTime);
+				Read2UDP.tempData["gametrigger"] = DataController.GameDataController.getAppendString(gameTrigger);
+				Read2UDP.tempData["score"] = score.ToString();
+
+				gameTime.Clear();
+				gameTrigger.Clear();
+				timeController.isFinish = false;	
+			}
 			restartGame();
 		}
 	}
@@ -194,8 +204,9 @@ public class SpaceController : MonoBehaviour {
 	{
 		score -= newScoreValue;
 		UpdateScore ();
-		// gameTrigger.Add(-1*newScoreValue);
-		// gameTime.Add(read2UDP.timeTempChanged);
+		if(newScoreValue == 10){trigger = 1.0f;} else {trigger = 2.0f;}
+		gameTrigger.Add(trigger);
+		gameTime.Add(read2UDP.timeTempChanged);
 		// print(">>" + (-1*newScoreValue) + " - " + read2UDP.timeTempChanged);
 	}
 

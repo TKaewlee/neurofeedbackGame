@@ -12,8 +12,8 @@ public class barGague : MonoBehaviour {
 		private Read2UDP read2UDP;
 	public float Alpha = 1.0f;
 	public float baseAlpha = 1.0f;
-	private static List<float> dataAvgChanged = new List<float>();
-	private float dataAvg;
+	// private static List<float> dataAvgChanged = new List<float>();
+	// private float dataAvg;
 	private bool isSaved;
 	public static Dictionary<string, string> tempCalibation = new Dictionary<string, string>();
 	public float a,i=0.0f;
@@ -42,13 +42,20 @@ public class barGague : MonoBehaviour {
 		if(timeController.isSaving)
 		{
 			Alpha = read2UDP.dataTempChanged;
-			dataAvgChanged.Add(Alpha);
-            a=1-((baseline-Alpha)/threshold);
+			// dataAvgChanged.Add(Alpha);
+            a = (Alpha-baseline)/Mathf.Abs(threshold-baseline);
+			if(a < 0){a = 0;} else if (a > 1){a = 1;}
+			gaugeFill.value = a;
         }
-        Read2UDP.tempData["average"] = dataAvg.ToString();
-        dataAvgChanged.Clear();
-        timeController.isSetAvg = false;
-		controlGauge();
+		else
+		{
+			timeController.isFinish = false;
+			// Read2UDP.tempData["average"] = dataAvg.ToString();
+			// dataAvgChanged.Clear();
+		}
+
+        
+		// controlGauge();
 	}
 
 	public void ChangeGauge(int amount){

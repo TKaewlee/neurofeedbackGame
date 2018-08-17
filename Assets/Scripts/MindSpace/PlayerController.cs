@@ -14,11 +14,11 @@ public class PlayerController : MonoBehaviour
 	public float tilt;
 	public Boundary boundary;
 	
-	public GameObject shot;
-	public Transform shotSpawn;
-	public float fireRate;
+	// public GameObject shot;
+	// public Transform shotSpawn;
+	// public float fireRate;
 
-	private float nextFire;
+	// private float nextFire;
 
 	private SpaceController gameController;
 	
@@ -35,17 +35,17 @@ public class PlayerController : MonoBehaviour
 		}	
 	}
 
-	void Update ()
-	{
-		if (Input.GetButton("Fire1") && Time.time > nextFire)
-        {
-			gameController.minusScore (5);
-            nextFire = Time.time + fireRate;
-            // GameObject clone = 
-			Instantiate(shot, shotSpawn.position, shotSpawn.rotation); //as GameObject;
-			GetComponent<AudioSource>().Play ();
-        }
-	}
+	// void Update ()
+	// {
+	// 	if (Input.GetButton("Fire1") && Time.time > nextFire)
+    //     {
+	// 		gameController.minusScore (5);
+    //         nextFire = Time.time + fireRate;
+    //         // GameObject clone = 
+	// 		Instantiate(shot, shotSpawn.position, shotSpawn.rotation); //as GameObject;
+	// 		GetComponent<AudioSource>().Play ();
+    //     }
+	// }
 	void FixedUpdate ()
 	{
 		float moveHorizontal = Input.GetAxis("Horizontal");

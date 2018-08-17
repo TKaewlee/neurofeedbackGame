@@ -29,7 +29,7 @@ public class timeController : MonoBehaviour {
     // public static bool isConfirmExit;
     public static bool isTimeSet = false;
     public static bool isStart = false;
-    public static bool isSetAvg = false;
+    public static bool isFinish = false;
     public static bool isOnSave = false;
     public static bool isSaving = false;
 
@@ -58,6 +58,7 @@ public class timeController : MonoBehaviour {
         if (isContinue)
         {
             isSaving = true;
+            isFinish = false;
             // Read2UDP.startRecieve();
             if (isTimeSet)
             {
@@ -95,11 +96,8 @@ public class timeController : MonoBehaviour {
         settingCanvas.interactable = true;
         settingCanvas.blocksRaycasts = true;  
         isSaving = false;
+        isFinish = true;
         isOnSave = true; 
-        if(isCalScene())
-        {
-            isSetAvg = true;
-        } 
     }
 
     private void actionDropdownValueChanged(Dropdown actionTarget){
@@ -107,18 +105,18 @@ public class timeController : MonoBehaviour {
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
     }
 
-    private bool isCalScene()
-    {
-        // string[] scenesList = new string[] {"spaceShooter", "cognitiveRun", "tetris", "gdrive", "gmath", "gmatch", "ordering", "grouping", "matching"};
-        // foreach (string i in scenesList)
-        // {
-        if(SceneManager.GetActiveScene().name == "Calibration")
-        {
-            return true;
-        }
-        // }
-        return false;
-    }
+    // private bool isCalScene()
+    // {
+    //     // string[] scenesList = new string[] {"spaceShooter", "cognitiveRun", "tetris", "gdrive", "gmath", "gmatch", "ordering", "grouping", "matching"};
+    //     // foreach (string i in scenesList)
+    //     // {
+    //     if(SceneManager.GetActiveScene().name == "Calibration")
+    //     {
+    //         return true;
+    //     }
+    //     // }
+    //     return false;
+    // }
 
     private void startOnClick(){
         Time.timeScale = 1;

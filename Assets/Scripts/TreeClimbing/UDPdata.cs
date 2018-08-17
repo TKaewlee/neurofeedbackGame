@@ -99,7 +99,7 @@ public class UDPdata : MonoBehaviour {
         Read2UDP.tempData["average"] = dataAvg.ToString();
 
         dataAvgChanged.Clear();
-        timeController.isSetAvg = false;	
+        // timeController.isSetAvg = false;	
     }
 		// }
 		// if(timeController.isConfirmExit)

@@ -44,11 +44,11 @@ public class SpaceDestroyByContact : MonoBehaviour
 		}
 		else
 		{
-			if(gameObject.tag == "Reward" && other.tag == "Bolt")
-			{
-				gameController.trigger = 1;
-				gameController.minusScore (scoreValue);
-			}
+			// if(gameObject.tag == "Reward" && other.tag == "Bolt")
+			// {
+			// 	gameController.trigger = 1;
+			// 	gameController.minusScore (scoreValue);
+			// }
 			Destroy(gameObject);
 			Instantiate(explosion, transform.position, transform.rotation); 
 		}

@@ -12,8 +12,8 @@ public class ColorChanging : MonoBehaviour {
 	// public KeyCode changeCol;
 	private Read2UDP read2UDP;
 
-	private static List<float> dataAvgChanged = new List<float>();
-	private float dataAvg;
+	// private static List<float> dataAvgChanged = new List<float>();
+	// private float dataAvg;
 	public Text baselineSetText;
 	public Text thresholdSetText;
 
@@ -69,7 +69,7 @@ public class ColorChanging : MonoBehaviour {
 		if(timeController.isSaving)
 		{
 			Alpha = read2UDP.dataTempChanged;
-			dataAvgChanged.Add(Alpha);
+			// dataAvgChanged.Add(Alpha);
 		// }
 		// else
 		// {	
@@ -88,7 +88,8 @@ public class ColorChanging : MonoBehaviour {
 
 
             //smooth color changing
-            a=((Alpha-baseline)/(hardFactor*(threshold-baseline)))+helpFactor;
+            a=((Alpha-baseline)/(hardFactor*Mathf.Abs(threshold-baseline)))+helpFactor;
+			if(a < 0){a = 0;} else if (a > 1){a = 1;}
             if(a>i)
             {
                 while(a>i)
@@ -128,11 +129,14 @@ public class ColorChanging : MonoBehaviour {
                 print("Intensity DOWN");
             }
         }
+		else{
+			timeController.isFinish = false;
+		}
 
-        Read2UDP.tempData["average"] = dataAvg.ToString();
+        // Read2UDP.tempData["average"] = dataAvg.ToString();
 
-        dataAvgChanged.Clear();
-        timeController.isSetAvg = false;	
+        // dataAvgChanged.Clear();
+        	
     }
 		// }
 		// if(timeController.isConfirmExit)
