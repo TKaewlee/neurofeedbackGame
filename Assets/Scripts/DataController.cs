@@ -94,14 +94,14 @@ public class DataController : MonoBehaviour
 
 				foreach (float i in floatEnum)
 				{
-					if (!i.Equals(last))
-					{
-						temp.Append(i.ToString("f3")).Append(" ");
-					}
-					else
-					{
-						temp.Append(i.ToString("f3"));
-					}
+					// if (!i.Equals(last))
+					// {
+					temp.Append(i.ToString("f3")).Append(" ");
+					// }
+					// else
+					// {
+					// 	temp.Append(i.ToString("f3"));
+					// }
 				}
 			}
 			catch 
@@ -111,5 +111,33 @@ public class DataController : MonoBehaviour
 
 			return temp.ToString();
 		}
+
+		public static string getAppendString(List<int> intEnum)
+		{
+			StringBuilder temp = new StringBuilder();
+			
+			try
+			{
+				int last = intEnum.Last();
+
+				foreach (int i in intEnum)
+				{
+					// if (!i.Equals(last))
+					// {
+					temp.Append(i.ToString()).Append(" ");
+					// }
+					// else
+					// {
+					// 	temp.Append(i.ToString());
+					// }
+				}
+			}
+			catch 
+			{
+				return null;
+			}
+
+			return temp.ToString();	
+		}	
 	}
 }

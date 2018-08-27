@@ -44,8 +44,17 @@ public class SpaceController : MonoBehaviour {
 
 	private GameObject[] gameObjects;
 	private static List<float> gameTime = new List<float>();
-	private static List<float> gameTrigger = new List<float>();
-	public float trigger = 0; 
+	private static List<int> gameTrigger = new List<int>();
+	public int trigger = 0; 
+
+
+	private static List<float> moveHorizontalTime = new List<float>();
+	private static List<int> moveHorizontalTrigger = new List<int>();
+	// public float horizontalTrigger = 0; 
+	
+	private static List<float> moveVerticalTime = new List<float>();
+	private static List<int> moveVerticalTrigger = new List<int>();
+	// public float verticalTrigger = 0; 
 
 	void Start ()
 	{
@@ -83,6 +92,12 @@ public class SpaceController : MonoBehaviour {
 	{
 		if(timeController.isContinue)
 		{
+			if( Input.GetButtonDown("Horizontal") ) {  moveHorizontalTime.Add(read2UDP.timeTempChanged); moveHorizontalTrigger.Add(1);}
+			if( Input.GetButtonUp("Horizontal") ) 	{  moveHorizontalTime.Add(read2UDP.timeTempChanged); moveHorizontalTrigger.Add(0);}
+
+			if( Input.GetButtonDown("Vertical") ) 	{ moveVerticalTime.Add(read2UDP.timeTempChanged); moveVerticalTrigger.Add(2);}
+			if( Input.GetButtonUp("Vertical") ) 	{ moveVerticalTime.Add(read2UDP.timeTempChanged); moveVerticalTrigger.Add(0); }
+			
 			if(timeController.isStart)
 			{
 				if(scaleInputField.text != "")
@@ -165,6 +180,10 @@ public class SpaceController : MonoBehaviour {
 				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
 				Read2UDP.tempData["gametime"] = DataController.GameDataController.getAppendString(gameTime);
 				Read2UDP.tempData["gametrigger"] = DataController.GameDataController.getAppendString(gameTrigger);
+				Read2UDP.tempData["moveHorizontaltime"] = DataController.GameDataController.getAppendString(moveHorizontalTime);
+				Read2UDP.tempData["moveHorizontaltrigger"] = DataController.GameDataController.getAppendString(moveHorizontalTrigger);
+				Read2UDP.tempData["moveVerticaltime"] = DataController.GameDataController.getAppendString(moveVerticalTime);
+				Read2UDP.tempData["moveVerticaltrigger"] = DataController.GameDataController.getAppendString(moveVerticalTrigger);
 				Read2UDP.tempData["score"] = score.ToString();
 
 				gameTime.Clear();
@@ -204,7 +223,7 @@ public class SpaceController : MonoBehaviour {
 	{
 		score -= newScoreValue;
 		UpdateScore ();
-		if(newScoreValue == 10){trigger = 1.0f;} else {trigger = 2.0f;}
+		if(newScoreValue == 10){trigger = -1;} else {trigger = 1;}
 		gameTrigger.Add(trigger);
 		gameTime.Add(read2UDP.timeTempChanged);
 		// print(">>" + (-1*newScoreValue) + " - " + read2UDP.timeTempChanged);
