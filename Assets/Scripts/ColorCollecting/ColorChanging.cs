@@ -58,7 +58,7 @@ public class ColorChanging : MonoBehaviour {
             Debug.Log("Cannot find 'read2UDP' script");
         }
 
-		i=0.2f; // initial smooth color changing
+		i=1f; // initial smooth color changing
 
 		hardFactor=1;
 		helpFactor=0;
@@ -68,7 +68,7 @@ public class ColorChanging : MonoBehaviour {
 	void Update () {
 		if(timeController.isSaving)
 		{
-			Alpha = read2UDP.dataTempChanged;
+			// Alpha = read2UDP.dataTempChanged;
 			// dataAvgChanged.Add(Alpha);
 		// }
 		// else
@@ -88,46 +88,46 @@ public class ColorChanging : MonoBehaviour {
 
 
             //smooth color changing
-            a=((Alpha-baseline)/(hardFactor*Mathf.Abs(threshold-baseline)))+helpFactor;
-			if(a < 0){a = 0;} else if (a > 1){a = 1;}
-            if(a>i)
-            {
-                while(a>i)
-                {
-                    i+=0.01f;
-                    col=blackMat.color;    col.a=(float)i;     blackMat.color=col;
-					col=blueMat.color;     col.a=(float)i;     blueMat.color=col;
-					col=cyanMat.color;     col.a=(float)i;     cyanMat.color=col;
-					col=greenMat.color;    col.a=(float)i;     greenMat.color=col;
-					col=greyMat.color;     col.a=(float)i;     greyMat.color=col;
-					col=magentaMat.color;  col.a=(float)i;     magentaMat.color=col;
-					col=orangeMat.color;   col.a=(float)i;     orangeMat.color=col;
-					col=skyMat.color;      col.a=(float)i;     skyMat.color=col;
-					col=redMat.color;      col.a=(float)i;     redMat.color=col;
-					col=whiteMat.color;    col.a=(float)i;     whiteMat.color=col;
-					col=yellowMat.color;   col.a=(float)i;     yellowMat.color=col;
-                }
-                print("Intensity UP");
-            }
-            else if(a<i)
-            {
-                while(a<i)
-                {
-                    i-=0.01f;
-                    col=blackMat.color;    col.a=(float)i;     blackMat.color=col;
-					col=blueMat.color;     col.a=(float)i;     blueMat.color=col;
-					col=cyanMat.color;     col.a=(float)i;     cyanMat.color=col;
-					col=greenMat.color;    col.a=(float)i;     greenMat.color=col;
-					col=greyMat.color;     col.a=(float)i;     greyMat.color=col;
-					col=magentaMat.color;  col.a=(float)i;     magentaMat.color=col;
-					col=orangeMat.color;   col.a=(float)i;     orangeMat.color=col;
-					col=skyMat.color;      col.a=(float)i;     skyMat.color=col;
-					col=redMat.color;      col.a=(float)i;     redMat.color=col;
-					col=whiteMat.color;    col.a=(float)i;     whiteMat.color=col;
-					col=yellowMat.color;   col.a=(float)i;     yellowMat.color=col;
-                }
-                print("Intensity DOWN");
-            }
+            // a=((Alpha-baseline)/(hardFactor*Mathf.Abs(threshold-baseline)))+helpFactor;
+			// if(a < 0){a = 0;} else if (a > 1){a = 1;}
+            // if(a>i)
+            // {
+            //     while(a>i)
+            //     {
+            //         i+=0.01f;
+			col=blackMat.color;    col.a=(float)i;     blackMat.color=col;
+			col=blueMat.color;     col.a=(float)i;     blueMat.color=col;
+			col=cyanMat.color;     col.a=(float)i;     cyanMat.color=col;
+			col=greenMat.color;    col.a=(float)i;     greenMat.color=col;
+			col=greyMat.color;     col.a=(float)i;     greyMat.color=col;
+			col=magentaMat.color;  col.a=(float)i;     magentaMat.color=col;
+			col=orangeMat.color;   col.a=(float)i;     orangeMat.color=col;
+			col=skyMat.color;      col.a=(float)i;     skyMat.color=col;
+			col=redMat.color;      col.a=(float)i;     redMat.color=col;
+			col=whiteMat.color;    col.a=(float)i;     whiteMat.color=col;
+			col=yellowMat.color;   col.a=(float)i;     yellowMat.color=col;
+            //     }
+            //     print("Intensity UP");
+            // }
+            // else if(a<i)
+            // {
+            //     while(a<i)
+            //     {
+            //         i-=0.01f;
+            //         col=blackMat.color;    col.a=(float)i;     blackMat.color=col;
+			// 		col=blueMat.color;     col.a=(float)i;     blueMat.color=col;
+			// 		col=cyanMat.color;     col.a=(float)i;     cyanMat.color=col;
+			// 		col=greenMat.color;    col.a=(float)i;     greenMat.color=col;
+			// 		col=greyMat.color;     col.a=(float)i;     greyMat.color=col;
+			// 		col=magentaMat.color;  col.a=(float)i;     magentaMat.color=col;
+			// 		col=orangeMat.color;   col.a=(float)i;     orangeMat.color=col;
+			// 		col=skyMat.color;      col.a=(float)i;     skyMat.color=col;
+			// 		col=redMat.color;      col.a=(float)i;     redMat.color=col;
+			// 		col=whiteMat.color;    col.a=(float)i;     whiteMat.color=col;
+			// 		col=yellowMat.color;   col.a=(float)i;     yellowMat.color=col;
+            //     }
+            //     print("Intensity DOWN");
+            // }
         }
 		else{
 			timeController.isFinish = false;
