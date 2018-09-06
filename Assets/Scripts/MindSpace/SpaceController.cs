@@ -8,10 +8,10 @@ public class SpaceController : MonoBehaviour {
 	public GameObject[] hazards;
 	public GameObject[] rewards;
 	public Vector3 SpawnValues;
-	public int hazardCount;
-	public float spawnWait;
-	public float startWait;
-	public float waveWait;
+	public int hazardCount; // 3
+	public float spawnWait; // 1.5
+	public float startWait; // 0.5
+	public float waveWait;  // 0.8
 
 	private int score;
 	public Text scoreText;
@@ -22,6 +22,7 @@ public class SpaceController : MonoBehaviour {
 
 	public CanvasGroup slideCanvas;
 	public Slider gaugeFill;
+	public CanvasGroup centerSlideCanvas;
 
 	public Material[] matObject;
 
@@ -33,11 +34,12 @@ public class SpaceController : MonoBehaviour {
     public float baseline;
     public float threshold;
 
-	public InputField scaleInputField;
-	public InputField difficultInputField;
-	private float scale;
-	private float difficult;
-	public float timeDuration;
+	public InputField feedbackThresholdInputField;
+	public Dropdown difficultDropdown;
+	private float feedbackThreshold;
+	private string difficult;
+	private int difficultIndex;
+	public float timeDuration = 3;
 
 	private float timeStart = 0;
 	private bool isStart = false;
@@ -60,7 +62,11 @@ public class SpaceController : MonoBehaviour {
 	{
 		baseline = GameControl.currentBaselineAvg;
         threshold = GameControl.currentThresholdAvg;
-		
+
+        difficultDropdown.onValueChanged.AddListener(delegate {
+            actionDropdownValueChanged(difficultDropdown);
+        });
+
         GameObject gameControllerObject = GameObject.FindGameObjectWithTag ("UDPReciever");
         if (gameControllerObject != null)
         {
@@ -80,6 +86,7 @@ public class SpaceController : MonoBehaviour {
 		score = 0;
 		distance = 350;
 
+		centerSlideCanvas.alpha = 0;
 		distanceCanvas.alpha = 0;
 		slideCanvas.alpha = 0;
 		AddDistance();
@@ -100,22 +107,23 @@ public class SpaceController : MonoBehaviour {
 			
 			if(timeController.isStart)
 			{
-				if(scaleInputField.text != "")
+				difficult = difficultDropdown.options[difficultIndex].text;
+				if(difficult == "easy")
 				{
-					scale = float.Parse(scaleInputField.text);
+					hazardCount = 0;
 				}
 				else
 				{
-					scale = 1;
+					hazardCount = 3;
 				}
 
-				if(difficultInputField.text != "")
+				if(feedbackThresholdInputField.text != "")
 				{
-					difficult = float.Parse(difficultInputField.text);
+					feedbackThreshold = float.Parse(feedbackThresholdInputField.text);
 				}
 				else
 				{
-					difficult = 0.5f;
+					feedbackThreshold = 0.5f;
 				}
 				// print("Send to tempData");
 				// timeController.isStart = false;
@@ -131,10 +139,10 @@ public class SpaceController : MonoBehaviour {
 			{
 				Alpha = read2UDP.dataTempChanged;
 				// dataAvgChanged.Add(Alpha);
-				a = (Alpha-baseline)/(scale*Mathf.Abs(threshold-baseline));
+				a = (Alpha-baseline)/(Mathf.Abs(threshold-baseline));
 				if(a < 0){a = 0;} else if (a > 1){a = 1;}
 				
-				if(a > difficult)
+				if(a > feedbackThreshold)
 				{
 					if(isStart)
 					{
@@ -162,11 +170,18 @@ public class SpaceController : MonoBehaviour {
 				}
 				else if(timeController.modeName == "NF with moving object")
 				{
-					for (int i = 0; i < matObject.Length; i++)
+					if(difficult == "easy")
 					{
-						matObject[i].color = new Color(1f, 1f, 1f, a);
-						matObject[i].SetFloat("_Metallic", a);
+						centerSlideCanvas.alpha = (1-a)/2;
 					}
+					else{
+						for (int i = 0; i < matObject.Length; i++)
+						{
+							matObject[i].color = new Color(1f, 1f, 1f, a);
+							matObject[i].SetFloat("_Metallic", a);
+						}
+					}
+
 				}
 			}
 		}
@@ -174,8 +189,8 @@ public class SpaceController : MonoBehaviour {
 		{
 			if(timeController.isFinish)
 			{
-				Read2UDP.tempData["difficult"] = scale.ToString();
-				Read2UDP.tempData["scale"] = difficult.ToString();
+				Read2UDP.tempData["difficult"] = difficult;
+				Read2UDP.tempData["feedbackthreshold"] = feedbackThreshold.ToString();
 				Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
 				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
 				Read2UDP.tempData["gametime"] = DataController.GameDataController.getAppendString(gameTime);
@@ -193,6 +208,11 @@ public class SpaceController : MonoBehaviour {
 			restartGame();
 		}
 	}
+
+    private void actionDropdownValueChanged(Dropdown actionTarget){
+        difficultIndex = actionTarget.value;
+        // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
+    }
 
 	private void RewardWaves ()
 	{
