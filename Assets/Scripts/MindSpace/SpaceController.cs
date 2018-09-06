@@ -50,13 +50,9 @@ public class SpaceController : MonoBehaviour {
 	public int trigger = 0; 
 
 
-	private static List<float> moveHorizontalTime = new List<float>();
-	private static List<int> moveHorizontalTrigger = new List<int>();
-	// public float horizontalTrigger = 0; 
-	
-	private static List<float> moveVerticalTime = new List<float>();
-	private static List<int> moveVerticalTrigger = new List<int>();
-	// public float verticalTrigger = 0; 
+	private static List<float> moveTime = new List<float>();
+	private static List<int> moveTrigger = new List<int>();	
+	private static List<float> moveEnd = new List<float>();
 
 	void Start ()
 	{
@@ -99,11 +95,11 @@ public class SpaceController : MonoBehaviour {
 	{
 		if(timeController.isContinue)
 		{
-			if( Input.GetButtonDown("Horizontal") ) {  moveHorizontalTime.Add(read2UDP.timeTempChanged); moveHorizontalTrigger.Add(1);}
-			if( Input.GetButtonUp("Horizontal") ) 	{  moveHorizontalTime.Add(read2UDP.timeTempChanged); moveHorizontalTrigger.Add(0);}
+			if( Input.GetButtonDown("Horizontal") ) {  moveTrigger.Add(1); moveTime.Add(read2UDP.timeTempChanged); }
+			if( Input.GetButtonUp("Horizontal") ) 	{  moveEnd.Add(read2UDP.timeTempChanged); }
 
-			if( Input.GetButtonDown("Vertical") ) 	{ moveVerticalTime.Add(read2UDP.timeTempChanged); moveVerticalTrigger.Add(2);}
-			if( Input.GetButtonUp("Vertical") ) 	{ moveVerticalTime.Add(read2UDP.timeTempChanged); moveVerticalTrigger.Add(0); }
+			if( Input.GetButtonDown("Vertical") ) 	{ moveTrigger.Add(2); moveTime.Add(read2UDP.timeTempChanged); }
+			if( Input.GetButtonUp("Vertical") ) 	{ moveEnd.Add(read2UDP.timeTempChanged); }
 			
 			if(timeController.isStart)
 			{
@@ -195,10 +191,9 @@ public class SpaceController : MonoBehaviour {
 				Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
 				Read2UDP.tempData["gametime"] = DataController.GameDataController.getAppendString(gameTime);
 				Read2UDP.tempData["gametrigger"] = DataController.GameDataController.getAppendString(gameTrigger);
-				Read2UDP.tempData["moveHorizontaltime"] = DataController.GameDataController.getAppendString(moveHorizontalTime);
-				Read2UDP.tempData["moveHorizontaltrigger"] = DataController.GameDataController.getAppendString(moveHorizontalTrigger);
-				Read2UDP.tempData["moveVerticaltime"] = DataController.GameDataController.getAppendString(moveVerticalTime);
-				Read2UDP.tempData["moveVerticaltrigger"] = DataController.GameDataController.getAppendString(moveVerticalTrigger);
+				Read2UDP.tempData["movetime"] = DataController.GameDataController.getAppendString(moveTime);
+				Read2UDP.tempData["movetrigger"] = DataController.GameDataController.getAppendString(moveTrigger);
+				Read2UDP.tempData["moveEnd"] = DataController.GameDataController.getAppendString(moveEnd);
 				Read2UDP.tempData["score"] = score.ToString();
 
 				gameTime.Clear();
