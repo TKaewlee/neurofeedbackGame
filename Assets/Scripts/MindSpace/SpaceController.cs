@@ -33,6 +33,8 @@ public class SpaceController : MonoBehaviour {
 
     public float baseline;
     public float threshold;
+	public int Fs = 256; float percentOver = 0.8f;
+	private int numOverThreshold =0;
 
 	public InputField feedbackThresholdInputField;
 	public Dropdown difficultDropdown;
@@ -53,6 +55,10 @@ public class SpaceController : MonoBehaviour {
 	private static List<float> moveTime = new List<float>();
 	private static List<int> moveTrigger = new List<int>();	
 	private static List<float> moveEnd = new List<float>();
+
+	private AudioSource audioSource;
+	public AudioClip backgroundAudio;
+	private static bool isPlayAudio = false;
 
 	void Start ()
 	{
@@ -79,6 +85,9 @@ public class SpaceController : MonoBehaviour {
 			matObject[i].SetFloat("_Metallic", 1.0f);
 		}
 
+		audioSource = gameObject.GetComponent<AudioSource>();
+		audioSource.clip = backgroundAudio;
+
 		score = 0;
 		distance = 350;
 
@@ -95,90 +104,121 @@ public class SpaceController : MonoBehaviour {
 	{
 		if(timeController.isContinue)
 		{
-			if( Input.GetButtonDown("Horizontal") ) {  moveTrigger.Add(1); moveTime.Add(read2UDP.timeTempChanged); }
-			if( Input.GetButtonUp("Horizontal") ) 	{  moveEnd.Add(read2UDP.timeTempChanged); }
-
-			if( Input.GetButtonDown("Vertical") ) 	{ moveTrigger.Add(2); moveTime.Add(read2UDP.timeTempChanged); }
-			if( Input.GetButtonUp("Vertical") ) 	{ moveEnd.Add(read2UDP.timeTempChanged); }
-			
-			if(timeController.isStart)
+			if(timeController.isPlaying)
 			{
-				difficult = difficultDropdown.options[difficultIndex].text;
-				if(difficult == "easy")
-				{
-					hazardCount = 0;
-				}
-				else
-				{
-					hazardCount = 3;
-				}
+				if( Input.GetButtonDown("Horizontal") ) {  moveTrigger.Add(1); moveTime.Add(read2UDP.timeTempChanged); }
+				if( Input.GetButtonUp("Horizontal") ) 	{  moveEnd.Add(read2UDP.timeTempChanged); }
 
-				if(feedbackThresholdInputField.text != "")
-				{
-					feedbackThreshold = float.Parse(feedbackThresholdInputField.text);
-				}
-				else
-				{
-					feedbackThreshold = 0.5f;
-				}
-				// print("Send to tempData");
-				// timeController.isStart = false;
-			}
-
-
-			if(timeController.modeName == "without NF")
-			{
-				distanceCanvas.alpha = 1;
-				AddDistance();
-			}
-			else 
-			{
-				Alpha = read2UDP.dataTempChanged;
-				// dataAvgChanged.Add(Alpha);
-				a = (Alpha-baseline)/(Mathf.Abs(threshold-baseline));
-				if(a < 0){a = 0;} else if (a > 1){a = 1;}
+				if( Input.GetButtonDown("Vertical") ) 	{ moveTrigger.Add(2); moveTime.Add(read2UDP.timeTempChanged); }
+				if( Input.GetButtonUp("Vertical") ) 	{ moveEnd.Add(read2UDP.timeTempChanged); }
 				
-				if(a > feedbackThreshold)
+				if(timeController.isStartGame)
 				{
-					if(isStart)
+					if(!isPlayAudio)
 					{
-						timeStart = Time.time;
-						isStart = false;
+						audioSource.Play();  print("Play Background Audio");
+						isPlayAudio = true;
 					}
-
-					if(Time.time - timeStart >= timeDuration)
-					{
-						RewardWaves ();
-						isStart = true;
-					}
-				}	
-				else
-				{
-					isStart = true;
-				}	
-
-				if(timeController.modeName == "NF with slider")
-				{
-					slideCanvas.alpha = 1;
-					// currentGauge += (int)a;
-					// currentGauge = Mathf.Clamp(currentGauge, 0, maxGauge);
-					gaugeFill.value = a; //currentGauge / maxGauge;
-				}
-				else if(timeController.modeName == "NF with moving object")
-				{
+					
+					difficult = difficultDropdown.options[difficultIndex].text;
 					if(difficult == "easy")
 					{
-						centerSlideCanvas.alpha = (1-a)/2;
+						hazardCount = 0;
 					}
-					else{
-						for (int i = 0; i < matObject.Length; i++)
-						{
-							matObject[i].color = new Color(1f, 1f, 1f, a);
-							matObject[i].SetFloat("_Metallic", a);
-						}
+					else
+					{
+						hazardCount = 3;
 					}
 
+					if(feedbackThresholdInputField.text != "")
+					{
+						feedbackThreshold = float.Parse(feedbackThresholdInputField.text);
+					}
+					else
+					{
+						feedbackThreshold = 0.5f;
+					}
+					// print("Send to tempData");
+					timeController.isStartGame = false; // comment out if not connect to G.Tec
+					timeStart = timeController.timeStart;
 				}
+
+
+				if(timeController.modeName == "without NF")
+				{
+					distanceCanvas.alpha = 1;
+					AddDistance();
+				}
+				else 
+				{
+					Alpha = read2UDP.dataTempChanged;
+					// dataAvgChanged.Add(Alpha);
+					a = (Alpha-baseline)/(Mathf.Abs(threshold-baseline));
+					// if(a < 0){a = 0;} else if (a > 1){a = 1;}
+					
+					if(Time.time - timeStart <= timeDuration)
+					{
+						if(a > feedbackThreshold)
+						{
+							numOverThreshold += 1;
+						}
+					}
+					else
+					{
+						if( numOverThreshold >= percentOver*timeDuration*Fs)
+						{
+							RewardWaves ();
+						}
+						numOverThreshold = 0;
+						timeStart = Time.time;
+					}
+
+
+					// 	if(isStart)
+					// 	{
+					// 		timeStart = Time.time;
+					// 		isStart = false;
+					// 	}
+
+					// 	if(Time.time - timeStart >= timeDuration)
+					// 	{
+					// 		RewardWaves ();
+					// 		isStart = true;
+					// 	}
+					// }	
+					// else
+					// {
+					// 	isStart = true;
+					// }	
+
+					if(timeController.modeName == "NF with slider")
+					{
+						slideCanvas.alpha = 1;
+						// currentGauge += (int)a;
+						// currentGauge = Mathf.Clamp(currentGauge, 0, maxGauge);
+						gaugeFill.value = a; //currentGauge / maxGauge;
+					}
+					else if(timeController.modeName == "NF with moving object")
+					{
+						if(difficult == "easy")
+						{
+							centerSlideCanvas.alpha = (1-a)/2;
+						}
+						else{
+							for (int i = 0; i < matObject.Length; i++)
+							{
+								matObject[i].color = new Color(1f, 1f, 1f, a);
+								matObject[i].SetFloat("_Metallic", a);
+							}
+						}
+
+					}
+				}
+			}
+			else
+			{
+				audioSource.Stop();
+				isPlayAudio = false;
 			}
 		}
 		else
@@ -274,11 +314,12 @@ public class SpaceController : MonoBehaviour {
 	}
 	
 	private void restartGame()
-	{
+	{	
 		score = 0;
 		distance = 350;
 		UpdateScore ();
 		AddDistance();
+		centerSlideCanvas.alpha = 0;
 		distanceCanvas.alpha = 0;
 		slideCanvas.alpha = 0;
 		DestroyObjectswithTag("Asteroid");
