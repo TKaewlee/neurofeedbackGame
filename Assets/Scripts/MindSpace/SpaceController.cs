@@ -27,13 +27,13 @@ public class SpaceController : MonoBehaviour {
 	public Material[] matObject;
 
 	private Read2UDP read2UDP;
-	private float Alpha;
+	private float data;
 
 	public float a;
 
     public float baseline;
     public float threshold;
-	public int Fs = 256; float percentOver = 0.8f;
+	public int Fs = 256; float percentOver = 0.5f;
 	private int numOverThreshold =0;
 
 	public InputField feedbackThresholdInputField;
@@ -41,7 +41,7 @@ public class SpaceController : MonoBehaviour {
 	private float feedbackThreshold;
 	private string difficult;
 	private int difficultIndex;
-	public float timeDuration = 3;
+	public float timeDuration = 2;
 
 	private float timeStart = 0;
 	private bool isStart = false;
@@ -58,7 +58,7 @@ public class SpaceController : MonoBehaviour {
 
 	private AudioSource audioSource;
 	public AudioClip backgroundAudio;
-	private static bool isPlayAudio = false;
+	private static bool isPlayAudio;
 
 	void Start ()
 	{
@@ -87,6 +87,7 @@ public class SpaceController : MonoBehaviour {
 
 		audioSource = gameObject.GetComponent<AudioSource>();
 		audioSource.clip = backgroundAudio;
+		isPlayAudio = false;
 
 		score = 0;
 		distance = 350;
@@ -104,7 +105,18 @@ public class SpaceController : MonoBehaviour {
 	{
 		if(timeController.isContinue)
 		{
-			if(timeController.isPlaying)
+			if(timeController.isFixing)
+			{
+				if(isPlayAudio)
+				{
+					audioSource.Stop();
+					isPlayAudio = false;
+				}
+				hazardCount = 0;
+				DestroyObjectswithTag("Asteroid");
+				DestroyObjectswithTag("Reward");				
+			}
+			else
 			{
 				if( Input.GetButtonDown("Horizontal") ) {  moveTrigger.Add(1); moveTime.Add(read2UDP.timeTempChanged); }
 				if( Input.GetButtonUp("Horizontal") ) 	{  moveEnd.Add(read2UDP.timeTempChanged); }
@@ -151,11 +163,12 @@ public class SpaceController : MonoBehaviour {
 				}
 				else 
 				{
-					Alpha = read2UDP.dataTempChanged;
+					data = read2UDP.dataTempChanged;
 					// dataAvgChanged.Add(Alpha);
-					a = (Alpha-baseline)/(Mathf.Abs(threshold-baseline));
-					// if(a < 0){a = 0;} else if (a > 1){a = 1;}
-					
+					a = (data-baseline)/(Mathf.Abs(threshold-baseline));
+					if(a < 0){a = 0;} else if (a > 1){a = 1;}
+
+					print(">> " + numOverThreshold + " - " + percentOver*timeDuration*Fs);
 					if(Time.time - timeStart <= timeDuration)
 					{
 						if(a > feedbackThreshold)
@@ -202,7 +215,7 @@ public class SpaceController : MonoBehaviour {
 					{
 						if(difficult == "easy")
 						{
-							centerSlideCanvas.alpha = (1-a)/2;
+							centerSlideCanvas.alpha = 0.8f*(1-a);
 						}
 						else{
 							for (int i = 0; i < matObject.Length; i++)
@@ -215,16 +228,16 @@ public class SpaceController : MonoBehaviour {
 					}
 				}
 			}
-			else
-			{
-				audioSource.Stop();
-				isPlayAudio = false;
-			}
 		}
 		else
 		{
 			if(timeController.isFinish)
 			{
+				if(isPlayAudio)
+				{
+					audioSource.Stop();
+					isPlayAudio = false;
+				}
 				Read2UDP.tempData["difficult"] = difficult;
 				Read2UDP.tempData["feedbackthreshold"] = feedbackThreshold.ToString();
 				Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
@@ -314,7 +327,13 @@ public class SpaceController : MonoBehaviour {
 	}
 	
 	private void restartGame()
-	{	
+	{
+		for (int i = 0; i < matObject.Length; i++)
+		{
+			matObject[i].color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+			matObject[i].SetFloat("_Metallic", 1.0f);
+		}
+
 		score = 0;
 		distance = 350;
 		UpdateScore ();

@@ -93,6 +93,14 @@ public class Read2UDP : MonoBehaviour
 					{
 						tempData["timeset"] = "None";
 					}
+					if(timeController.isFixation)
+					{
+						tempData["timefixation"] = timeController.timeFixation.ToString();
+					}
+					else
+					{
+						tempData["timefixation"] = "None";
+					}					
 					tempData["start"] = timeTempChanged.ToString("f2");
 					timeController.isStart = false;
 				}

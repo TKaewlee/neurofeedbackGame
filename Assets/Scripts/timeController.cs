@@ -26,6 +26,9 @@ public class timeController : MonoBehaviour {
     public static int timeSet;
 
     public Text timeCountText;
+
+    public InputField timeFixationInput;
+    public static int timeFixation; // second unit
     
     // public static bool isConfirmExit;
     public static bool isTimeSet = false;
@@ -34,10 +37,10 @@ public class timeController : MonoBehaviour {
     public static bool isFinish = false;
     public static bool isOnSave = false;
     public static bool isSaving = false;
-    public static bool isFixation = true;
-    public static bool isPlaying = false;
-    public static bool isFixationSet = true;
-    public static int timeFixation = 5; // second unit
+    public static bool isFixation;
+    public static bool isFixing = false;
+    private static bool isFixationSet = true;
+    
 
     // Use this for initialization
     void Start () 
@@ -65,13 +68,13 @@ public class timeController : MonoBehaviour {
         {
             isSaving = true;
             isFinish = false;
-            // Read2UDP.startRecieve();
             if (isTimeSet)
             {
                 // timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
                 // + Mathf.Floor(Time.time % 60).ToString("00"); 
-                timeCountText.text = Mathf.Floor((Time.time - timeStart - timeFixation) / 60).ToString("00") + " : "
-                + Mathf.Floor((Time.time - timeStart - timeFixation) % 60).ToString("00");
+
+                // timeCountText.text = Mathf.Floor((Time.time - timeStart - timeFixation) / 60).ToString("00") + " : "
+                // + Mathf.Floor((Time.time - timeStart - timeFixation) % 60).ToString("00");
 
                 // timeDownText.text = Mathf.Floor(timeSet / 60).ToString("00") + " : "
                 // + Mathf.Floor(timeSet % 60).ToString("00");  
@@ -79,6 +82,9 @@ public class timeController : MonoBehaviour {
 
                 if(isFixation)
                 {
+                    timeCountText.text = Mathf.Floor((Time.time - timeStart - timeFixation) / 60).ToString("00") + " : "
+                    + Mathf.Floor((Time.time - timeStart - timeFixation) % 60).ToString("00");
+                    
                     if(isFixationSet)
                     {
                         timeSet = timeSet + 2*timeFixation;
@@ -88,13 +94,18 @@ public class timeController : MonoBehaviour {
                     if(Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation)
                     {
                         fixationCanvas.alpha = 1;
-                        isPlaying = false;
+                        isFixing = true;
                     }                    
                     else
                     {
                         fixationCanvas.alpha = 0;
-                        isPlaying = true;
+                        isFixing = false;
                     }   
+                }
+                else
+                {
+                    timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
+                    + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
                 }
 
                 if (Time.time - timeStart > timeSet)
@@ -104,7 +115,7 @@ public class timeController : MonoBehaviour {
             }
             else
             {
-                isPlaying = true;
+                // isPlaying = true;
                 timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                 + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");                        
             }
@@ -127,7 +138,7 @@ public class timeController : MonoBehaviour {
         isSaving = false;
         isFinish = true;
         isOnSave = true; 
-        isPlaying = false;
+        // isPlaying = false;
         isFixationSet = true;
     }
 
@@ -164,6 +175,17 @@ public class timeController : MonoBehaviour {
             isTimeSet = true;
             timeSet = int.Parse(timeSetInput.text);
         }
+
+        if (timeFixationInput.text == "")
+        {
+            isFixation = false;
+        }
+        else
+        {
+            isFixation = true;
+            timeFixation = int.Parse(timeFixationInput.text);
+        }
+
         modeName = modeDropdown.options[modeIndex].text; 
         isContinue = !isContinue;
         settingCanvas.alpha = 0;
