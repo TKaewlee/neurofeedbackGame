@@ -33,7 +33,8 @@ public class SpaceController : MonoBehaviour {
 
     public float baseline;
     public float threshold;
-	public int Fs = 256; float percentOver = 0.5f;
+	public int Fs = 256; 
+	public float percentOver = 0.01f;
 	private int numOverThreshold =0;
 
 	public InputField feedbackThresholdInputField;
@@ -41,7 +42,7 @@ public class SpaceController : MonoBehaviour {
 	private float feedbackThreshold;
 	private string difficult;
 	private int difficultIndex;
-	public float timeDuration = 2;
+	public float timeDuration = 1;
 
 	private float timeStart = 0;
 	private bool isStart = false;

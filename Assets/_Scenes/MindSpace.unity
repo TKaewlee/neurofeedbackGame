@@ -523,12 +523,13 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 578af1667322bab45b652b79a40bb4fb, type: 2}
   - {fileID: 2100000, guid: 4c3865b2ac420cd46a9cde6ab468d016, type: 2}
   a: 1
-  baseline: 0
-  threshold: 0
+  baseline: 1800
+  threshold: 3000
   Fs: 256
+  percentOver: 0.01
   feedbackThresholdInputField: {fileID: 2134264151}
   difficultDropdown: {fileID: 528292153}
-  timeDuration: 2
+  timeDuration: 1
   trigger: 0
   backgroundAudio: {fileID: 8300000, guid: 7b04c59dd84f14039b601e1abbe7b884, type: 3}
 --- !u!4 &26453372
