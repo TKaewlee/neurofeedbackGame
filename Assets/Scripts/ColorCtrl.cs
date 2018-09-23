@@ -15,7 +15,9 @@ public class ColorCtrl : MonoBehaviour {
 	private static List<float> dataAvgChanged = new List<float>();
 	private float dataAvg;
 	public Text baselineSetText;
+	public InputField baselineInputField;
 	public Text thresholdSetText;
+	public InputField thresholdInputField;
 
 	private bool isSaved;
 
@@ -47,7 +49,6 @@ public class ColorCtrl : MonoBehaviour {
 				a = 1-((Alpha - baseAlpha)/10);
 				if(a < 0){a = 0;} else if (a > 1){a = 1;}
 				matObject.color = new Color(0f, 0f, 0f, a);
-				
 			}
 		}
 		else
@@ -57,20 +58,36 @@ public class ColorCtrl : MonoBehaviour {
 				dataAvg = dataAvgChanged.Average();
 				if(timeController.modeName == "Baseline")
 				{
-					baselineSetText.text = dataAvg.ToString();
-					GameControl.currentBaselineAvg = dataAvg;
+					if(baselineInputField.text != "")
+					{
+						baselineSetText.text = "Baseline     : Manaully";
+						GameControl.currentBaselineAvg = float.Parse(baselineInputField.text);
+					}
+					else
+					{
+						baselineSetText.text = "Baseline     : " + dataAvg.ToString();
+						GameControl.currentBaselineAvg = dataAvg;
+					}
+					
 				}
 				else
 				{
-					thresholdSetText.text = dataAvg.ToString();
-					GameControl.currentThresholdAvg = dataAvg;
+					if(thresholdInputField.text != "")
+					{
+						thresholdSetText.text = "Threshold : Manaully";
+						GameControl.currentThresholdAvg = float.Parse(thresholdInputField.text);
+					}
+					else
+					{
+						thresholdSetText.text = "Threshold : " + dataAvg.ToString();
+						GameControl.currentThresholdAvg = dataAvg;
+					}
 				}
 
 				Read2UDP.tempData["average"] = dataAvg.ToString();
 				
 				dataAvgChanged.Clear();
 				timeController.isFinish = false;	
-				
 			}
 		}
 	}
