@@ -251,6 +251,9 @@ public class SpaceController : MonoBehaviour {
 
 				gameTime.Clear();
 				gameTrigger.Clear();
+				moveTime.Clear();
+				moveTrigger.Clear();
+				moveEnd.Clear();
 				timeController.isFinish = false;	
 			}
 			restartGame();
