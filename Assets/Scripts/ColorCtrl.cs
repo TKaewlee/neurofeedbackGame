@@ -41,7 +41,7 @@ public class ColorCtrl : MonoBehaviour {
 		{
 			Alpha = read2UDP.dataTempChanged;
 			dataAvgChanged.Add(Alpha);
-			if(timeController.modeName != "Baseline")
+			if(timeController.modeName == "Threshold")
 			{
 				// a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;
 				a = 1-((Alpha - baseAlpha)/10);
