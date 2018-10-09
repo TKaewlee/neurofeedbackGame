@@ -140,7 +140,7 @@ public class SpaceController : MonoBehaviour {
 					}
 					else
 					{
-						hazardCount = 3;
+						//hazardCount = 1;
 					}
 
 					if(feedbackThresholdInputField.text != "")

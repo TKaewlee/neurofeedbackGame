@@ -498,10 +498,10 @@ MonoBehaviour:
   - {fileID: 1594634001550394, guid: c0a679e85e5b29f41884be3e811f4b70, type: 2}
   - {fileID: 1366455964184840, guid: 414ca4e6439a00349b26f0400c7fb766, type: 2}
   SpawnValues: {x: 6, y: 0, z: 16}
-  hazardCount: 3
-  spawnWait: 1.5
-  startWait: 0.5
-  waveWait: 0.8
+  hazardCount: 1
+  spawnWait: 0
+  startWait: 1
+  waveWait: 10
   scoreText: {fileID: 1753233002}
   distanceTexts:
   - {fileID: 729343999}
