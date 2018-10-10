@@ -501,7 +501,7 @@ MonoBehaviour:
   hazardCount: 1
   spawnWait: 0
   startWait: 1
-  waveWait: 10
+  waveWait: 7.5
   scoreText: {fileID: 1753233002}
   distanceTexts:
   - {fileID: 729343999}
