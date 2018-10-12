@@ -4,7 +4,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-public class timeController : MonoBehaviour {
+public class timeController : MonoBehaviour
+{
 
     public CanvasGroup settingCanvas;
     public CanvasGroup confirmBackCanvas;
@@ -13,7 +14,7 @@ public class timeController : MonoBehaviour {
     private int modeIndex;
     public static string modeName;
 
-	public Button startButton;
+    public Button startButton;
     public static bool isContinue;
 
     public Button backButton;
@@ -21,7 +22,7 @@ public class timeController : MonoBehaviour {
     public Button promptNo;
 
     public static float timeStart = 0;
-    
+
     public InputField timeSetInput;
     public static int timeSet;
 
@@ -29,7 +30,7 @@ public class timeController : MonoBehaviour {
 
     public InputField timeFixationInput;
     public static int timeFixation; // second unit
-    
+
     // public static bool isConfirmExit;
     public static bool isTimeSet = false;
     public static bool isStart = false;
@@ -40,16 +41,16 @@ public class timeController : MonoBehaviour {
     public static bool isFixation;
     public static bool isFixing = false;
     private static bool isFixationSet = true;
-    
+
 
     // Use this for initialization
-    void Start () 
+    void Start()
     {
         print("Time Start");
         Time.timeScale = 0;
         // isConfirmExit = false;
         timeStart = Time.time;
-        startButton.onClick.AddListener(() => startOnClick()); 
+        startButton.onClick.AddListener(() => startOnClick());
         backButton.onClick.AddListener(() => onBack());
         promptYes.onClick.AddListener(onPromptYes);
         promptNo.onClick.AddListener(onPromptNo);
@@ -62,8 +63,9 @@ public class timeController : MonoBehaviour {
         settingCanvas.blocksRaycasts = true;
     }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update()
+    {
         if (isContinue)
         {
             isSaving = true;
@@ -80,34 +82,34 @@ public class timeController : MonoBehaviour {
                 // + Mathf.Floor(timeSet % 60).ToString("00");  
 
 
-                if(isFixation)
+                if (isFixation)
                 {
                     timeCountText.text = Mathf.Floor((Time.time - timeStart - timeFixation) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart - timeFixation) % 60).ToString("00");
-                    
-                    if(isFixationSet)
+
+                    if (isFixationSet)
                     {
-                        timeSet = timeSet + 2*timeFixation;
+                        timeSet = timeSet + 2 * timeFixation;
                         isFixationSet = false;
                     }
-                
-                    if(Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation)
+
+                    if (Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation)
                     {
                         fixationCanvas.alpha = 1;
                         isFixing = true;
-                    }                    
+                    }
                     else
                     {
                         fixationCanvas.alpha = 0;
                         isFixing = false;
-                    }   
+                    }
                 }
                 else
                 {
                     timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
                 }
-
+                print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
                 if (Time.time - timeStart > timeSet)
                 {
                     onSetting();
@@ -117,14 +119,14 @@ public class timeController : MonoBehaviour {
             {
                 // isPlaying = true;
                 timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
-                + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");                        
+                + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
             }
 
             if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
             {
                 onSetting();
-            }            
-        }            
+            }
+        }
     }
 
     public void onSetting()
@@ -134,15 +136,16 @@ public class timeController : MonoBehaviour {
         fixationCanvas.alpha = 0;
         settingCanvas.alpha = 1;
         settingCanvas.interactable = true;
-        settingCanvas.blocksRaycasts = true;  
+        settingCanvas.blocksRaycasts = true;
         isSaving = false;
         isFinish = true;
-        isOnSave = true; 
+        isOnSave = true;
         // isPlaying = false;
         isFixationSet = true;
     }
 
-    private void actionDropdownValueChanged(Dropdown actionTarget){
+    private void actionDropdownValueChanged(Dropdown actionTarget)
+    {
         modeIndex = actionTarget.value;
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
     }
@@ -160,7 +163,8 @@ public class timeController : MonoBehaviour {
     //     return false;
     // }
 
-    private void startOnClick(){
+    private void startOnClick()
+    {
         Time.timeScale = 1;
         timeStart = Time.time;
         // timeStartText.text = Mathf.Floor(timeStart / 60).ToString("00") + " : " 
@@ -186,15 +190,15 @@ public class timeController : MonoBehaviour {
             timeFixation = int.Parse(timeFixationInput.text);
         }
 
-        modeName = modeDropdown.options[modeIndex].text; 
+        modeName = modeDropdown.options[modeIndex].text;
         isContinue = !isContinue;
         settingCanvas.alpha = 0;
         settingCanvas.interactable = false;
-        settingCanvas.blocksRaycasts = false;  
+        settingCanvas.blocksRaycasts = false;
         isStart = true;
         isStartGame = true;
     }
-    
+
 
     public void onBack()
     {
@@ -202,8 +206,8 @@ public class timeController : MonoBehaviour {
         settingCanvas.interactable = false;
         settingCanvas.blocksRaycasts = false;
         confirmBackCanvas.alpha = 1;
-        confirmBackCanvas.interactable = true; 
-		confirmBackCanvas.blocksRaycasts = true; // blocksRaycasts if true is interactable false is not
+        confirmBackCanvas.interactable = true;
+        confirmBackCanvas.blocksRaycasts = true; // blocksRaycasts if true is interactable false is not
     }
 
     public void onPromptYes()
@@ -216,7 +220,7 @@ public class timeController : MonoBehaviour {
         SceneManager.LoadScene("_MainMenu");
     }
 
-	public void onPromptNo()
+    public void onPromptNo()
     {
         // if not exit, hide canvas
         //confirmQuit.SetActive(false); // obsolated
@@ -226,7 +230,7 @@ public class timeController : MonoBehaviour {
 
         confirmBackCanvas.alpha = 0;
         confirmBackCanvas.blocksRaycasts = false;
-		confirmBackCanvas.blocksRaycasts = false;
+        confirmBackCanvas.blocksRaycasts = false;
     }
 
 }

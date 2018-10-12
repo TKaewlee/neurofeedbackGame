@@ -47,6 +47,7 @@ public class Read2UDP : MonoBehaviour
 	// start from Unity3d
 	public void Start ()
 	{
+        print("Read2UDP start");
 		init ();
 	}
 
@@ -114,8 +115,8 @@ public class Read2UDP : MonoBehaviour
 						dataChanged.Add(dataTempChanged);
 					}
 				}
-
-				if(timeController.isOnSave)
+                print("Read2UDP timeController.isOnSave: " + timeController.isOnSave);
+                if (timeController.isOnSave)
 				{
 					tempData["stop"] = timeTempChanged.ToString("f2");	
 					tempData["time"] = DataController.GameDataController.getAppendString(timeChanged);
