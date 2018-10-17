@@ -41,8 +41,8 @@ public class readSocket : MonoBehaviour {
             StreamReader reader = new StreamReader (ns);
             msg = reader.ReadToEnd();
             Debug.Log(msg);
-            float value = float.Parse(msg);
             print (msg);
+            //float value = float.Parse(msg);
             // colorCtrl.AdjustAlpha(value);
         }
     }

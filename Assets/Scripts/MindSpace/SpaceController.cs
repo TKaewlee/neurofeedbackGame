@@ -53,6 +53,8 @@ public class SpaceController : MonoBehaviour
     private static List<int> gameTrigger = new List<int>();
     public int trigger = 0;
 
+    private static List<float> asteroidAppearTime = new List<float>();
+    private static List<float> rewardAppearTime = new List<float>();
 
     private static List<float> moveTime = new List<float>();
     private static List<int> moveTrigger = new List<int>();
@@ -170,7 +172,7 @@ public class SpaceController : MonoBehaviour
                     a = (data - baseline) / (Mathf.Abs(threshold - baseline));
                     if (a < 0) { a = 0; } else if (a > 1) { a = 1; }
 
-                    print(">> " + numOverThreshold + " - " + percentOver * timeDuration * Fs);
+                    //print(">> " + numOverThreshold + " - " + percentOver * timeDuration * Fs);
                     if (Time.time - timeStart <= timeDuration)
                     {
                         if (a > feedbackThreshold)
@@ -236,7 +238,7 @@ public class SpaceController : MonoBehaviour
         {
             if (timeController.isFinish)
             {
-                print("timeController.isFinish!");
+                //print("timeController.isFinish!");
                 if (isPlayAudio)
                 {
                     audioSource.Stop();
@@ -251,6 +253,8 @@ public class SpaceController : MonoBehaviour
                 Read2UDP.tempData["movetime"] = DataController.GameDataController.getAppendString(moveTime);
                 Read2UDP.tempData["movetrigger"] = DataController.GameDataController.getAppendString(moveTrigger);
                 Read2UDP.tempData["moveEnd"] = DataController.GameDataController.getAppendString(moveEnd);
+                Read2UDP.tempData["asteroidappeartime"] = DataController.GameDataController.getAppendString(asteroidAppearTime);
+                Read2UDP.tempData["rewardappeartime"] = DataController.GameDataController.getAppendString(rewardAppearTime);
                 Read2UDP.tempData["score"] = score.ToString();
 
                 gameTime.Clear();
@@ -258,6 +262,8 @@ public class SpaceController : MonoBehaviour
                 moveTime.Clear();
                 moveTrigger.Clear();
                 moveEnd.Clear();
+                asteroidAppearTime.Clear();
+                rewardAppearTime.Clear();
                 timeController.isFinish = false;
             }
             restartGame();
@@ -276,6 +282,8 @@ public class SpaceController : MonoBehaviour
         Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
         Quaternion spawnRotation = Quaternion.Euler(90, 0, 0);
         Instantiate(reward, spawnPosition, spawnRotation);
+        rewardAppearTime.Add(read2UDP.timeTempChanged);
+        //print("Reward time: " + read2UDP.timeTempChanged);
     }
 
     IEnumerator SpawnWaves()
@@ -289,6 +297,8 @@ public class SpaceController : MonoBehaviour
                 Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(hazard, spawnPosition, spawnRotation);
+                asteroidAppearTime.Add(read2UDP.timeTempChanged);
+                //print("Asteriod time: " + read2UDP.timeTempChanged);
                 yield return new WaitForSeconds(spawnWait);
             }
             yield return new WaitForSeconds(waveWait);
@@ -302,7 +312,7 @@ public class SpaceController : MonoBehaviour
         if (newScoreValue == 10) { trigger = -1; } else { trigger = 1; }
         gameTrigger.Add(trigger);
         gameTime.Add(read2UDP.timeTempChanged);
-        print(">>" + (-1*newScoreValue) + " - " + read2UDP.timeTempChanged);
+        //print(">>" + (-1*newScoreValue) + " - " + read2UDP.timeTempChanged);
     }
 
     void UpdateScore()
