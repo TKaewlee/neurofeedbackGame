@@ -9,7 +9,8 @@ public class SpaceController : MonoBehaviour
     public GameObject[] hazards;
     public GameObject[] rewards;
     public Vector3 SpawnValues;
-    public int hazardCount; // 3
+    public int configHazardCount;
+    private int hazardCount; // 3
     public float spawnWait; // 1.5
     public float startWait; // 0.5
     public float waveWait;  // 0.8
@@ -143,7 +144,7 @@ public class SpaceController : MonoBehaviour
                     }
                     else
                     {
-                        //hazardCount = 3;
+                        hazardCount = configHazardCount;
                     }
 
                     if (feedbackThresholdInputField.text != "")
