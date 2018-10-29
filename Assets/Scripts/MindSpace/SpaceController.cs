@@ -33,8 +33,11 @@ public class SpaceController : MonoBehaviour
 
     public float a;
 
-    public float baseline;
-    public float threshold;
+    private float baseline;
+    private float threshold;
+    private static float baseline_space = 0;
+    private static float threshold_spcae = 0;
+
     public int Fs = 256;
     public float percentOver = 0.01f;
     private int numOverThreshold = 0;
@@ -239,7 +242,6 @@ public class SpaceController : MonoBehaviour
         {
             if (timeController.isFinish)
             {
-                //print("timeController.isFinish!");
                 if (isPlayAudio)
                 {
                     audioSource.Stop();

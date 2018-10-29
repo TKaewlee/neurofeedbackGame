@@ -15,8 +15,10 @@ public class mainPortalScript : MonoBehaviour {
     public InputField nameInputField;
     public InputField birthdayInputField;
     public InputField informationInputField;
-    public InputField baselineInformation;
+    public Text baselineInfoText;
+    public Text thresholdInfoText;
 
+    //private static Text 
     private static bool isInfoExisted = false;
     private static string gameDir;
     private static string gameCsv;
@@ -29,8 +31,10 @@ public class mainPortalScript : MonoBehaviour {
     void Start()
     {   
         saveButton.onClick.AddListener(() => onSave());
+        baselineInfoText.text = "Baseline: " + GameControl.currentBaselineAvg.ToString();
+        thresholdInfoText.text = "Threshold: " + GameControl.currentThresholdAvg.ToString();
 
-        if(GameControl.currentUserName != "")
+        if (GameControl.currentUserName != "")
         {
             welcomeText.text = GameControl.currentUserName;
             
@@ -99,7 +103,7 @@ public class mainPortalScript : MonoBehaviour {
                     {
                         informationInputField.text = informations[indexOfLatest];
                     }
-
+                    baselineInfoText.text = "Baseline: 00";
                 }
             }
             else

@@ -109,7 +109,7 @@ public class timeController : MonoBehaviour
                     timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
                 }
-                print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
+                //print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
                 if (Time.time - timeStart > timeSet)
                 {
                     onSetting();
