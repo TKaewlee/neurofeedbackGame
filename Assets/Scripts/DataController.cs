@@ -90,7 +90,7 @@ public class DataController : MonoBehaviour
 
 			try
 			{
-				float last = floatEnum.Last();
+				//float last = floatEnum.Last();
 
 				foreach (float i in floatEnum)
 				{
@@ -118,7 +118,7 @@ public class DataController : MonoBehaviour
 			
 			try
 			{
-				int last = intEnum.Last();
+				//int last = intEnum.Last();
 
 				foreach (int i in intEnum)
 				{

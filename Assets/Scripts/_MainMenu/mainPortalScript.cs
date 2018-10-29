@@ -15,6 +15,7 @@ public class mainPortalScript : MonoBehaviour {
     public InputField nameInputField;
     public InputField birthdayInputField;
     public InputField informationInputField;
+    public InputField baselineInformation;
 
     private static bool isInfoExisted = false;
     private static string gameDir;
@@ -94,11 +95,11 @@ public class mainPortalScript : MonoBehaviour {
                     {
                         birthdayInputField.text = birthdays[indexOfLatest];
                     }
-
                     if (informationInputField.text == "")
                     {
                         informationInputField.text = informations[indexOfLatest];
                     }
+
                 }
             }
             else

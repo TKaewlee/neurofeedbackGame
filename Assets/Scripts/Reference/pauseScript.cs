@@ -37,7 +37,7 @@ public class pauseScript : MonoBehaviour {
 
 	// public Text timeTimeText;
 	// public Text timeStartText;
-    public GUIText timeCountText;
+    public Text timeCountText;
     // public Text timeDownText;
 
     #region main events
