@@ -84,7 +84,7 @@ public class timeController : MonoBehaviour
 
                 if (isFixation)
                 {
-                    timeCountText.text = Mathf.Floor((Time.time - timeStart - timeFixation) / 60).ToString("00") + " : "
+                    timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart - timeFixation) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart - timeFixation) % 60).ToString("00");
 
                     if (isFixationSet)
@@ -106,7 +106,7 @@ public class timeController : MonoBehaviour
                 }
                 else
                 {
-                    timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
+                    timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
                 }
                 //print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
@@ -118,7 +118,7 @@ public class timeController : MonoBehaviour
             else
             {
                 // isPlaying = true;
-                timeCountText.text = Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
+                timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                 + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
             }
 
