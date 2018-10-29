@@ -103,7 +103,6 @@ public class mainPortalScript : MonoBehaviour {
                     {
                         informationInputField.text = informations[indexOfLatest];
                     }
-                    baselineInfoText.text = "Baseline: 00";
                 }
             }
             else
