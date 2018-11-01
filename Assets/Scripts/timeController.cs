@@ -10,9 +10,14 @@ public class timeController : MonoBehaviour
     public CanvasGroup settingCanvas;
     public CanvasGroup confirmBackCanvas;
     public CanvasGroup fixationCanvas;
+    public CanvasGroup typeSelectCanvas;
+    public CanvasGroup waitCanvas;
     public Dropdown modeDropdown;
     private int modeIndex;
     public static string modeName;
+    public Dropdown difficultDropdown;
+    public static string difficult;
+    private int difficultIndex;
 
     public Button startButton;
     public static bool isContinue;
@@ -20,6 +25,7 @@ public class timeController : MonoBehaviour
     public Button backButton;
     public Button promptYes;
     public Button promptNo;
+    public Button multipleGameButton;
 
     public static float timeStart = 0;
 
@@ -42,6 +48,10 @@ public class timeController : MonoBehaviour
     public static bool isFixing = false;
     private static bool isFixationSet = true;
 
+    public GameObject[] hazards;
+    public GameObject[] rewards;
+
+    private bool multiGame = false;
 
     // Use this for initialization
     void Start()
@@ -54,10 +64,15 @@ public class timeController : MonoBehaviour
         backButton.onClick.AddListener(() => onBack());
         promptYes.onClick.AddListener(onPromptYes);
         promptNo.onClick.AddListener(onPromptNo);
+        multipleGameButton.onClick.AddListener(() => multiGameControl());
 
         modeDropdown.onValueChanged.AddListener(delegate {
-            actionDropdownValueChanged(modeDropdown);
+            actionDropdownValueChangedMode(modeDropdown);
         });
+        difficultDropdown.onValueChanged.AddListener(delegate {
+            actionDropdownValueChangedDifficult(difficultDropdown);
+        });
+
         settingCanvas.alpha = 1;
         settingCanvas.interactable = true;
         settingCanvas.blocksRaycasts = true;
@@ -144,9 +159,14 @@ public class timeController : MonoBehaviour
         isFixationSet = true;
     }
 
-    private void actionDropdownValueChanged(Dropdown actionTarget)
+    private void actionDropdownValueChangedMode(Dropdown actionTarget)
     {
         modeIndex = actionTarget.value;
+        // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
+    }
+    private void actionDropdownValueChangedDifficult(Dropdown actionTarget)
+    {
+        difficultIndex = actionTarget.value;
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
     }
 
@@ -190,6 +210,7 @@ public class timeController : MonoBehaviour
             timeFixation = int.Parse(timeFixationInput.text);
         }
 
+        difficult = difficultDropdown.options[difficultIndex].text;
         modeName = modeDropdown.options[modeIndex].text;
         isContinue = !isContinue;
         settingCanvas.alpha = 0;
@@ -197,14 +218,16 @@ public class timeController : MonoBehaviour
         settingCanvas.blocksRaycasts = false;
         isStart = true;
         isStartGame = true;
+
+        multiGame = false;
     }
 
 
     public void onBack()
     {
-        settingCanvas.alpha = 0;
-        settingCanvas.interactable = false;
-        settingCanvas.blocksRaycasts = false;
+        typeSelectCanvas.alpha = 0;
+        typeSelectCanvas.interactable = false;
+        typeSelectCanvas.blocksRaycasts = false;
         confirmBackCanvas.alpha = 1;
         confirmBackCanvas.interactable = true;
         confirmBackCanvas.blocksRaycasts = true; // blocksRaycasts if true is interactable false is not
@@ -224,13 +247,45 @@ public class timeController : MonoBehaviour
     {
         // if not exit, hide canvas
         //confirmQuit.SetActive(false); // obsolated
-        settingCanvas.alpha = 1;
-        settingCanvas.interactable = true;
-        settingCanvas.blocksRaycasts = true;
+        typeSelectCanvas.alpha = 1;
+        typeSelectCanvas.interactable = true;
+        typeSelectCanvas.blocksRaycasts = true;
 
         confirmBackCanvas.alpha = 0;
+        confirmBackCanvas.interactable = false;
         confirmBackCanvas.blocksRaycasts = false;
-        confirmBackCanvas.blocksRaycasts = false;
+    }
+
+    public void multiGameControl()
+    {
+        int i;
+        //GameObject a;
+        
+        /* 1st Game */
+        for(i = 0; i < hazards.Length; i++)
+        {
+            //a = hazards[i];
+            hazards[i].GetComponent<Mover>().speed = -30;
+        }
+
+        modeName = "without NF";
+        difficult = "hard";
+        timeSet = 15;
+        timeFixation = 1;
+
+        Time.timeScale = 1;
+        timeStart = Time.time;
+
+        isTimeSet = true;
+        isFixation = true;
+        isContinue = !isContinue;
+        settingCanvas.alpha = 0;
+        settingCanvas.interactable = false;
+        settingCanvas.blocksRaycasts = false;
+        isStart = true;
+        isStartGame = true;
+
+        multiGame = true;
     }
 
 }

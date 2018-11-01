@@ -43,10 +43,10 @@ public class SpaceController : MonoBehaviour
     private int numOverThreshold = 0;
 
     public InputField feedbackThresholdInputField;
-    public Dropdown difficultDropdown;
+    //public Dropdown difficultDropdown;
     private float feedbackThreshold;
-    private string difficult;
-    private int difficultIndex;
+    //public static string difficult;
+    //private int difficultIndex;
     public float timeDuration = 1;
 
     private float timeStart = 0;
@@ -72,10 +72,6 @@ public class SpaceController : MonoBehaviour
     {
         baseline = GameControl.currentBaselineAvg;
         threshold = GameControl.currentThresholdAvg;
-
-        difficultDropdown.onValueChanged.AddListener(delegate {
-            actionDropdownValueChanged(difficultDropdown);
-        });
 
         GameObject gameControllerObject = GameObject.FindGameObjectWithTag("UDPReciever");
         if (gameControllerObject != null)
@@ -139,9 +135,8 @@ public class SpaceController : MonoBehaviour
                         audioSource.Play(); print("Play Background Audio");
                         isPlayAudio = true;
                     }
-
-                    difficult = difficultDropdown.options[difficultIndex].text;
-                    if (difficult == "easy")
+                    
+                    if (timeController.difficult == "easy")
                     {
                         hazardCount = 0;
                     }
@@ -221,7 +216,7 @@ public class SpaceController : MonoBehaviour
                     }
                     else if (timeController.modeName == "NF with moving object")
                     {
-                        if (difficult == "easy")
+                        if (timeController.difficult == "easy")
                         {
                             centerSlideCanvas.alpha = 0.8f * (1 - a);
                         }
@@ -247,7 +242,7 @@ public class SpaceController : MonoBehaviour
                     audioSource.Stop();
                     isPlayAudio = false;
                 }
-                Read2UDP.tempData["difficult"] = difficult;
+                Read2UDP.tempData["difficult"] = timeController.difficult;
                 Read2UDP.tempData["feedbackthreshold"] = feedbackThreshold.ToString();
                 Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
                 Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
@@ -273,11 +268,11 @@ public class SpaceController : MonoBehaviour
         }
     }
 
-    private void actionDropdownValueChanged(Dropdown actionTarget)
+    /*private void actionDropdownValueChanged(Dropdown actionTarget)
     {
-        difficultIndex = actionTarget.value;
+        timeController.difficultIndex = actionTarget.value;
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
-    }
+    }*/
 
     private void RewardWaves()
     {
