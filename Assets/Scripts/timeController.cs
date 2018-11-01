@@ -10,6 +10,7 @@ public class timeController : MonoBehaviour
     public CanvasGroup settingCanvas;
     public CanvasGroup confirmBackCanvas;
     public CanvasGroup fixationCanvas;
+    public CanvasGroup sumScoreCanvas;
     public Dropdown modeDropdown;
     private int modeIndex;
     public static string modeName;
@@ -112,6 +113,9 @@ public class timeController : MonoBehaviour
                 //print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
                 if (Time.time - timeStart > timeSet)
                 {
+                    /*sumScoreCanvas.alpha = 1;
+                    sumScoreCanvas.interactable = true;
+                    sumScoreCanvas.blocksRaycasts = true;*/
                     onSetting();
                 }
             }
