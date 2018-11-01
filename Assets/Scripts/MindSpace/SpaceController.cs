@@ -7,7 +7,9 @@ public class SpaceController : MonoBehaviour
 {
 
     public GameObject[] hazards;
+    public int hazardsSpeed;
     public GameObject[] rewards;
+    public int rewardsSpeed;
     public Vector3 SpawnValues;
     public int configHazardCount;
     private int hazardCount; // 3
@@ -68,6 +70,8 @@ public class SpaceController : MonoBehaviour
     public AudioClip backgroundAudio;
     private static bool isPlayAudio;
 
+    private int countObject;
+
     void Start()
     {
         baseline = GameControl.currentBaselineAvg;
@@ -76,7 +80,7 @@ public class SpaceController : MonoBehaviour
         difficultDropdown.onValueChanged.AddListener(delegate {
             actionDropdownValueChanged(difficultDropdown);
         });
-
+        
         GameObject gameControllerObject = GameObject.FindGameObjectWithTag("UDPReciever");
         if (gameControllerObject != null)
         {
@@ -148,6 +152,17 @@ public class SpaceController : MonoBehaviour
                     else
                     {
                         hazardCount = configHazardCount;
+                        
+                        for(countObject = 0; countObject < hazards.Length; countObject++)
+                        {
+                            hazards[countObject].GetComponent<Mover>().speed = hazardsSpeed;
+                        }
+
+                        for (countObject = 0; countObject < rewards.Length; countObject++)
+                        {
+                            rewards[countObject].GetComponent<RewardMover>().speed = rewardsSpeed;
+                        }
+                        
                     }
 
                     if (feedbackThresholdInputField.text != "")
