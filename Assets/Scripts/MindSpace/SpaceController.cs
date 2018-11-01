@@ -320,7 +320,7 @@ public class SpaceController : MonoBehaviour
 
     void UpdateScore()
     {
-        scoreText.text = "Score\n" + score;
+        scoreText.text = score.ToString();
     }
 
     private void AddDistance()
