@@ -9714,6 +9714,11 @@ Prefab:
       propertyPath: timeFixationInput
       value: 
       objectReference: {fileID: 1462142973}
+    - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
+        type: 2}
+      propertyPath: sumScoreCanvas
+      value: 
+      objectReference: {fileID: 499472115}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d238be553daed504489058eb53431773, type: 2}
   m_IsPrefabAsset: 0
