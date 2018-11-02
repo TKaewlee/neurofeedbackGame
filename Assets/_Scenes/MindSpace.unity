@@ -143,6 +143,7 @@ RectTransform:
   m_Children:
   - {fileID: 1721236150}
   - {fileID: 1753233001}
+  - {fileID: 1044953461}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -482,6 +483,7 @@ MonoBehaviour:
   - {fileID: 1292120074606028, guid: 2f051baffd824d249b25ba3a196aa5cb, type: 2}
   - {fileID: 1209769890982234, guid: b57c0f166ebc32443b23c3db71710b17, type: 2}
   - {fileID: 1193529347319408, guid: ee292d6102166b649bb67b2bcc5cec29, type: 2}
+  hazardsSpeed: -15
   rewards:
   - {fileID: 1416350146699026, guid: 2cb05168ffc413a409d51a8e17d719b5, type: 2}
   - {fileID: 1026072453441510, guid: 30094e0101672c0459b479a7147a5aa8, type: 2}
@@ -499,12 +501,13 @@ MonoBehaviour:
   - {fileID: 1552418266697430, guid: 10a2060ff5e63504ca6c6b8b1470ca62, type: 2}
   - {fileID: 1594634001550394, guid: c0a679e85e5b29f41884be3e811f4b70, type: 2}
   - {fileID: 1366455964184840, guid: 414ca4e6439a00349b26f0400c7fb766, type: 2}
+  rewardsSpeed: -15
   SpawnValues: {x: 6, y: 0, z: 16}
-  configHazardCount: 3
-  spawnWait: 1.5
-  startWait: 0.5
-  waveWait: 0.8
-  scoreText: {fileID: 1753233002}
+  configHazardCount: 1
+  spawnWait: 2
+  startWait: 1
+  waveWait: 0
+  scoreText: {fileID: 1044953462}
   distanceTexts:
   - {fileID: 729343999}
   - {fileID: 1422589333}
@@ -2632,8 +2635,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 201.59999, y: -80.60277}
-  m_SizeDelta: {x: 403.19998, y: 161.20554}
+  m_AnchoredPosition: {x: 201.61983, y: -56.699997}
+  m_SizeDelta: {x: 403.23965, y: 113.399994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &524590487
 MonoBehaviour:
@@ -2673,7 +2676,29 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 524590488}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 499472114}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 269907816}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &524590488
@@ -5076,7 +5101,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 470.40002, y: -352.2}
+  m_AnchoredPosition: {x: 470.4004, y: -352.2}
   m_SizeDelta: {x: 900.80005, y: 51.600002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &811466399
@@ -6714,74 +6739,80 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1039708661}
   m_CullTransparentMesh: 0
---- !u!1 &1130687790
+--- !u!1 &1044953460
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1130687791}
-  - component: {fileID: 1130687793}
-  - component: {fileID: 1130687792}
+  - component: {fileID: 1044953461}
+  - component: {fileID: 1044953463}
+  - component: {fileID: 1044953462}
   m_Layer: 5
-  m_Name: BlackPanel
+  m_Name: ScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1130687791
+--- !u!224 &1044953461
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1130687790}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1044953460}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 829989650}
-  m_RootOrder: 0
+  m_Father: {fileID: 2607145}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.4, y: 0.85}
+  m_AnchorMax: {x: 0.6, y: 0.92}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1130687792
+  m_Pivot: {x: 0, y: 1}
+--- !u!114 &1044953462
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1130687790}
+  m_GameObject: {fileID: 1044953460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.17056425, g: 0.16642931, b: 0.18867922, a: 0.7254902}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
---- !u!222 &1130687793
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 60
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 100
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 0
+--- !u!222 &1044953463
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1130687790}
+  m_GameObject: {fileID: 1044953460}
   m_CullTransparentMesh: 0
 --- !u!1 &1143023607
 GameObject:
@@ -8101,7 +8132,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 150
+    m_FontSize: 100
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -9440,7 +9471,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 70
+    m_FontSize: 55
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -9849,7 +9880,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1721236148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10259,7 +10290,7 @@ GameObject:
   - component: {fileID: 1753233003}
   - component: {fileID: 1753233002}
   m_Layer: 5
-  m_Name: ScoreText
+  m_Name: ScoreLabelText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10278,8 +10309,8 @@ RectTransform:
   m_Father: {fileID: 2607145}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.55, y: 0.87}
-  m_AnchorMax: {x: 0.7, y: 0.97}
+  m_AnchorMin: {x: 0.4, y: 0.92}
+  m_AnchorMax: {x: 0.6, y: 0.97}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
@@ -10309,15 +10340,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 100
-    m_Alignment: 2
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Score
-
-    0'
+  m_Text: Score
 --- !u!222 &1753233003
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11678,55 +11707,9 @@ Prefab:
       objectReference: {fileID: 1462142973}
     - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
         type: 2}
-      propertyPath: typeSelectCanvas
+      propertyPath: sumScoreCanvas
       value: 
-      objectReference: {fileID: 1736058403}
-    - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
-        type: 2}
-      propertyPath: waitCanvas
-      value: 
-      objectReference: {fileID: 829989646}
-    - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
-        type: 2}
-      propertyPath: multipleGameButton
-      value: 
-      objectReference: {fileID: 2123337604}
-    - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
-        type: 2}
-      propertyPath: hazards.Array.data[0]
-      value: 
-      objectReference: {fileID: 1292120074606028, guid: 2f051baffd824d249b25ba3a196aa5cb,
-        type: 2}
-    - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
-        type: 2}
-      propertyPath: hazards.Array.data[1]
-      value: 
-      objectReference: {fileID: 1209769890982234, guid: b57c0f166ebc32443b23c3db71710b17,
-        type: 2}
-    - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
-        type: 2}
-      propertyPath: hazards.Array.data[2]
-      value: 
-      objectReference: {fileID: 1193529347319408, guid: ee292d6102166b649bb67b2bcc5cec29,
-        type: 2}
-    - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
-        type: 2}
-      propertyPath: rewards.Array.data[0]
-      value: 
-      objectReference: {fileID: 1416350146699026, guid: 2cb05168ffc413a409d51a8e17d719b5,
-        type: 2}
-    - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
-        type: 2}
-      propertyPath: rewards.Array.data[1]
-      value: 
-      objectReference: {fileID: 1545098548642796, guid: 82fae16e55d5cc747b40c3ff2ff54b22,
-        type: 2}
-    - target: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
-        type: 2}
-      propertyPath: rewards.Array.data[2]
-      value: 
-      objectReference: {fileID: 1924772434187328, guid: 65312ec63e36e284eb12ae51dcf04d60,
-        type: 2}
+      objectReference: {fileID: 499472115}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d238be553daed504489058eb53431773, type: 2}
   m_IsPrefabAsset: 0
