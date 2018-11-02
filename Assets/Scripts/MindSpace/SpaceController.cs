@@ -71,6 +71,7 @@ public class SpaceController : MonoBehaviour
     private static bool isPlayAudio;
 
     private int countObject;
+    private int tmpSpeed;
 
     void Start()
     {
@@ -143,20 +144,48 @@ public class SpaceController : MonoBehaviour
                     if (timeController.difficult == "easy")
                     {
                         hazardCount = 0;
+
+                        for (countObject = 0; countObject < rewards.Length; countObject++)
+                        {
+                            rewards[countObject].GetComponent<RewardMover>().speed = -3;
+                        }
                     }
                     else
                     {
                         hazardCount = configHazardCount;
                         
-                        for(countObject = 0; countObject < hazards.Length; countObject++)
+                        switch(timeController.multiSceneCnt)
                         {
-                            hazards[countObject].GetComponent<Mover>().speed = hazardsSpeed;
+                            case 1:
+                                tmpSpeed = -5;
+                                break;
+                            case 2:
+                                tmpSpeed = -10;
+                                break;
+                            case 3:
+                                tmpSpeed = -15;
+                                break;
+                            default:
+                                tmpSpeed = hazardsSpeed;
+                                break;
                         }
+                        if(timeController.multiSceneCnt != 0)
+                        {
+                            
+                        }
+                        else
+                        {
+                            for(countObject = 0; countObject < hazards.Length; countObject++)
+                            {
+                                hazards[countObject].GetComponent<Mover>().speed = hazardsSpeed;
+                            }
 
-                        for (countObject = 0; countObject < rewards.Length; countObject++)
-                        {
-                            rewards[countObject].GetComponent<RewardMover>().speed = rewardsSpeed;
+                            for (countObject = 0; countObject < rewards.Length; countObject++)
+                            {
+                                rewards[countObject].GetComponent<RewardMover>().speed = rewardsSpeed;
+                            }
                         }
+                        
                         
                     }
 

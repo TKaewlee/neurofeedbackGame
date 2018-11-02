@@ -52,7 +52,9 @@ public class timeController : MonoBehaviour
     public GameObject[] hazards;
     public GameObject[] rewards;
 
-    private bool multiGame = false;
+    public static bool multiGame = false;
+    public static int multiSceneCnt = 0;
+    private int countObject;
 
     // Use this for initialization
     void Start()
@@ -189,6 +191,8 @@ public class timeController : MonoBehaviour
 
     private void startOnClick()
     {
+        multiGame = true;
+        multiSceneCnt = 0;
         Time.timeScale = 1;
         timeStart = Time.time;
         // timeStartText.text = Mathf.Floor(timeStart / 60).ToString("00") + " : " 
@@ -223,7 +227,7 @@ public class timeController : MonoBehaviour
         isStart = true;
         isStartGame = true;
 
-        multiGame = false;
+        
     }
 
 
@@ -262,16 +266,16 @@ public class timeController : MonoBehaviour
 
     public void multiGameControl()
     {
-        int i;
-        //GameObject a;
+        multiGame = true;
+        multiSceneCnt = 1;
         
         /* 1st Game */
-        for(i = 0; i < hazards.Length; i++)
+        /*
+        for(countObject = 0; countObject < hazards.Length; countObject++)
         {
-            //a = hazards[i];
-            hazards[i].GetComponent<Mover>().speed = -30;
+            hazards[countObject].GetComponent<Mover>().speed = -5;
         }
-
+        */
         modeName = "without NF";
         difficult = "hard";
         timeSet = 15;
@@ -289,7 +293,7 @@ public class timeController : MonoBehaviour
         isStart = true;
         isStartGame = true;
 
-        multiGame = true;
+        //multiGame = true;
     }
 
 }
