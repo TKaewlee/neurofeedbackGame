@@ -39,9 +39,9 @@ public class timeController : MonoBehaviour
     public static bool isFinish = false;
     public static bool isOnSave = false;
     public static bool isSaving = false;
-    public static bool isFixation;
+    public static bool isFixation = false;
     public static bool isFixing = false;
-    private static bool isFixationSet = true;
+    private static bool isFixationSet = false;
 
 
     // Use this for initialization

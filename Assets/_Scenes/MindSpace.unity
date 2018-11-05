@@ -483,7 +483,7 @@ MonoBehaviour:
   - {fileID: 1292120074606028, guid: 2f051baffd824d249b25ba3a196aa5cb, type: 2}
   - {fileID: 1209769890982234, guid: b57c0f166ebc32443b23c3db71710b17, type: 2}
   - {fileID: 1193529347319408, guid: ee292d6102166b649bb67b2bcc5cec29, type: 2}
-  hazardsSpeed: -15
+  hazardsSpeed: -5
   rewards:
   - {fileID: 1416350146699026, guid: 2cb05168ffc413a409d51a8e17d719b5, type: 2}
   - {fileID: 1026072453441510, guid: 30094e0101672c0459b479a7147a5aa8, type: 2}
@@ -501,7 +501,7 @@ MonoBehaviour:
   - {fileID: 1552418266697430, guid: 10a2060ff5e63504ca6c6b8b1470ca62, type: 2}
   - {fileID: 1594634001550394, guid: c0a679e85e5b29f41884be3e811f4b70, type: 2}
   - {fileID: 1366455964184840, guid: 414ca4e6439a00349b26f0400c7fb766, type: 2}
-  rewardsSpeed: -15
+  rewardsSpeed: -5
   SpawnValues: {x: 6, y: 0, z: 16}
   configHazardCount: 1
   spawnWait: 2
