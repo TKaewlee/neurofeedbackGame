@@ -54,7 +54,7 @@ public class timeController : MonoBehaviour
 
     public static bool multiGame = false;
     public static int multiSceneCnt = 0;
-    private int countObject;
+    private int cntGameLoop;
 
     // Use this for initialization
     void Start()
@@ -90,6 +90,7 @@ public class timeController : MonoBehaviour
             isFinish = false;
             if (isTimeSet)
             {
+                Debug.Log("continue + timeset");
                 // timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
                 // + Mathf.Floor(Time.time % 60).ToString("00"); 
 
@@ -127,13 +128,19 @@ public class timeController : MonoBehaviour
                     timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
                 }
-                //print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
+                print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
                 if (Time.time - timeStart > timeSet)
                 {
-                    /*sumScoreCanvas.alpha = 1;
-                    sumScoreCanvas.interactable = true;
-                    sumScoreCanvas.blocksRaycasts = true;*/
-                    onSetting();
+                    Debug.Log("timeend");
+                    if(multiGame == false)
+                    {
+                        onSetting();
+                    }
+                    else
+                    {
+                        onWaiting();
+                    }
+                    
                 }
             }
             else
@@ -152,12 +159,29 @@ public class timeController : MonoBehaviour
 
     public void onSetting()
     {
+        Debug.Log("onSetting");
         Time.timeScale = 0;
         isContinue = !isContinue;
         fixationCanvas.alpha = 0;
         settingCanvas.alpha = 1;
         settingCanvas.interactable = true;
         settingCanvas.blocksRaycasts = true;
+        isSaving = false;
+        isFinish = true;
+        isOnSave = true;
+        // isPlaying = false;
+        isFixationSet = true;
+    }
+
+    public void onWaiting()
+    {
+        Debug.Log("onWaiting");
+        Time.timeScale = 0;
+        isContinue = !isContinue;
+        fixationCanvas.alpha = 0;
+        sumScoreCanvas.alpha = 1;
+        sumScoreCanvas.interactable = true;
+        sumScoreCanvas.blocksRaycasts = true;
         isSaving = false;
         isFinish = true;
         isOnSave = true;
@@ -191,7 +215,7 @@ public class timeController : MonoBehaviour
 
     private void startOnClick()
     {
-        multiGame = true;
+        multiGame = false;
         multiSceneCnt = 0;
         Time.timeScale = 1;
         timeStart = Time.time;
@@ -267,31 +291,32 @@ public class timeController : MonoBehaviour
     public void multiGameControl()
     {
         multiGame = true;
-        multiSceneCnt = 1;
         
-        /* 1st Game */
-        /*
-        for(countObject = 0; countObject < hazards.Length; countObject++)
-        {
-            hazards[countObject].GetComponent<Mover>().speed = -5;
-        }
-        */
         modeName = "without NF";
         difficult = "hard";
         timeSet = 15;
         timeFixation = 1;
 
-        Time.timeScale = 1;
-        timeStart = Time.time;
+        /* Start Game */
 
-        isTimeSet = true;
-        isFixation = true;
-        isContinue = !isContinue;
-        settingCanvas.alpha = 0;
-        settingCanvas.interactable = false;
-        settingCanvas.blocksRaycasts = false;
-        isStart = true;
-        isStartGame = true;
+        for(cntGameLoop = 0; cntGameLoop < 3; cntGameLoop++)
+        {
+            multiSceneCnt = cntGameLoop + 1;
+            Time.timeScale = 1;
+            timeStart = Time.time;
+            isTimeSet = true;
+            isFixation = true;
+            isContinue = !isContinue;
+            settingCanvas.alpha = 0;
+            settingCanvas.interactable = false;
+            settingCanvas.blocksRaycasts = false;
+            isStart = true;
+            isStartGame = true;
+        }
+        
+        
+
+        
 
         //multiGame = true;
     }

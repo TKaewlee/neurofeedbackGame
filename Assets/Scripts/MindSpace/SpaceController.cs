@@ -71,7 +71,8 @@ public class SpaceController : MonoBehaviour
     private static bool isPlayAudio;
 
     private int countObject;
-    private int tmpSpeed;
+    private int tmpHazardsSpeed;
+    private int tmpRewardsSpeed;
 
     void Start()
     {
@@ -145,6 +146,11 @@ public class SpaceController : MonoBehaviour
                     {
                         hazardCount = 0;
 
+                        for(countObject = 0; countObject < hazards.Length; countObject++)
+                        {
+                            hazards[countObject].GetComponent<Mover>().speed = -5;
+                        }
+
                         for (countObject = 0; countObject < rewards.Length; countObject++)
                         {
                             rewards[countObject].GetComponent<RewardMover>().speed = -3;
@@ -157,35 +163,32 @@ public class SpaceController : MonoBehaviour
                         switch(timeController.multiSceneCnt)
                         {
                             case 1:
-                                tmpSpeed = -5;
+                                tmpHazardsSpeed = -5;
+                                tmpRewardsSpeed = -5;
                                 break;
                             case 2:
-                                tmpSpeed = -10;
+                                tmpHazardsSpeed = -10;
+                                tmpRewardsSpeed = -10;
                                 break;
                             case 3:
-                                tmpSpeed = -15;
+                                tmpHazardsSpeed = -15;
+                                tmpRewardsSpeed = -15;
                                 break;
                             default:
-                                tmpSpeed = hazardsSpeed;
+                                tmpHazardsSpeed = hazardsSpeed;
+                                tmpRewardsSpeed = rewardsSpeed;
                                 break;
                         }
-                        if(timeController.multiSceneCnt != 0)
-                        {
-                            
-                        }
-                        else
-                        {
-                            for(countObject = 0; countObject < hazards.Length; countObject++)
-                            {
-                                hazards[countObject].GetComponent<Mover>().speed = hazardsSpeed;
-                            }
-
-                            for (countObject = 0; countObject < rewards.Length; countObject++)
-                            {
-                                rewards[countObject].GetComponent<RewardMover>().speed = rewardsSpeed;
-                            }
-                        }
                         
+                        for(countObject = 0; countObject < hazards.Length; countObject++)
+                        {
+                            hazards[countObject].GetComponent<Mover>().speed = hazardsSpeed;
+                        }
+
+                        for (countObject = 0; countObject < rewards.Length; countObject++)
+                        {
+                            rewards[countObject].GetComponent<RewardMover>().speed = rewardsSpeed;
+                        }
                         
                     }
 
