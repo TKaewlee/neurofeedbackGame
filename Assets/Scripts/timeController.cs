@@ -110,7 +110,7 @@ public class timeController : MonoBehaviour
                     timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
                 }
-                //print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
+                print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
                 if (Time.time - timeStart > timeSet)
                 {
                     /*sumScoreCanvas.alpha = 1;

@@ -115,7 +115,7 @@ public class Read2UDP : MonoBehaviour
 						dataChanged.Add(dataTempChanged);
 					}
 				}
-                print("Read2UDP timeController.isOnSave: " + timeController.isOnSave);
+                //print("Read2UDP timeController.isOnSave: " + timeController.isOnSave);
                 if (timeController.isOnSave)
 				{
 					tempData["stop"] = timeTempChanged.ToString("f2");	
