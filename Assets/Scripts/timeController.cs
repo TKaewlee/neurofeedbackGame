@@ -27,6 +27,7 @@ public class timeController : MonoBehaviour
     public Button promptYes;
     public Button promptNo;
     public Button multipleGameButton;
+    public Button multipleGameContinue;
 
     public static float timeStart = 0;
 
@@ -37,6 +38,8 @@ public class timeController : MonoBehaviour
 
     public InputField timeFixationInput;
     public static int timeFixation; // second unit
+
+    public Text totalScoreText;
 
     // public static bool isConfirmExit;
     public static bool isTimeSet = false;
@@ -67,18 +70,35 @@ public class timeController : MonoBehaviour
         backButton.onClick.AddListener(() => onBack());
         promptYes.onClick.AddListener(onPromptYes);
         promptNo.onClick.AddListener(onPromptNo);
-        multipleGameButton.onClick.AddListener(() => multiGameControl());
 
         modeDropdown.onValueChanged.AddListener(delegate {
             actionDropdownValueChangedMode(modeDropdown);
         });
-        difficultDropdown.onValueChanged.AddListener(delegate {
-            actionDropdownValueChangedDifficult(difficultDropdown);
-        });
 
-        settingCanvas.alpha = 1;
-        settingCanvas.interactable = true;
-        settingCanvas.blocksRaycasts = true;
+        if(SceneManager.GetActiveScene().name != "Calibration")
+        {
+            multipleGameButton.onClick.AddListener(() => multiGameControl());
+
+            difficultDropdown.onValueChanged.AddListener(delegate {
+                actionDropdownValueChangedDifficult(difficultDropdown);
+            });
+        }
+
+        typeSelectCanvas.gameObject.SetActive(true);
+        settingCanvas.gameObject.SetActive(false);
+        sumScoreCanvas.gameObject.SetActive(false);
+        confirmBackCanvas.gameObject.SetActive(false);
+        waitCanvas.gameObject.SetActive(false);
+        //settingCanvas. = false;
+
+        /*
+        settingCanvas.alpha = 0;
+        settingCanvas.interactable = false;
+        settingCanvas.blocksRaycasts = false;
+        sumScoreCanvas.alpha = 0;
+        sumScoreCanvas.interactable = false;
+        sumScoreCanvas.blocksRaycasts = false;
+        */
     }
 
     // Update is called once per frame
@@ -163,9 +183,12 @@ public class timeController : MonoBehaviour
         Time.timeScale = 0;
         isContinue = !isContinue;
         fixationCanvas.alpha = 0;
+        settingCanvas.gameObject.SetActive(true);
+        /*
         settingCanvas.alpha = 1;
         settingCanvas.interactable = true;
         settingCanvas.blocksRaycasts = true;
+        */
         isSaving = false;
         isFinish = true;
         isOnSave = true;
@@ -179,14 +202,13 @@ public class timeController : MonoBehaviour
         Time.timeScale = 0;
         isContinue = !isContinue;
         fixationCanvas.alpha = 0;
-        sumScoreCanvas.alpha = 1;
-        sumScoreCanvas.interactable = true;
-        sumScoreCanvas.blocksRaycasts = true;
+        totalScoreText.text = SpaceController.mindSpaceScore.ToString();
+        waitCanvas.gameObject.SetActive(true);
         isSaving = false;
         isFinish = true;
         isOnSave = true;
-        // isPlaying = false;
-        isFixationSet = true;
+        //isFixationSet = true;
+        multipleGameContinue.onClick.AddListener(() => multiGameControl());
     }
 
     private void actionDropdownValueChangedMode(Dropdown actionTarget)
@@ -242,27 +264,30 @@ public class timeController : MonoBehaviour
             timeFixation = int.Parse(timeFixationInput.text);
         }
 
-        difficult = difficultDropdown.options[difficultIndex].text;
+        if (SceneManager.GetActiveScene().name != "Calibration")
+        {
+            difficult = difficultDropdown.options[difficultIndex].text;
+        }
         modeName = modeDropdown.options[modeIndex].text;
         isContinue = !isContinue;
-        settingCanvas.alpha = 0;
-        settingCanvas.interactable = false;
-        settingCanvas.blocksRaycasts = false;
+        settingCanvas.gameObject.SetActive(false);
         isStart = true;
         isStartGame = true;
-
-        
     }
 
 
     public void onBack()
     {
+        typeSelectCanvas.gameObject.SetActive(false);
+        confirmBackCanvas.gameObject.SetActive(true);
+        /*
         typeSelectCanvas.alpha = 0;
         typeSelectCanvas.interactable = false;
         typeSelectCanvas.blocksRaycasts = false;
         confirmBackCanvas.alpha = 1;
         confirmBackCanvas.interactable = true;
         confirmBackCanvas.blocksRaycasts = true; // blocksRaycasts if true is interactable false is not
+        */
     }
 
     public void onPromptYes()
@@ -279,6 +304,11 @@ public class timeController : MonoBehaviour
     {
         // if not exit, hide canvas
         //confirmQuit.SetActive(false); // obsolated
+
+        typeSelectCanvas.gameObject.SetActive(true);
+        confirmBackCanvas.gameObject.SetActive(false);
+
+        /*
         typeSelectCanvas.alpha = 1;
         typeSelectCanvas.interactable = true;
         typeSelectCanvas.blocksRaycasts = true;
@@ -286,6 +316,7 @@ public class timeController : MonoBehaviour
         confirmBackCanvas.alpha = 0;
         confirmBackCanvas.interactable = false;
         confirmBackCanvas.blocksRaycasts = false;
+        */
     }
 
     public void multiGameControl()
@@ -296,29 +327,36 @@ public class timeController : MonoBehaviour
         difficult = "hard";
         timeSet = 15;
         timeFixation = 1;
-
-        /* Start Game */
-
-        for(cntGameLoop = 0; cntGameLoop < 3; cntGameLoop++)
+        
+        //multiSceneCnt = cntGameLoop + 1;
+        Time.timeScale = 1;
+        timeStart = Time.time;
+        isTimeSet = true;
+        isFixation = true;
+        isContinue = !isContinue;
+        settingCanvas.gameObject.SetActive(false);
+        isStart = true;
+        isStartGame = true;
+        
+        switch(multiSceneCnt)
         {
-            multiSceneCnt = cntGameLoop + 1;
-            Time.timeScale = 1;
-            timeStart = Time.time;
-            isTimeSet = true;
-            isFixation = true;
-            isContinue = !isContinue;
-            settingCanvas.alpha = 0;
-            settingCanvas.interactable = false;
-            settingCanvas.blocksRaycasts = false;
-            isStart = true;
-            isStartGame = true;
+            case 0:
+                multiSceneCnt = 1;
+                break;
+            case 1:
+                multiSceneCnt = 2;
+                break;
+            case 2:
+                multiSceneCnt = 3;
+                break;
+            case 3:
+                multiSceneCnt = 0;
+                break;
+            default:
+                /*Do nothing*/
+                break;
         }
-        
-        
-
-        
-
-        //multiGame = true;
+        Debug.Log(multiSceneCnt);
     }
 
 }

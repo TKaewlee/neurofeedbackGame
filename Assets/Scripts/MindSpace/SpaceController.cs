@@ -17,7 +17,7 @@ public class SpaceController : MonoBehaviour
     public float startWait; // 0.5
     public float waveWait;  // 0.8
 
-    private int score;
+    public static int mindSpaceScore = 0;
     public Text scoreText;
 
     private int distance;
@@ -99,7 +99,7 @@ public class SpaceController : MonoBehaviour
         audioSource.clip = backgroundAudio;
         isPlayAudio = false;
 
-        score = 0;
+        mindSpaceScore = 0;
         distance = 350;
 
         centerSlideCanvas.alpha = 0;
@@ -182,12 +182,12 @@ public class SpaceController : MonoBehaviour
                         
                         for(countObject = 0; countObject < hazards.Length; countObject++)
                         {
-                            hazards[countObject].GetComponent<Mover>().speed = hazardsSpeed;
+                            hazards[countObject].GetComponent<Mover>().speed = tmpHazardsSpeed;
                         }
 
                         for (countObject = 0; countObject < rewards.Length; countObject++)
                         {
-                            rewards[countObject].GetComponent<RewardMover>().speed = rewardsSpeed;
+                            rewards[countObject].GetComponent<RewardMover>().speed = tmpRewardsSpeed;
                         }
                         
                     }
@@ -300,7 +300,7 @@ public class SpaceController : MonoBehaviour
                 Read2UDP.tempData["moveEnd"] = DataController.GameDataController.getAppendString(moveEnd);
                 Read2UDP.tempData["asteroidappeartime"] = DataController.GameDataController.getAppendString(asteroidAppearTime);
                 Read2UDP.tempData["rewardappeartime"] = DataController.GameDataController.getAppendString(rewardAppearTime);
-                Read2UDP.tempData["score"] = score.ToString();
+                Read2UDP.tempData["score"] = mindSpaceScore.ToString();
 
                 gameTime.Clear();
                 gameTrigger.Clear();
@@ -352,7 +352,7 @@ public class SpaceController : MonoBehaviour
 
     public void minusScore(int newScoreValue)
     {
-        score -= newScoreValue;
+        mindSpaceScore -= newScoreValue;
         UpdateScore();
         if (newScoreValue == 10) { trigger = -1; } else { trigger = 1; }
         gameTrigger.Add(trigger);
@@ -362,7 +362,7 @@ public class SpaceController : MonoBehaviour
 
     void UpdateScore()
     {
-        scoreText.text = score.ToString();
+        scoreText.text = mindSpaceScore.ToString();
     }
 
     private void AddDistance()
@@ -397,7 +397,7 @@ public class SpaceController : MonoBehaviour
             matObject[i].SetFloat("_Metallic", 1.0f);
         }
 
-        score = 0;
+        mindSpaceScore = 0;
         distance = 350;
         UpdateScore();
         AddDistance();
