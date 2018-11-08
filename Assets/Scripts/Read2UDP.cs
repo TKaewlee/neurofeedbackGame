@@ -112,6 +112,7 @@ public class Read2UDP : MonoBehaviour
 					if (timeController.isSaving)
 					{
 						timeChanged.Add(timeTempChanged);
+                        print("Time changed: " + timeTempChanged);
 						dataChanged.Add(dataTempChanged);
 					}
 				}
