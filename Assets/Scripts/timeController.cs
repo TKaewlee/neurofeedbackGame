@@ -110,7 +110,7 @@ public class timeController : MonoBehaviour
             isFinish = false;
             if (isTimeSet)
             {
-                Debug.Log("continue + timeset");
+                //Debug.Log("continue + timeset");
                 // timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
                 // + Mathf.Floor(Time.time % 60).ToString("00"); 
 
@@ -128,7 +128,7 @@ public class timeController : MonoBehaviour
 
                     if (isFixationSet)
                     {
-                        timeSet = timeSet + 2 * timeFixation;
+                        timeSet = timeSet + (2 * timeFixation);
                         isFixationSet = false;
                     }
 
@@ -193,7 +193,7 @@ public class timeController : MonoBehaviour
         isFinish = true;
         isOnSave = true;
         // isPlaying = false;
-        isFixationSet = true;
+        //isFixationSet = true;
     }
 
     public void onWaiting()
@@ -257,10 +257,12 @@ public class timeController : MonoBehaviour
         if (timeFixationInput.text == "")
         {
             isFixation = false;
+            isFixationSet = false;
         }
         else
         {
             isFixation = true;
+            isFixationSet = true;
             timeFixation = int.Parse(timeFixationInput.text);
         }
 
@@ -333,8 +335,9 @@ public class timeController : MonoBehaviour
         timeStart = Time.time;
         isTimeSet = true;
         isFixation = true;
+        isFixationSet = true;
         isContinue = !isContinue;
-        settingCanvas.gameObject.SetActive(false);
+        //settingCanvas.gameObject.SetActive(false);
         isStart = true;
         isStartGame = true;
         
@@ -348,6 +351,7 @@ public class timeController : MonoBehaviour
                 break;
             case 2:
                 multiSceneCnt = 3;
+                print("Level3: " + timeSet + " | " + timeFixation);
                 break;
             case 3:
                 multiSceneCnt = 0;
