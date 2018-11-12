@@ -32,7 +32,7 @@ public class SpaceDestroyByContact : MonoBehaviour
 		if (other.tag == "Player")
 		{
 			Instantiate(playerExplosion, other.transform.position, other.transform.rotation); 
-			gameController.minusScore (scoreValue);
+			gameController.MinusScore (scoreValue);
 			// gameController.GameOver ();
 		}
 		// gameController.AddScore (scoreValue);

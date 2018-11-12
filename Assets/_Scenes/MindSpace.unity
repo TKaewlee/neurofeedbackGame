@@ -10189,6 +10189,12 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1732735590}
   m_CullTransparentMesh: 0
+--- !u!114 &1733957371 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114444592661184020, guid: d238be553daed504489058eb53431773,
+    type: 2}
+  m_PrefabInternal: {fileID: 1929170186}
+  m_Script: {fileID: 11500000, guid: ca6eba35282d558489ebfd623708f2a3, type: 3}
 --- !u!1 &1735913125
 GameObject:
   m_ObjectHideFlags: 0
@@ -10678,9 +10684,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 862721685}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1733957371}
+        m_MethodName: multiGameControl
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

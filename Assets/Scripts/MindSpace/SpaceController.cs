@@ -37,8 +37,8 @@ public class SpaceController : MonoBehaviour
 
     private float baseline;
     private float threshold;
-    private static float baseline_space = 0;
-    private static float threshold_spcae = 0;
+    //private static float baseline_space = 0;
+    //private static float threshold_spcae = 0;
 
     public int Fs = 256;
     public float percentOver = 0.01f;
@@ -52,7 +52,7 @@ public class SpaceController : MonoBehaviour
     public float timeDuration = 1;
 
     private float timeStart = 0;
-    private bool isStart = false;
+    //private bool isStart = false;
 
     private GameObject[] gameObjects;
     private static List<float> gameTime = new List<float>();
@@ -113,13 +113,14 @@ public class SpaceController : MonoBehaviour
 
     void Update()
     {
-        if (timeController.isContinue)
+        //print(timeController.isContinue+" "+timeController.isFixing+" "+timeController.isStartGame);
+        if (timeController.isContinue == true)
         {
-            if (timeController.isFixing)
+            if (timeController.isFixing == true)
             {
-                if (isPlayAudio)
+                if (isPlayAudio == true)
                 {
-                    audioSource.Stop();
+                    audioSource.Stop(); print("Stop Background Audio");
                     isPlayAudio = false;
                 }
                 hazardCount = 0;
@@ -134,14 +135,14 @@ public class SpaceController : MonoBehaviour
                 if (Input.GetButtonDown("Vertical")) { moveTrigger.Add(2); moveTime.Add(read2UDP.timeTempChanged); }
                 if (Input.GetButtonUp("Vertical")) { moveEnd.Add(read2UDP.timeTempChanged); }
 
-                if (timeController.isStartGame)
+                if (timeController.isStartGame == true)
                 {
-                    if (!isPlayAudio)
+                    if (isPlayAudio == false)
                     {
                         audioSource.Play(); print("Play Background Audio");
                         isPlayAudio = true;
                     }
-                    
+
                     if (timeController.difficult == "easy")
                     {
                         hazardCount = 0;
@@ -179,7 +180,7 @@ public class SpaceController : MonoBehaviour
                                 tmpRewardsSpeed = rewardsSpeed;
                                 break;
                         }
-                        
+                        print(tmpHazardsSpeed);
                         for(countObject = 0; countObject < hazards.Length; countObject++)
                         {
                             hazards[countObject].GetComponent<Mover>().speed = tmpHazardsSpeed;
@@ -282,11 +283,11 @@ public class SpaceController : MonoBehaviour
         }
         else
         {
-            if (timeController.isFinish)
+            if (timeController.isFinish == true)
             {
-                if (isPlayAudio)
+                if (isPlayAudio == true)
                 {
-                    audioSource.Stop();
+                    audioSource.Stop(); print("Stop Background Audio");
                     isPlayAudio = false;
                 }
                 Read2UDP.tempData["difficult"] = timeController.difficult;
@@ -311,7 +312,7 @@ public class SpaceController : MonoBehaviour
                 rewardAppearTime.Clear();
                 timeController.isFinish = false;
             }
-            restartGame();
+            RestartGame();
         }
     }
 
@@ -350,7 +351,7 @@ public class SpaceController : MonoBehaviour
         }
     }
 
-    public void minusScore(int newScoreValue)
+    public void MinusScore(int newScoreValue)
     {
         mindSpaceScore -= newScoreValue;
         UpdateScore();
@@ -389,7 +390,7 @@ public class SpaceController : MonoBehaviour
         }
     }
 
-    private void restartGame()
+    private void RestartGame()
     {
         for (int i = 0; i < matObject.Length; i++)
         {

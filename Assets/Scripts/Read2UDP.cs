@@ -48,12 +48,12 @@ public class Read2UDP : MonoBehaviour
 	public void Start ()
 	{
         print("Read2UDP start");
-		init ();
+		Init ();
 	}
 
 
 	// Initialization code
-	private void init ()
+	private void Init ()
 	{
 		// Initialize (seen in comments window)
 		// print ("UDP Object init()");
@@ -83,10 +83,10 @@ public class Read2UDP : MonoBehaviour
 				dataTempChanged = (float)BitConverter.ToDouble(data, 0);
 				timeTempChanged = (float)BitConverter.ToDouble(data1, 0);
 				
-				if(timeController.isStart)
+				if(timeController.isStart == true)
 				{
 					tempData["date"] = DateTime.Now.ToString();
-					if(timeController.isTimeSet)
+					if(timeController.isTimeSet == true)
 					{
 						tempData["timeset"] = timeController.timeSet.ToString();
 					}
@@ -94,7 +94,7 @@ public class Read2UDP : MonoBehaviour
 					{
 						tempData["timeset"] = "None";
 					}
-					if(timeController.isFixation)
+					if(timeController.isFixation == true)
 					{
 						tempData["timefixation"] = timeController.timeFixation.ToString();
 					}
@@ -116,7 +116,7 @@ public class Read2UDP : MonoBehaviour
 					}
 				}
                 print("Read2UDP timeController.isOnSave: " + timeController.isOnSave);
-                if (timeController.isOnSave)
+                if (timeController.isOnSave == true)
 				{
 					tempData["stop"] = timeTempChanged.ToString("f2");	
 					tempData["time"] = DataController.GameDataController.getAppendString(timeChanged);

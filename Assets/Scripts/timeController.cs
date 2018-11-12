@@ -46,7 +46,7 @@ public class timeController : MonoBehaviour
     public static bool isStart = false;
     public static bool isStartGame = false;
     public static bool isFinish = false;
-    public static bool isOnSave = false;
+    public static bool isOnSave = true;
     public static bool isSaving = false;
     public static bool isFixation = false;
     public static bool isFixing = false;
@@ -57,7 +57,6 @@ public class timeController : MonoBehaviour
 
     public static bool multiGame = false;
     public static int multiSceneCnt = 0;
-    private int cntGameLoop;
 
     // Use this for initialization
     void Start()
@@ -104,11 +103,12 @@ public class timeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isContinue)
+        //print(isContinue+" "+isTimeSet+" "+isFixation+" "+isFixationSet+" "+isFixing);
+        if (isContinue == true)
         {
             isSaving = true;
             isFinish = false;
-            if (isTimeSet)
+            if (isTimeSet == true)
             {
                 //Debug.Log("continue + timeset");
                 // timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
@@ -121,12 +121,12 @@ public class timeController : MonoBehaviour
                 // + Mathf.Floor(timeSet % 60).ToString("00");  
 
 
-                if (isFixation)
+                if (isFixation == true)
                 {
                     timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart - timeFixation) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart - timeFixation) % 60).ToString("00");
 
-                    if (isFixationSet)
+                    if (isFixationSet == true)
                     {
                         timeSet = timeSet + (2 * timeFixation);
                         isFixationSet = false;
@@ -134,8 +134,11 @@ public class timeController : MonoBehaviour
 
                     if (Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation)
                     {
-                        fixationCanvas.alpha = 1;
-                        isFixing = true;
+                        if(isFixing == false)
+                        {
+                            fixationCanvas.alpha = 1;
+                            isFixing = true;
+                        }
                     }
                     else
                     {
@@ -148,7 +151,7 @@ public class timeController : MonoBehaviour
                     timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
                 }
-                print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
+                //print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
                 if (Time.time - timeStart > timeSet)
                 {
                     Debug.Log("timeend");
@@ -181,7 +184,7 @@ public class timeController : MonoBehaviour
     {
         Debug.Log("onSetting");
         Time.timeScale = 0;
-        isContinue = !isContinue;
+        isContinue = false;
         fixationCanvas.alpha = 0;
         settingCanvas.gameObject.SetActive(true);
         /*
@@ -200,15 +203,17 @@ public class timeController : MonoBehaviour
     {
         Debug.Log("onWaiting");
         Time.timeScale = 0;
-        isContinue = !isContinue;
-        fixationCanvas.alpha = 0;
-        totalScoreText.text = SpaceController.mindSpaceScore.ToString();
-        waitCanvas.gameObject.SetActive(true);
+        isContinue = false;
         isSaving = false;
         isFinish = true;
         isOnSave = true;
+        isFixing = false;
         //isFixationSet = true;
-        multipleGameContinue.onClick.AddListener(() => multiGameControl());
+
+        fixationCanvas.alpha = 0;
+        totalScoreText.text = SpaceController.mindSpaceScore.ToString();
+        waitCanvas.gameObject.SetActive(true);
+        //multipleGameContinue.onClick.AddListener(() => multiGameControl());
     }
 
     private void actionDropdownValueChangedMode(Dropdown actionTarget)
@@ -271,7 +276,7 @@ public class timeController : MonoBehaviour
             difficult = difficultDropdown.options[difficultIndex].text;
         }
         modeName = modeDropdown.options[modeIndex].text;
-        isContinue = !isContinue;
+        isContinue = true;
         settingCanvas.gameObject.SetActive(false);
         isStart = true;
         isStartGame = true;
@@ -324,24 +329,29 @@ public class timeController : MonoBehaviour
     public void multiGameControl()
     {
         multiGame = true;
-        
+        waitCanvas.gameObject.SetActive(false);
+        //multipleGameContinue.onClick.RemoveListener(() => multiGameControl());
+
         modeName = "without NF";
         difficult = "hard";
         timeSet = 15;
         timeFixation = 1;
+        multiSceneCnt++;
+        if (multiSceneCnt <= 3)
+        {
+            Time.timeScale = 1;
+            timeStart = Time.time;
+            isTimeSet = true;
+            isFixation = true;
+            isFixationSet = true;
+            isContinue = true;
+            //settingCanvas.gameObject.SetActive(false);
+            isStart = true;
+            isStartGame = true;
+        }
         
-        //multiSceneCnt = cntGameLoop + 1;
-        Time.timeScale = 1;
-        timeStart = Time.time;
-        isTimeSet = true;
-        isFixation = true;
-        isFixationSet = true;
-        isContinue = !isContinue;
-        //settingCanvas.gameObject.SetActive(false);
-        isStart = true;
-        isStartGame = true;
-        
-        switch(multiSceneCnt)
+        /*
+        switch (multiSceneCnt)
         {
             case 0:
                 multiSceneCnt = 1;
@@ -351,16 +361,20 @@ public class timeController : MonoBehaviour
                 break;
             case 2:
                 multiSceneCnt = 3;
-                print("Level3: " + timeSet + " | " + timeFixation);
+                //print("Level3: " + timeSet + " | " + timeFixation);
                 break;
             case 3:
-                multiSceneCnt = 0;
+                multiSceneCnt = 4;
                 break;
             default:
-                /*Do nothing*/
+                //Do nothing
                 break;
-        }
+        }*/
+        
         Debug.Log(multiSceneCnt);
+        //waitCanvas.gameObject.SetActive(false);
+        print(timeStart);
+        print(isContinue+" "+isFinish+isFixation+isFixationSet+isFixing+isOnSave+isSaving+isStart+isStartGame+isTimeSet);
     }
 
 }
