@@ -50,7 +50,7 @@ public class timeController : MonoBehaviour
     public static bool isSaving = false;
     public static bool isFixation = false;
     public static bool isFixing = false;
-    private static bool isFixationSet = false;
+    public static bool isFixationSet = false;
 
     public GameObject[] hazards;
     public GameObject[] rewards;
@@ -76,7 +76,7 @@ public class timeController : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name != "Calibration")
         {
-            multipleGameButton.onClick.AddListener(() => multiGameControl());
+            //multipleGameButton.onClick.AddListener(() => multiGameControl());
 
             difficultDropdown.onValueChanged.AddListener(delegate {
                 actionDropdownValueChangedDifficult(difficultDropdown);
@@ -134,11 +134,8 @@ public class timeController : MonoBehaviour
 
                     if (Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation)
                     {
-                        if(isFixing == false)
-                        {
-                            fixationCanvas.alpha = 1;
-                            isFixing = true;
-                        }
+                        fixationCanvas.alpha = 1;
+                        isFixing = true;
                     }
                     else
                     {
@@ -349,27 +346,10 @@ public class timeController : MonoBehaviour
             isStart = true;
             isStartGame = true;
         }
-        
-        /*
-        switch (multiSceneCnt)
+        else
         {
-            case 0:
-                multiSceneCnt = 1;
-                break;
-            case 1:
-                multiSceneCnt = 2;
-                break;
-            case 2:
-                multiSceneCnt = 3;
-                //print("Level3: " + timeSet + " | " + timeFixation);
-                break;
-            case 3:
-                multiSceneCnt = 4;
-                break;
-            default:
-                //Do nothing
-                break;
-        }*/
+            typeSelectCanvas.gameObject.SetActive(true);
+        }
         
         Debug.Log(multiSceneCnt);
         //waitCanvas.gameObject.SetActive(false);
