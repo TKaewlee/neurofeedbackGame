@@ -211,6 +211,17 @@ public class timeController : MonoBehaviour
         totalScoreText.text = SpaceController.mindSpaceScore.ToString();
         waitCanvas.gameObject.SetActive(true);
         //multipleGameContinue.onClick.AddListener(() => multiGameControl());
+        StartCoroutine(WaitForKeysToMultiGame());
+        
+    }
+
+    IEnumerator WaitForKeysToMultiGame()
+    {
+        while (!(Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)))
+        {
+            yield return null;
+        }
+        multiGameControl();
     }
 
     private void actionDropdownValueChangedMode(Dropdown actionTarget)
