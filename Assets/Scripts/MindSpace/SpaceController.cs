@@ -118,7 +118,7 @@ public class SpaceController : MonoBehaviour
         {
             if (timeController.isContinue == true)
             {
-                if (timeController.isFixing == true)
+                if (timeController.isFixing == true || timeController.isCountDown == true)
                 {
                     if (isPlayAudio == true)
                     {

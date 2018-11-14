@@ -13,6 +13,7 @@ public class timeController : MonoBehaviour
     public CanvasGroup typeSelectCanvas;
     public CanvasGroup waitCanvas;
     public CanvasGroup sumScoreCanvas;
+    public CanvasGroup countDownCanvas;
     public Dropdown modeDropdown;
     private int modeIndex;
     public static string modeName;
@@ -41,6 +42,8 @@ public class timeController : MonoBehaviour
 
     public Text totalScoreText;
 
+    public Text countDownText;
+
     // public static bool isConfirmExit;
     public static bool isTimeSet = false;
     public static bool isStart = false;
@@ -51,12 +54,16 @@ public class timeController : MonoBehaviour
     public static bool isFixation = false;
     public static bool isFixing = false;
     public static bool isFixationSet = false;
+    public static bool isCountDown = false;
 
     public GameObject[] hazards;
     public GameObject[] rewards;
 
     public static bool multiGame = false;
     public static int multiSceneCnt = 0;
+
+    private int timeCntDwn = 5;
+    private float timeStartCntDwn;
 
     // Use this for initialization
     void Start()
@@ -132,7 +139,7 @@ public class timeController : MonoBehaviour
                         isFixationSet = false;
                     }
 
-                    if (Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation)
+                    if (Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation - timeCntDwn)
                     {
                         fixationCanvas.alpha = 1;
                         isFixing = true;
@@ -142,12 +149,44 @@ public class timeController : MonoBehaviour
                         fixationCanvas.alpha = 0;
                         isFixing = false;
                     }
+
+                    if (Time.time - timeStart > timeFixation & Time.time - timeStart < timeFixation + timeCntDwn)
+                    {
+                        if (!isCountDown)
+                        {
+                            timeStartCntDwn = Time.time - timeStart;
+                        }
+                        countDownCanvas.alpha = 1;
+                        isCountDown = true;
+                    }
+                    else
+                    {
+                        countDownCanvas.alpha = 0;
+                        isCountDown = false;
+                    }
                 }
                 else
                 {
                     timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
+
+                    if (Time.time - timeStart < timeCntDwn)
+                    {
+                        countDownCanvas.alpha = 1;
+                        isCountDown = true;
+                    }
+                    else
+                    {
+                        countDownCanvas.alpha = 0;
+                        isCountDown = false;
+                    }
                 }
+
+                /*if (isCountDown)
+                {
+                    CountDownBeforeStartGame();
+                }*/
+
                 //print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
                 if (Time.time - timeStart > timeSet)
                 {
@@ -265,6 +304,7 @@ public class timeController : MonoBehaviour
         {
             isTimeSet = true;
             timeSet = int.Parse(timeSetInput.text);
+            timeSet = timeSet + timeCntDwn;
         }
 
         if (timeFixationInput.text == "")
@@ -295,14 +335,6 @@ public class timeController : MonoBehaviour
     {
         typeSelectCanvas.gameObject.SetActive(false);
         confirmBackCanvas.gameObject.SetActive(true);
-        /*
-        typeSelectCanvas.alpha = 0;
-        typeSelectCanvas.interactable = false;
-        typeSelectCanvas.blocksRaycasts = false;
-        confirmBackCanvas.alpha = 1;
-        confirmBackCanvas.interactable = true;
-        confirmBackCanvas.blocksRaycasts = true; // blocksRaycasts if true is interactable false is not
-        */
     }
 
     public void onPromptYes()
@@ -322,27 +354,19 @@ public class timeController : MonoBehaviour
 
         typeSelectCanvas.gameObject.SetActive(true);
         confirmBackCanvas.gameObject.SetActive(false);
-
-        /*
-        typeSelectCanvas.alpha = 1;
-        typeSelectCanvas.interactable = true;
-        typeSelectCanvas.blocksRaycasts = true;
-
-        confirmBackCanvas.alpha = 0;
-        confirmBackCanvas.interactable = false;
-        confirmBackCanvas.blocksRaycasts = false;
-        */
     }
 
     public void multiGameControl()
     {
+        //StartCoroutine(CountDownBeforeStartGame());
         multiGame = true;
         waitCanvas.gameObject.SetActive(false);
         //multipleGameContinue.onClick.RemoveListener(() => multiGameControl());
+        
 
         modeName = "without NF";
         difficult = "hard";
-        timeSet = 15;
+        timeSet = 15 + timeCntDwn;
         timeFixation = 1;
         multiSceneCnt++;
         if (multiSceneCnt <= 3)
@@ -366,6 +390,19 @@ public class timeController : MonoBehaviour
         //waitCanvas.gameObject.SetActive(false);
         print(timeStart);
         print(isContinue+" "+isFinish+isFixation+isFixationSet+isFixing+isOnSave+isSaving+isStart+isStartGame+isTimeSet);
+    }
+
+    IEnumerator CountDownBeforeStartGame()
+    {
+        int cntNum;
+
+        countDownCanvas.alpha = 1;
+        for (cntNum = timeCntDwn; cntNum > 0; cntNum--)
+        {
+            countDownText.text = cntNum.ToString();
+            yield return new WaitForSeconds(1);
+        }
+        countDownCanvas.alpha = 0;
     }
 
 }
