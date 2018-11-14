@@ -85,6 +85,7 @@ public class Read2UDP : MonoBehaviour
 				
 				if(timeController.isStart)
 				{
+                    print("start");
 					tempData["date"] = DateTime.Now.ToString();
 					if(timeController.isTimeSet)
 					{
@@ -119,7 +120,8 @@ public class Read2UDP : MonoBehaviour
                 //print("Read2UDP timeController.isOnSave: " + timeController.isOnSave);
                 if (timeController.isOnSave)
 				{
-					tempData["stop"] = timeTempChanged.ToString("f2");	
+                    print("onsave");
+                    tempData["stop"] = timeTempChanged.ToString("f2");	
 					tempData["time"] = DataController.GameDataController.getAppendString(timeChanged);
 					tempData["data"] = DataController.GameDataController.getAppendString(dataChanged);
 
