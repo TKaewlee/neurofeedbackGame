@@ -74,15 +74,18 @@ public class Read2UDP : MonoBehaviour
 	// Receive data, update packets received
 	private  void ReceiveData ()
 	{
+        print("Receive data");
 		do {
+            print("#a");
 			try {
-				IPEndPoint IP8000 = new IPEndPoint (IPAddress.Any, portLocal);
+                print("#b");
+                IPEndPoint IP8000 = new IPEndPoint (IPAddress.Any, portLocal);
 				IPEndPoint IP8001 = new IPEndPoint (IPAddress.Any, portLocal1);
 				byte[] data = client.Receive (ref IP8000);
 				byte[] data1 = client1.Receive (ref IP8001);
 				dataTempChanged = (float)BitConverter.ToDouble(data, 0);
 				timeTempChanged = (float)BitConverter.ToDouble(data1, 0);
-				
+                print("timeController.isStart: " + timeController.isStart);
 				if(timeController.isStart)
 				{
                     print("start");
