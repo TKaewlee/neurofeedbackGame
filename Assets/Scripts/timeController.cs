@@ -43,6 +43,7 @@ public class timeController : MonoBehaviour
     public Text totalScoreText;
 
     public Text countDownText;
+    private int cntDwnNum;
 
     // public static bool isConfirmExit;
     public static bool isTimeSet = false;
@@ -155,9 +156,16 @@ public class timeController : MonoBehaviour
                         if (!isCountDown)
                         {
                             timeStartCntDwn = Time.time - timeStart;
+                            cntDwnNum = 5;
+                            countDownCanvas.alpha = 1;
+                            isCountDown = true;
                         }
-                        countDownCanvas.alpha = 1;
-                        isCountDown = true;
+                        if (Time.time - timeStart > timeStartCntDwn + 1)
+                        {
+                            timeStartCntDwn += 1;
+                            cntDwnNum--;
+                        }
+                        countDownText.text = cntDwnNum.ToString();
                     }
                     else
                     {
@@ -172,8 +180,19 @@ public class timeController : MonoBehaviour
 
                     if (Time.time - timeStart < timeCntDwn)
                     {
-                        countDownCanvas.alpha = 1;
-                        isCountDown = true;
+                        if (!isCountDown)
+                        {
+                            timeStartCntDwn = Time.time - timeStart;
+                            cntDwnNum = 5;
+                            countDownCanvas.alpha = 1;
+                            isCountDown = true;
+                        }
+                        if (Time.time - timeStart > timeStartCntDwn + 1)
+                        {
+                            timeStartCntDwn += 1;
+                            cntDwnNum--;
+                        }
+                        countDownText.text = cntDwnNum.ToString();
                     }
                     else
                     {
@@ -367,7 +386,7 @@ public class timeController : MonoBehaviour
         modeName = "without NF";
         difficult = "hard";
         timeSet = 15 + timeCntDwn;
-        timeFixation = 1;
+        timeFixation = 3;
         multiSceneCnt++;
         if (multiSceneCnt <= 3)
         {
