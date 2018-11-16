@@ -13,6 +13,7 @@ public class timeController : MonoBehaviour
     public CanvasGroup typeSelectCanvas;
     public CanvasGroup waitCanvas;
     public CanvasGroup sumScoreCanvas;
+    public CanvasGroup instructionCanvas;
     public CanvasGroup countDownCanvas;
     public Dropdown modeDropdown;
     private int modeIndex;
@@ -44,6 +45,8 @@ public class timeController : MonoBehaviour
 
     public Text countDownText;
     private int cntDwnNum;
+
+    public Text waitText;
 
     // public static bool isConfirmExit;
     public static bool isTimeSet = false;
@@ -96,6 +99,7 @@ public class timeController : MonoBehaviour
         sumScoreCanvas.gameObject.SetActive(false);
         confirmBackCanvas.gameObject.SetActive(false);
         waitCanvas.gameObject.SetActive(false);
+        instructionCanvas.gameObject.SetActive(false);
         //settingCanvas. = false;
 
         /*
@@ -140,10 +144,11 @@ public class timeController : MonoBehaviour
                         isFixationSet = false;
                     }
 
-                    if (Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation - timeCntDwn)
+                    if (Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation)
                     {
                         fixationCanvas.alpha = 1;
                         isFixing = true;
+                        print(Time.time - timeStart);
                     }
                     else
                     {
@@ -273,6 +278,12 @@ public class timeController : MonoBehaviour
         
     }
 
+    public void ShowInstrctionCanvas()
+    {
+        instructionCanvas.gameObject.SetActive(true);
+        StartCoroutine(WaitForKeysToMultiGame());
+    }
+
     IEnumerator WaitForKeysToMultiGame()
     {
         while (!(Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)))
@@ -380,8 +391,9 @@ public class timeController : MonoBehaviour
         //StartCoroutine(CountDownBeforeStartGame());
         multiGame = true;
         waitCanvas.gameObject.SetActive(false);
+        instructionCanvas.gameObject.SetActive(false);
         //multipleGameContinue.onClick.RemoveListener(() => multiGameControl());
-        
+
 
         modeName = "without NF";
         difficult = "hard";
@@ -404,13 +416,19 @@ public class timeController : MonoBehaviour
         {
             typeSelectCanvas.gameObject.SetActive(true);
         }
+
+        if (multiSceneCnt < 3)
+        {
+            waitText.text = "If you are ready, please press any of arrow keys to continue.";
+        }
+        else
+        {
+            waitText.text = "Thank you for your participation.\nPlease press any of arrow keys to continue.";
+        }
         
         Debug.Log(multiSceneCnt);
-        //waitCanvas.gameObject.SetActive(false);
-        print(timeStart);
-        print(isContinue+" "+isFinish+isFixation+isFixationSet+isFixing+isOnSave+isSaving+isStart+isStartGame+isTimeSet);
     }
-
+/*
     IEnumerator CountDownBeforeStartGame()
     {
         int cntNum;
@@ -423,5 +441,6 @@ public class timeController : MonoBehaviour
         }
         countDownCanvas.alpha = 0;
     }
+    */
 
 }
