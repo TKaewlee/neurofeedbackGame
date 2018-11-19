@@ -92,14 +92,19 @@ public class timeController : MonoBehaviour
             difficultDropdown.onValueChanged.AddListener(delegate {
                 actionDropdownValueChangedDifficult(difficultDropdown);
             });
+            typeSelectCanvas.gameObject.SetActive(true);
+            sumScoreCanvas.gameObject.SetActive(false);
+            waitCanvas.gameObject.SetActive(false);
+            instructionCanvas.gameObject.SetActive(false);
+            settingCanvas.gameObject.SetActive(false);
         }
-
-        typeSelectCanvas.gameObject.SetActive(true);
-        settingCanvas.gameObject.SetActive(false);
-        sumScoreCanvas.gameObject.SetActive(false);
+        else
+        {
+            settingCanvas.gameObject.SetActive(true);
+        }
+        
         confirmBackCanvas.gameObject.SetActive(false);
-        waitCanvas.gameObject.SetActive(false);
-        instructionCanvas.gameObject.SetActive(false);
+
         //settingCanvas. = false;
 
         /*
@@ -182,27 +187,30 @@ public class timeController : MonoBehaviour
                     timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                     + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
 
-                    if (Time.time - timeStart < timeCntDwn)
+                    if (SceneManager.GetActiveScene().name != "Calibration")
                     {
-                        if (!isCountDown)
+                        if (Time.time - timeStart < timeCntDwn)
                         {
-                            timeStartCntDwn = Time.time - timeStart;
-                            cntDwnNum = 5;
-                            countDownCanvas.alpha = 1;
-                            isCountDown = true;
+                            if (!isCountDown)
+                            {
+                                timeStartCntDwn = Time.time - timeStart;
+                                cntDwnNum = 5;
+                                countDownCanvas.alpha = 1;
+                                isCountDown = true;
+                            }
+                            if (Time.time - timeStart > timeStartCntDwn + 1)
+                            {
+                                timeStartCntDwn += 1;
+                                cntDwnNum--;
+                            }
+                            countDownText.text = cntDwnNum.ToString();
                         }
-                        if (Time.time - timeStart > timeStartCntDwn + 1)
+                        else
                         {
-                            timeStartCntDwn += 1;
-                            cntDwnNum--;
+                            countDownCanvas.alpha = 0;
+                            isCountDown = false;
                         }
-                        countDownText.text = cntDwnNum.ToString();
-                    }
-                    else
-                    {
-                        countDownCanvas.alpha = 0;
-                        isCountDown = false;
-                    }
+                    }  
                 }
 
                 /*if (isCountDown)
@@ -333,7 +341,10 @@ public class timeController : MonoBehaviour
         {
             isTimeSet = true;
             timeSet = int.Parse(timeSetInput.text);
-            timeSet = timeSet + timeCntDwn;
+            if (SceneManager.GetActiveScene().name != "Calibration")
+            {
+                timeSet = timeSet + timeCntDwn;
+            }
         }
 
         if (timeFixationInput.text == "")
@@ -362,7 +373,14 @@ public class timeController : MonoBehaviour
 
     public void onBack()
     {
-        typeSelectCanvas.gameObject.SetActive(false);
+        if (SceneManager.GetActiveScene().name != "Calibration")
+        {
+            typeSelectCanvas.gameObject.SetActive(false);
+        }
+        else
+        {
+            settingCanvas.gameObject.SetActive(false);
+        }
         confirmBackCanvas.gameObject.SetActive(true);
     }
 
@@ -380,8 +398,14 @@ public class timeController : MonoBehaviour
     {
         // if not exit, hide canvas
         //confirmQuit.SetActive(false); // obsolated
-
-        typeSelectCanvas.gameObject.SetActive(true);
+        if (SceneManager.GetActiveScene().name != "Calibration")
+        {
+            typeSelectCanvas.gameObject.SetActive(true);
+        }
+        else
+        {
+            settingCanvas.gameObject.SetActive(true);
+        }
         confirmBackCanvas.gameObject.SetActive(false);
     }
 
@@ -396,8 +420,8 @@ public class timeController : MonoBehaviour
 
         modeName = "without NF";
         difficult = "hard";
-        timeSet = 15 + timeCntDwn;
-        timeFixation = 3;
+        timeSet = 300 + timeCntDwn;
+        timeFixation = 120;
         multiSceneCnt++;
         if (multiSceneCnt <= 3)
         {
