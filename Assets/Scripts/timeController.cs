@@ -53,7 +53,7 @@ public class timeController : MonoBehaviour
     public static bool isStart = false;
     public static bool isStartGame = false;
     public static bool isFinish = false;
-    public static bool isOnSave = true;
+    public static bool isOnSave = false;
     public static bool isSaving = false;
     public static bool isFixation = false;
     public static bool isFixing = false;
@@ -148,7 +148,6 @@ public class timeController : MonoBehaviour
                     {
                         fixationCanvas.alpha = 1;
                         isFixing = true;
-                        print(Time.time - timeStart);
                     }
                     else
                     {
@@ -415,6 +414,7 @@ public class timeController : MonoBehaviour
         else
         {
             typeSelectCanvas.gameObject.SetActive(true);
+            multiSceneCnt = 0;
         }
 
         if (multiSceneCnt < 3)
