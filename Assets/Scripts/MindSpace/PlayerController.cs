@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
 	void Update ()
 	{
-		if(!timeController.isContinue)
+		if(timeController.isContinue == false)
 		{
 			GetComponent<Rigidbody>().position = new Vector3( 0.0f, 0.0f, 0.0f );			
 		}
