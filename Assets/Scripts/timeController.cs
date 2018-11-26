@@ -88,8 +88,6 @@ public class timeController : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name != "Calibration")
         {
-            //multipleGameButton.onClick.AddListener(() => multiGameControl());
-
             difficultDropdown.onValueChanged.AddListener(delegate {
                 actionDropdownValueChangedDifficult(difficultDropdown);
             });
@@ -105,40 +103,17 @@ public class timeController : MonoBehaviour
         }
         
         confirmBackCanvas.gameObject.SetActive(false);
-
-        //settingCanvas. = false;
-
-        /*
-        settingCanvas.alpha = 0;
-        settingCanvas.interactable = false;
-        settingCanvas.blocksRaycasts = false;
-        sumScoreCanvas.alpha = 0;
-        sumScoreCanvas.interactable = false;
-        sumScoreCanvas.blocksRaycasts = false;
-        */
     }
 
     // Update is called once per frame
     void Update()
     {
-        //print(isContinue+" "+isTimeSet+" "+isFixation+" "+isFixationSet+" "+isFixing);
         if (isContinue == true)
         {
             isSaving = true;
             isFinish = false;
             if (isTimeSet == true)
             {
-                //Debug.Log("continue + timeset");
-                // timeTimeText.text = Mathf.Floor(Time.time / 60).ToString("00") + " : "
-                // + Mathf.Floor(Time.time % 60).ToString("00"); 
-
-                // timeCountText.text = Mathf.Floor((Time.time - timeStart - timeFixation) / 60).ToString("00") + " : "
-                // + Mathf.Floor((Time.time - timeStart - timeFixation) % 60).ToString("00");
-
-                // timeDownText.text = Mathf.Floor(timeSet / 60).ToString("00") + " : "
-                // + Mathf.Floor(timeSet % 60).ToString("00");  
-
-
                 if (isFixation == true)
                 {
                     timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart - timeFixation) / 60).ToString("00") + " : "
@@ -215,12 +190,6 @@ public class timeController : MonoBehaviour
                         }
                     }  
                 }
-
-                /*if (isCountDown)
-                {
-                    CountDownBeforeStartGame();
-                }*/
-
                 //print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
                 if (Time.time - timeStart > timeSet)
                 {
@@ -238,7 +207,6 @@ public class timeController : MonoBehaviour
             }
             else
             {
-                // isPlaying = true;
                 timeCountText.text = "Time\n" + Mathf.Floor((Time.time - timeStart) / 60).ToString("00") + " : "
                 + Mathf.Floor((Time.time - timeStart) % 60).ToString("00");
             }
@@ -257,16 +225,9 @@ public class timeController : MonoBehaviour
         isContinue = false;
         fixationCanvas.alpha = 0;
         settingCanvas.gameObject.SetActive(true);
-        /*
-        settingCanvas.alpha = 1;
-        settingCanvas.interactable = true;
-        settingCanvas.blocksRaycasts = true;
-        */
         isSaving = false;
         isFinish = true;
         isOnSave = true;
-        // isPlaying = false;
-        //isFixationSet = true;
     }
 
     public void onWaiting()
@@ -278,12 +239,10 @@ public class timeController : MonoBehaviour
         isFinish = true;
         isOnSave = true;
         isFixing = false;
-        //isFixationSet = true;
 
         fixationCanvas.alpha = 0;
         totalScoreText.text = SpaceController.mindSpaceScore.ToString();
         waitCanvas.gameObject.SetActive(true);
-        //multipleGameContinue.onClick.AddListener(() => multiGameControl());
         StartCoroutine(WaitForKeysToMultiGame());
         
     }
@@ -314,27 +273,12 @@ public class timeController : MonoBehaviour
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
     }
 
-    // private bool isCalScene()
-    // {
-    //     // string[] scenesList = new string[] {"spaceShooter", "cognitiveRun", "tetris", "gdrive", "gmath", "gmatch", "ordering", "grouping", "matching"};
-    //     // foreach (string i in scenesList)
-    //     // {
-    //     if(SceneManager.GetActiveScene().name == "Calibration")
-    //     {
-    //         return true;
-    //     }
-    //     // }
-    //     return false;
-    // }
-
     private void startOnClick()
     {
         multiGame = false;
         multiSceneCnt = 0;
         Time.timeScale = 1;
         timeStart = Time.time;
-        // timeStartText.text = Mathf.Floor(timeStart / 60).ToString("00") + " : " 
-        //     + Mathf.Floor(timeStart % 60).ToString("00");
 
         if (timeSetInput.text == "")
         {
@@ -391,7 +335,6 @@ public class timeController : MonoBehaviour
     public void onPromptYes()
     {
         Time.timeScale = 1;
-        // isConfirmExit = true;
 
         // if quit game without setting elapsed time
         // it still moves to scoreReport scene
@@ -415,13 +358,10 @@ public class timeController : MonoBehaviour
 
     public void multiGameControl()
     {
-        //StartCoroutine(CountDownBeforeStartGame());
         multiGame = true;
         waitCanvas.gameObject.SetActive(false);
         instructionCanvas.gameObject.SetActive(false);
-        //multipleGameContinue.onClick.RemoveListener(() => multiGameControl());
-
-
+        
         modeName = "without NF";
         difficult = "hard";
         timeSet = 15 + timeCntDwn; //300 + timeCntDwn
@@ -435,7 +375,6 @@ public class timeController : MonoBehaviour
             isFixation = true;
             isFixationSet = true;
             isContinue = true;
-            //settingCanvas.gameObject.SetActive(false);
             isStart = true;
             isStartGame = true;
             isCountDownSet = true;
@@ -457,19 +396,4 @@ public class timeController : MonoBehaviour
         
         Debug.Log(multiSceneCnt);
     }
-/*
-    IEnumerator CountDownBeforeStartGame()
-    {
-        int cntNum;
-
-        countDownCanvas.alpha = 1;
-        for (cntNum = timeCntDwn; cntNum > 0; cntNum--)
-        {
-            countDownText.text = cntNum.ToString();
-            yield return new WaitForSeconds(1);
-        }
-        countDownCanvas.alpha = 0;
-    }
-    */
-
 }
