@@ -17,7 +17,7 @@ public class SpaceController : MonoBehaviour
     public float startWait; // 0.5
     public float waveWait;  // 0.8
 
-    public static int mindSpaceScore = 0;
+    private int score;
     public Text scoreText;
 
     private int distance;
@@ -37,22 +37,22 @@ public class SpaceController : MonoBehaviour
 
     private float baseline;
     private float threshold;
-    //private static float baseline_space = 0;
-    //private static float threshold_spcae = 0;
+    private static float baseline_space = 0;
+    private static float threshold_spcae = 0;
 
     public int Fs = 256;
     public float percentOver = 0.01f;
     private int numOverThreshold = 0;
 
     public InputField feedbackThresholdInputField;
-    //public Dropdown difficultDropdown;
+    public Dropdown difficultDropdown;
     private float feedbackThreshold;
-    //public static string difficult;
-    //private int difficultIndex;
+    private string difficult;
+    private int difficultIndex;
     public float timeDuration = 1;
 
     private float timeStart = 0;
-    //private bool isStart = false;
+    private bool isStart = false;
 
     private GameObject[] gameObjects;
     private static List<float> gameTime = new List<float>();
@@ -71,14 +71,16 @@ public class SpaceController : MonoBehaviour
     private static bool isPlayAudio;
 
     private int countObject;
-    private int tmpHazardsSpeed;
-    private int tmpRewardsSpeed;
 
     void Start()
     {
         baseline = GameControl.currentBaselineAvg;
         threshold = GameControl.currentThresholdAvg;
 
+        difficultDropdown.onValueChanged.AddListener(delegate {
+            actionDropdownValueChanged(difficultDropdown);
+        });
+        
         GameObject gameControllerObject = GameObject.FindGameObjectWithTag("UDPReciever");
         if (gameControllerObject != null)
         {
@@ -99,7 +101,7 @@ public class SpaceController : MonoBehaviour
         audioSource.clip = backgroundAudio;
         isPlayAudio = false;
 
-        mindSpaceScore = 0;
+        score = 0;
         distance = 350;
 
         centerSlideCanvas.alpha = 0;
@@ -113,227 +115,184 @@ public class SpaceController : MonoBehaviour
 
     void Update()
     {
-        //print(timeController.isContinue+" "+timeController.isFixing+" "+timeController.isStartGame);
-        if ((timeController.isFixation == false || (timeController.isFixation == true && timeController.isFixationSet == false)) && timeController.isCountDownSet == false)
+        if (timeController.isContinue)
         {
-            if (timeController.isContinue == true)
+            if (timeController.isFixing)
             {
-                if (timeController.isFixing == true || timeController.isCountDown == true)
+                if (isPlayAudio)
                 {
-                    if (isPlayAudio == true)
-                    {
-                        audioSource.Stop(); print("Stop Background Audio");
-                        isPlayAudio = false;
-                    }
-                    hazardCount = 0;
-                    DestroyObjectswithTag("Asteroid");
-                    DestroyObjectswithTag("Reward");
+                    audioSource.Stop();
+                    isPlayAudio = false;
                 }
-                else
-                {
-                    if (Input.GetButtonDown("Horizontal")) { moveTrigger.Add(1); moveTime.Add(read2UDP.timeTempChanged); }
-                    if (Input.GetButtonUp("Horizontal")) { moveEnd.Add(read2UDP.timeTempChanged); }
-
-                    if (Input.GetButtonDown("Vertical")) { moveTrigger.Add(2); moveTime.Add(read2UDP.timeTempChanged); }
-                    if (Input.GetButtonUp("Vertical")) { moveEnd.Add(read2UDP.timeTempChanged); }
-
-                    if (timeController.isStartGame == true)
-                    {
-                        if (isPlayAudio == false)
-                        {
-                            if (timeController.multiSceneCnt != 4)
-                            {
-                                audioSource.Play(); print("Play Background Audio");
-                                isPlayAudio = true;
-                                AudioListener.volume = 1;
-                            }
-                            else
-                            {
-                                AudioListener.volume = 0;
-                            }
-                        }
-                        
-
-                        if (timeController.difficult == "easy")
-                        {
-                            hazardCount = 0;
-
-                            for(countObject = 0; countObject < hazards.Length; countObject++)
-                            {
-                                hazards[countObject].GetComponent<Mover>().speed = -5;
-                            }
-
-                            for (countObject = 0; countObject < rewards.Length; countObject++)
-                            {
-                                rewards[countObject].GetComponent<RewardMover>().speed = -3;
-                            }
-                        }
-                        else
-                        {
-                            hazardCount = configHazardCount;
-                        
-                            switch(timeController.multiSceneCnt)
-                            {
-                                case 1:
-                                    tmpHazardsSpeed = -5;
-                                    tmpRewardsSpeed = -5;
-                                    break;
-                                case 2:
-                                    tmpHazardsSpeed = -10;
-                                    tmpRewardsSpeed = -10;
-                                    break;
-                                case 3:
-                                case 4:
-                                    tmpHazardsSpeed = -15;
-                                    tmpRewardsSpeed = -15;
-                                    break;
-                                default:
-                                    tmpHazardsSpeed = hazardsSpeed;
-                                    tmpRewardsSpeed = rewardsSpeed;
-                                    break;
-                            }
-                            print(tmpHazardsSpeed);
-                            for(countObject = 0; countObject < hazards.Length; countObject++)
-                            {
-                                hazards[countObject].GetComponent<Mover>().speed = tmpHazardsSpeed;
-                            }
-
-                            for (countObject = 0; countObject < rewards.Length; countObject++)
-                            {
-                                rewards[countObject].GetComponent<RewardMover>().speed = tmpRewardsSpeed;
-                            }
-                        
-                        }
-
-                        if (feedbackThresholdInputField.text != "")
-                        {
-                            feedbackThreshold = float.Parse(feedbackThresholdInputField.text);
-                        }
-                        else
-                        {
-                            feedbackThreshold = 0.5f;
-                        }
-                        // print("Send to tempData");
-                        timeController.isStartGame = false; // comment out if not connect to G.Tec
-                        timeStart = timeController.timeStart;
-                    }
-
-
-                    if (timeController.modeName == "without NF")
-                    {
-                        distanceCanvas.alpha = 1;
-                        AddDistance();
-                    }
-                    else
-                    {
-                        data = read2UDP.dataTempChanged;
-                        // dataAvgChanged.Add(Alpha);
-                        a = (data - baseline) / (Mathf.Abs(threshold - baseline));
-                        if (a < 0) { a = 0; } else if (a > 1) { a = 1; }
-
-                        //print(">> " + numOverThreshold + " - " + percentOver * timeDuration * Fs);
-                        if (Time.time - timeStart <= timeDuration)
-                        {
-                            if (a > feedbackThreshold)
-                            {
-                                numOverThreshold += 1;
-                            }
-                        }
-                        else
-                        {
-                            if (numOverThreshold >= percentOver * timeDuration * Fs)
-                            {
-                                RewardWaves();
-                            }
-                            numOverThreshold = 0;
-                            timeStart = Time.time;
-                        }
-
-
-                        // 	if(isStart)
-                        // 	{
-                        // 		timeStart = Time.time;
-                        // 		isStart = false;
-                        // 	}
-
-                        // 	if(Time.time - timeStart >= timeDuration)
-                        // 	{
-                        // 		RewardWaves ();
-                        // 		isStart = true;
-                        // 	}
-                        // }	
-                        // else
-                        // {
-                        // 	isStart = true;
-                        // }	
-
-                        if (timeController.modeName == "NF with slider")
-                        {
-                            slideCanvas.alpha = 1;
-                            // currentGauge += (int)a;
-                            // currentGauge = Mathf.Clamp(currentGauge, 0, maxGauge);
-                            gaugeFill.value = a; //currentGauge / maxGauge;
-                        }
-                        else if (timeController.modeName == "NF with moving object")
-                        {
-                            if (timeController.difficult == "easy")
-                            {
-                                centerSlideCanvas.alpha = 0.8f * (1 - a);
-                            }
-                            else
-                            {
-                                for (int i = 0; i < matObject.Length; i++)
-                                {
-                                    matObject[i].color = new Color(1f, 1f, 1f, a);
-                                    matObject[i].SetFloat("_Metallic", a);
-                                }
-                            }
-
-                        }
-                    }
-                }
+                hazardCount = 0;
+                DestroyObjectswithTag("Asteroid");
+                DestroyObjectswithTag("Reward");
             }
             else
             {
-                if (timeController.isFinish == true)
-                {
-                    if (isPlayAudio == true)
-                    {
-                        audioSource.Stop(); print("Stop Background Audio");
-                        isPlayAudio = false;
-                    }
-                    Read2UDP.tempData["difficult"] = timeController.difficult;
-                    Read2UDP.tempData["feedbackthreshold"] = feedbackThreshold.ToString();
-                    Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
-                    Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
-                    Read2UDP.tempData["gametime"] = DataController.GameDataController.getAppendString(gameTime);
-                    Read2UDP.tempData["gametrigger"] = DataController.GameDataController.getAppendString(gameTrigger);
-                    Read2UDP.tempData["movetime"] = DataController.GameDataController.getAppendString(moveTime);
-                    Read2UDP.tempData["movetrigger"] = DataController.GameDataController.getAppendString(moveTrigger);
-                    Read2UDP.tempData["moveEnd"] = DataController.GameDataController.getAppendString(moveEnd);
-                    Read2UDP.tempData["asteroidappeartime"] = DataController.GameDataController.getAppendString(asteroidAppearTime);
-                    Read2UDP.tempData["rewardappeartime"] = DataController.GameDataController.getAppendString(rewardAppearTime);
-                    Read2UDP.tempData["score"] = mindSpaceScore.ToString();
+                if (Input.GetButtonDown("Horizontal")) { moveTrigger.Add(1); moveTime.Add(read2UDP.timeTempChanged); }
+                if (Input.GetButtonUp("Horizontal")) { moveEnd.Add(read2UDP.timeTempChanged); }
 
-                    gameTime.Clear();
-                    gameTrigger.Clear();
-                    moveTime.Clear();
-                    moveTrigger.Clear();
-                    moveEnd.Clear();
-                    asteroidAppearTime.Clear();
-                    rewardAppearTime.Clear();
-                    timeController.isFinish = false;
+                if (Input.GetButtonDown("Vertical")) { moveTrigger.Add(2); moveTime.Add(read2UDP.timeTempChanged); }
+                if (Input.GetButtonUp("Vertical")) { moveEnd.Add(read2UDP.timeTempChanged); }
+
+                if (timeController.isStartGame)
+                {
+                    if (!isPlayAudio)
+                    {
+                        audioSource.Play(); print("Play Background Audio");
+                        isPlayAudio = true;
+                    }
+
+                    difficult = difficultDropdown.options[difficultIndex].text;
+                    if (difficult == "easy")
+                    {
+                        hazardCount = 0;
+                    }
+                    else
+                    {
+                        hazardCount = configHazardCount;
+                        
+                        for(countObject = 0; countObject < hazards.Length; countObject++)
+                        {
+                            hazards[countObject].GetComponent<Mover>().speed = hazardsSpeed;
+                        }
+
+                        for (countObject = 0; countObject < rewards.Length; countObject++)
+                        {
+                            rewards[countObject].GetComponent<RewardMover>().speed = rewardsSpeed;
+                        }
+                        
+                    }
+
+                    if (feedbackThresholdInputField.text != "")
+                    {
+                        feedbackThreshold = float.Parse(feedbackThresholdInputField.text);
+                    }
+                    else
+                    {
+                        feedbackThreshold = 0.5f;
+                    }
+                    // print("Send to tempData");
+                    timeController.isStartGame = false; // comment out if not connect to G.Tec
+                    timeStart = timeController.timeStart;
                 }
-                RestartGame();
+
+
+                if (timeController.modeName == "without NF")
+                {
+                    distanceCanvas.alpha = 1;
+                    AddDistance();
+                }
+                else
+                {
+                    data = read2UDP.dataTempChanged;
+                    // dataAvgChanged.Add(Alpha);
+                    a = (data - baseline) / (Mathf.Abs(threshold - baseline));
+                    if (a < 0) { a = 0; } else if (a > 1) { a = 1; }
+
+                    //print(">> " + numOverThreshold + " - " + percentOver * timeDuration * Fs);
+                    if (Time.time - timeStart <= timeDuration)
+                    {
+                        if (a > feedbackThreshold)
+                        {
+                            numOverThreshold += 1;
+                        }
+                    }
+                    else
+                    {
+                        if (numOverThreshold >= percentOver * timeDuration * Fs)
+                        {
+                            RewardWaves();
+                        }
+                        numOverThreshold = 0;
+                        timeStart = Time.time;
+                    }
+
+
+                    // 	if(isStart)
+                    // 	{
+                    // 		timeStart = Time.time;
+                    // 		isStart = false;
+                    // 	}
+
+                    // 	if(Time.time - timeStart >= timeDuration)
+                    // 	{
+                    // 		RewardWaves ();
+                    // 		isStart = true;
+                    // 	}
+                    // }	
+                    // else
+                    // {
+                    // 	isStart = true;
+                    // }	
+
+                    if (timeController.modeName == "NF with slider")
+                    {
+                        slideCanvas.alpha = 1;
+                        // currentGauge += (int)a;
+                        // currentGauge = Mathf.Clamp(currentGauge, 0, maxGauge);
+                        gaugeFill.value = a; //currentGauge / maxGauge;
+                    }
+                    else if (timeController.modeName == "NF with moving object")
+                    {
+                        if (difficult == "easy")
+                        {
+                            centerSlideCanvas.alpha = 0.8f * (1 - a);
+                        }
+                        else
+                        {
+                            for (int i = 0; i < matObject.Length; i++)
+                            {
+                                matObject[i].color = new Color(1f, 1f, 1f, a);
+                                matObject[i].SetFloat("_Metallic", a);
+                            }
+                        }
+
+                    }
+                }
             }
+        }
+        else
+        {
+            if (timeController.isFinish)
+            {
+                if (isPlayAudio)
+                {
+                    audioSource.Stop();
+                    isPlayAudio = false;
+                }
+                Read2UDP.tempData["difficult"] = difficult;
+                Read2UDP.tempData["feedbackthreshold"] = feedbackThreshold.ToString();
+                Read2UDP.tempData["baseline"] = GameControl.currentBaselineAvg.ToString();
+                Read2UDP.tempData["threshold"] = GameControl.currentThresholdAvg.ToString();
+                Read2UDP.tempData["gametime"] = DataController.GameDataController.getAppendString(gameTime);
+                Read2UDP.tempData["gametrigger"] = DataController.GameDataController.getAppendString(gameTrigger);
+                Read2UDP.tempData["movetime"] = DataController.GameDataController.getAppendString(moveTime);
+                Read2UDP.tempData["movetrigger"] = DataController.GameDataController.getAppendString(moveTrigger);
+                Read2UDP.tempData["moveEnd"] = DataController.GameDataController.getAppendString(moveEnd);
+                Read2UDP.tempData["asteroidappeartime"] = DataController.GameDataController.getAppendString(asteroidAppearTime);
+                Read2UDP.tempData["rewardappeartime"] = DataController.GameDataController.getAppendString(rewardAppearTime);
+                Read2UDP.tempData["score"] = score.ToString();
+
+                gameTime.Clear();
+                gameTrigger.Clear();
+                moveTime.Clear();
+                moveTrigger.Clear();
+                moveEnd.Clear();
+                asteroidAppearTime.Clear();
+                rewardAppearTime.Clear();
+                timeController.isFinish = false;
+            }
+            restartGame();
         }
     }
 
-    /*private void actionDropdownValueChanged(Dropdown actionTarget)
+    private void actionDropdownValueChanged(Dropdown actionTarget)
     {
-        timeController.difficultIndex = actionTarget.value;
+        difficultIndex = actionTarget.value;
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
-    }*/
+    }
 
     private void RewardWaves()
     {
@@ -364,9 +323,9 @@ public class SpaceController : MonoBehaviour
         }
     }
 
-    public void MinusScore(int newScoreValue)
+    public void minusScore(int newScoreValue)
     {
-        mindSpaceScore -= newScoreValue;
+        score -= newScoreValue;
         UpdateScore();
         if (newScoreValue == 10) { trigger = -1; } else { trigger = 1; }
         gameTrigger.Add(trigger);
@@ -376,7 +335,7 @@ public class SpaceController : MonoBehaviour
 
     void UpdateScore()
     {
-        scoreText.text = mindSpaceScore.ToString();
+        scoreText.text = score.ToString();
     }
 
     private void AddDistance()
@@ -403,7 +362,7 @@ public class SpaceController : MonoBehaviour
         }
     }
 
-    private void RestartGame()
+    private void restartGame()
     {
         for (int i = 0; i < matObject.Length; i++)
         {
@@ -411,7 +370,7 @@ public class SpaceController : MonoBehaviour
             matObject[i].SetFloat("_Metallic", 1.0f);
         }
 
-        mindSpaceScore = 0;
+        score = 0;
         distance = 350;
         UpdateScore();
         AddDistance();

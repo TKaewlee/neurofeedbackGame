@@ -25,15 +25,11 @@ public class GameControl : MonoBehaviour {
         {
             DontDestroyOnLoad(gameObject);
             controller = this;
-            print("#1");
-            print(SceneManager.GetActiveScene().name);
         }
         else if (controller != this)
         {
             Destroy(gameObject);
             Debug.Log("There is GameControl from last scene, GameControl in _" + SceneManager.GetActiveScene().name + "_ is killed.");
-            /*DontDestroyOnLoad(gameObject);
-            controller = this;*/
         }
     }
 
