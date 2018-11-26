@@ -37,22 +37,16 @@ public class SpaceController : MonoBehaviour
 
     private float baseline;
     private float threshold;
-    //private static float baseline_space = 0;
-    //private static float threshold_spcae = 0;
 
     public int Fs = 256;
     public float percentOver = 0.01f;
     private int numOverThreshold = 0;
 
     public InputField feedbackThresholdInputField;
-    //public Dropdown difficultDropdown;
     private float feedbackThreshold;
-    //public static string difficult;
-    //private int difficultIndex;
     public float timeDuration = 1;
 
     private float timeStart = 0;
-    //private bool isStart = false;
 
     private GameObject[] gameObjects;
     private static List<float> gameTime = new List<float>();
@@ -107,7 +101,6 @@ public class SpaceController : MonoBehaviour
         slideCanvas.alpha = 0;
         AddDistance();
         UpdateScore();
-        // UpdateDistance ();
         StartCoroutine(SpawnWaves());
     }
 
@@ -248,24 +241,6 @@ public class SpaceController : MonoBehaviour
                             numOverThreshold = 0;
                             timeStart = Time.time;
                         }
-
-
-                        // 	if(isStart)
-                        // 	{
-                        // 		timeStart = Time.time;
-                        // 		isStart = false;
-                        // 	}
-
-                        // 	if(Time.time - timeStart >= timeDuration)
-                        // 	{
-                        // 		RewardWaves ();
-                        // 		isStart = true;
-                        // 	}
-                        // }	
-                        // else
-                        // {
-                        // 	isStart = true;
-                        // }	
 
                         if (timeController.modeName == "NF with slider")
                         {
