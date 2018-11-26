@@ -59,6 +59,7 @@ public class timeController : MonoBehaviour
     public static bool isFixing = false;
     public static bool isFixationSet = false;
     public static bool isCountDown = false;
+    public static bool isCountDownSet = true;
 
     public GameObject[] hazards;
     public GameObject[] rewards;
@@ -168,6 +169,7 @@ public class timeController : MonoBehaviour
                             cntDwnNum = 5;
                             countDownCanvas.alpha = 1;
                             isCountDown = true;
+                            isCountDownSet = false;
                         }
                         if (Time.time - timeStart > timeStartCntDwn + 1)
                         {
@@ -197,6 +199,7 @@ public class timeController : MonoBehaviour
                                 cntDwnNum = 5;
                                 countDownCanvas.alpha = 1;
                                 isCountDown = true;
+                                isCountDownSet = false;
                             }
                             if (Time.time - timeStart > timeStartCntDwn + 1)
                             {
@@ -368,6 +371,7 @@ public class timeController : MonoBehaviour
         settingCanvas.gameObject.SetActive(false);
         isStart = true;
         isStartGame = true;
+        isCountDownSet = true;
     }
 
 
@@ -420,10 +424,10 @@ public class timeController : MonoBehaviour
 
         modeName = "without NF";
         difficult = "hard";
-        timeSet = 300 + timeCntDwn;
-        timeFixation = 120;
+        timeSet = 15 + timeCntDwn; //300 + timeCntDwn
+        timeFixation = 5; //120
         multiSceneCnt++;
-        if (multiSceneCnt <= 3)
+        if (multiSceneCnt <= 4)
         {
             Time.timeScale = 1;
             timeStart = Time.time;
@@ -434,6 +438,7 @@ public class timeController : MonoBehaviour
             //settingCanvas.gameObject.SetActive(false);
             isStart = true;
             isStartGame = true;
+            isCountDownSet = true;
         }
         else
         {
@@ -441,7 +446,7 @@ public class timeController : MonoBehaviour
             multiSceneCnt = 0;
         }
 
-        if (multiSceneCnt < 3)
+        if (multiSceneCnt < 4)
         {
             waitText.text = "If you are ready, please press any of arrow keys to continue.";
         }

@@ -114,7 +114,7 @@ public class SpaceController : MonoBehaviour
     void Update()
     {
         //print(timeController.isContinue+" "+timeController.isFixing+" "+timeController.isStartGame);
-        if (timeController.isFixation == false || (timeController.isFixation == true && timeController.isFixationSet == false))
+        if ((timeController.isFixation == false || (timeController.isFixation == true && timeController.isFixationSet == false)) && timeController.isCountDownSet == false)
         {
             if (timeController.isContinue == true)
             {
@@ -141,9 +141,18 @@ public class SpaceController : MonoBehaviour
                     {
                         if (isPlayAudio == false)
                         {
-                            audioSource.Play(); print("Play Background Audio");
-                            isPlayAudio = true;
+                            if (timeController.multiSceneCnt != 4)
+                            {
+                                audioSource.Play(); print("Play Background Audio");
+                                isPlayAudio = true;
+                                AudioListener.volume = 1;
+                            }
+                            else
+                            {
+                                AudioListener.volume = 0;
+                            }
                         }
+                        
 
                         if (timeController.difficult == "easy")
                         {
@@ -174,6 +183,7 @@ public class SpaceController : MonoBehaviour
                                     tmpRewardsSpeed = -10;
                                     break;
                                 case 3:
+                                case 4:
                                     tmpHazardsSpeed = -15;
                                     tmpRewardsSpeed = -15;
                                     break;
