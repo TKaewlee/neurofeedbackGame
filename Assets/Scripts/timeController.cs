@@ -282,7 +282,9 @@ public class timeController : MonoBehaviour
 
         if (timeSetInput.text == "")
         {
-            isTimeSet = false;
+            //isTimeSet = false;
+            isTimeSet = true;
+            timeSet = 60 + timeCntDwn;
         }
         else
         {
