@@ -21,6 +21,9 @@ public class timeController : MonoBehaviour
     public Dropdown difficultDropdown;
     public static string difficult;
     public static int difficultIndex;
+    private List<string> difficultyOptions_withoutNF = new List<string> { "easy(no asteroid)", "easy (has asteroid)", "hard (with sfx)", "hard (without sfx)"};
+    private List<string> difficultyOptions_NFwithSlider = new List<string> { "-" };
+    private List<string> difficultyOptions_NFwithMovingObj = new List<string> { "easy", "hard" };
     public Dropdown sequenceDropdown;
     private int sequenceIndex;
 
@@ -284,6 +287,20 @@ public class timeController : MonoBehaviour
     {
         modeIndex = actionTarget.value;
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
+        difficultDropdown.ClearOptions();
+        switch (modeIndex)
+        {
+            case 0:
+                difficultDropdown.AddOptions(difficultyOptions_withoutNF);
+                break;
+            case 1:
+                difficultDropdown.AddOptions(difficultyOptions_NFwithSlider);
+                break;
+            case 2:
+                difficultDropdown.AddOptions(difficultyOptions_NFwithMovingObj);
+                break;
+        }
+        
     }
     private void actionDropdownValueChangedDifficult(Dropdown actionTarget)
     {

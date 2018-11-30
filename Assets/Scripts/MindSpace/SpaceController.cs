@@ -243,8 +243,7 @@ public class SpaceController : MonoBehaviour
                         }
                         else if (timeController.modeName == "NF with moving object")
                         {
-                            //temporary comment
-                            /*if (timeController.difficult == "easy")
+                            if (timeController.difficult == "easy")
                             {
                                 centerSlideCanvas.alpha = 0.8f * (1 - a);
                             }
@@ -255,7 +254,7 @@ public class SpaceController : MonoBehaviour
                                     matObject[i].color = new Color(1f, 1f, 1f, a);
                                     matObject[i].SetFloat("_Metallic", a);
                                 }
-                            }*/
+                            }
 
                         }
                     }
