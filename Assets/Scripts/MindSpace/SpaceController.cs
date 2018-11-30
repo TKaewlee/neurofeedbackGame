@@ -107,7 +107,8 @@ public class SpaceController : MonoBehaviour
     void Update()
     {
         //print(timeController.isContinue+" "+timeController.isFixing+" "+timeController.isStartGame);
-        if ((timeController.isFixation == false || (timeController.isFixation == true && timeController.isFixationSet == false)) && timeController.isCountDownSet == false)
+        //if ((timeController.isFixation == false || (timeController.isFixation == true && timeController.isFixationSet == false)) && timeController.isCountDownSet == false)
+        if (timeController.isCountDownSet == false)
         {
             if (timeController.isContinue == true)
             {
@@ -134,27 +135,22 @@ public class SpaceController : MonoBehaviour
                     {
                         if (isPlayAudio == false)
                         {
-                            if (timeController.multiSceneCnt != 4)
+                            if (timeController.modeName == "without NF" && timeController.difficultIndex == 3) //hard (without sound)
+                            {
+                                AudioListener.volume = 0;
+                            }
+                            else
                             {
                                 audioSource.Play(); print("Play Background Audio");
                                 isPlayAudio = true;
                                 AudioListener.volume = 1;
                             }
-                            else
-                            {
-                                AudioListener.volume = 0;
-                            }
                         }
                         
 
-                        if (timeController.difficult == "easy")
+                        if (timeController.difficultIndex == 0) //easy (no asteroid)
                         {
                             hazardCount = 0;
-
-                            for(countObject = 0; countObject < hazards.Length; countObject++)
-                            {
-                                hazards[countObject].GetComponent<Mover>().speed = -5;
-                            }
 
                             for (countObject = 0; countObject < rewards.Length; countObject++)
                             {
@@ -165,18 +161,14 @@ public class SpaceController : MonoBehaviour
                         {
                             hazardCount = configHazardCount;
                         
-                            switch(timeController.multiSceneCnt)
+                            switch(timeController.difficultIndex)
                             {
                                 case 1:
                                     tmpHazardsSpeed = -5;
                                     tmpRewardsSpeed = -5;
                                     break;
                                 case 2:
-                                    tmpHazardsSpeed = -10;
-                                    tmpRewardsSpeed = -10;
-                                    break;
                                 case 3:
-                                case 4:
                                     tmpHazardsSpeed = -15;
                                     tmpRewardsSpeed = -15;
                                     break;
@@ -251,7 +243,8 @@ public class SpaceController : MonoBehaviour
                         }
                         else if (timeController.modeName == "NF with moving object")
                         {
-                            if (timeController.difficult == "easy")
+                            //temporary comment
+                            /*if (timeController.difficult == "easy")
                             {
                                 centerSlideCanvas.alpha = 0.8f * (1 - a);
                             }
@@ -262,7 +255,7 @@ public class SpaceController : MonoBehaviour
                                     matObject[i].color = new Color(1f, 1f, 1f, a);
                                     matObject[i].SetFloat("_Metallic", a);
                                 }
-                            }
+                            }*/
 
                         }
                     }
@@ -332,7 +325,7 @@ public class SpaceController : MonoBehaviour
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(hazard, spawnPosition, spawnRotation);
                 asteroidAppearTime.Add(read2UDP.timeTempChanged);
-                //print("Asteriod time: " + read2UDP.timeTempChanged);
+                //print("Asteriod time: " + Time.time);
                 yield return new WaitForSeconds(spawnWait);
             }
             yield return new WaitForSeconds(waveWait);
@@ -343,7 +336,15 @@ public class SpaceController : MonoBehaviour
     {
         mindSpaceScore -= newScoreValue;
         UpdateScore();
-        if (newScoreValue == 10) { trigger = -1; } else { trigger = 1; }
+        if (newScoreValue == 10)
+        {
+            trigger = -1;
+            //print("Asteroid hit time: " + Time.time);
+        }
+        else
+        {
+            trigger = 1;
+        }
         gameTrigger.Add(trigger);
         gameTime.Add(read2UDP.timeTempChanged);
         //print(">>" + (-1*newScoreValue) + " - " + read2UDP.timeTempChanged);

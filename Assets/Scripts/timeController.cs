@@ -20,7 +20,9 @@ public class timeController : MonoBehaviour
     public static string modeName;
     public Dropdown difficultDropdown;
     public static string difficult;
-    private int difficultIndex;
+    public static int difficultIndex;
+    public Dropdown sequenceDropdown;
+    private int sequenceIndex;
 
     public Button startButton;
     public static bool isContinue;
@@ -28,8 +30,10 @@ public class timeController : MonoBehaviour
     public Button backButton;
     public Button promptYes;
     public Button promptNo;
-    public Button multipleGameButton;
-    public Button multipleGameContinue;
+    //public Button multipleGameButton;
+    //public Button multipleGameContinue;
+    public Button multipleStartButton;
+    public Button multipleBackButton;
 
     public static float timeStart = 0;
 
@@ -70,6 +74,9 @@ public class timeController : MonoBehaviour
     private int timeCntDwn = 5;
     private float timeStartCntDwn;
 
+    private int[,] sequenceSet = { { 1, 2, 3 }, { 3, 1, 2 }, { 2, 3, 1 } };
+    private int sequenceCnt;
+
     // Use this for initialization
     void Start()
     {
@@ -90,6 +97,9 @@ public class timeController : MonoBehaviour
         {
             difficultDropdown.onValueChanged.AddListener(delegate {
                 actionDropdownValueChangedDifficult(difficultDropdown);
+            });
+            sequenceDropdown.onValueChanged.AddListener(delegate {
+                actionDropdownValueChangedSequence(sequenceDropdown);
             });
             typeSelectCanvas.gameObject.SetActive(true);
             sumScoreCanvas.gameObject.SetActive(false);
@@ -144,7 +154,7 @@ public class timeController : MonoBehaviour
                             cntDwnNum = 5;
                             countDownCanvas.alpha = 1;
                             isCountDown = true;
-                            isCountDownSet = false;
+                            //isCountDownSet = false;
                         }
                         if (Time.time - timeStart > timeStartCntDwn + 1)
                         {
@@ -152,6 +162,10 @@ public class timeController : MonoBehaviour
                             cntDwnNum--;
                         }
                         countDownText.text = cntDwnNum.ToString();
+                        if (cntDwnNum == 1)
+                        {
+                            isCountDownSet = false;
+                        }
                     }
                     else
                     {
@@ -182,6 +196,10 @@ public class timeController : MonoBehaviour
                                 cntDwnNum--;
                             }
                             countDownText.text = cntDwnNum.ToString();
+                            if (cntDwnNum == 1)
+                            {
+                                isCountDownSet = false;
+                            }
                         }
                         else
                         {
@@ -272,6 +290,11 @@ public class timeController : MonoBehaviour
         difficultIndex = actionTarget.value;
         // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
     }
+    private void actionDropdownValueChangedSequence(Dropdown actionTarget)
+    {
+        sequenceIndex = actionTarget.value;
+        // print(modeIndex + ">>" + actionTarget.options[modeIndex].text);
+    }
 
     private void startOnClick()
     {
@@ -311,6 +334,7 @@ public class timeController : MonoBehaviour
         if (SceneManager.GetActiveScene().name != "Calibration")
         {
             difficult = difficultDropdown.options[difficultIndex].text;
+            print(difficultIndex);
         }
         modeName = modeDropdown.options[modeIndex].text;
         isContinue = true;
@@ -365,12 +389,13 @@ public class timeController : MonoBehaviour
         instructionCanvas.gameObject.SetActive(false);
         
         modeName = "without NF";
-        difficult = "hard";
         timeSet = 15 + timeCntDwn; //300 + timeCntDwn
         timeFixation = 5; //120
+
         multiSceneCnt++;
-        if (multiSceneCnt <= 4)
+        if (multiSceneCnt <= 3)
         {
+            difficultIndex = sequenceSet[sequenceIndex, multiSceneCnt - 1];
             Time.timeScale = 1;
             timeStart = Time.time;
             isTimeSet = true;
@@ -380,6 +405,14 @@ public class timeController : MonoBehaviour
             isStart = true;
             isStartGame = true;
             isCountDownSet = true;
+            if (multiSceneCnt < 3)
+            {
+                waitText.text = "If you are ready, please press any of arrow keys to continue.";
+            }
+            else
+            {
+                waitText.text = "Thank you for your participation.\nPlease press any of arrow keys to continue.";
+            }
         }
         else
         {
@@ -387,15 +420,6 @@ public class timeController : MonoBehaviour
             multiSceneCnt = 0;
         }
 
-        if (multiSceneCnt < 4)
-        {
-            waitText.text = "If you are ready, please press any of arrow keys to continue.";
-        }
-        else
-        {
-            waitText.text = "Thank you for your participation.\nPlease press any of arrow keys to continue.";
-        }
-        
         Debug.Log(multiSceneCnt);
     }
 }
