@@ -3633,7 +3633,9 @@ MonoBehaviour:
     m_Options:
     - m_Text: easy (no asteroid)
       m_Image: {fileID: 0}
-    - m_Text: easy (has asteroid)
+    - m_Text: easy (with sfx)
+      m_Image: {fileID: 0}
+    - m_Text: easy (without sfx)
       m_Image: {fileID: 0}
     - m_Text: hard (with sfx)
       m_Image: {fileID: 0}
@@ -5243,11 +5245,11 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: A (Easy, Hard(Sound), Hard(Mute))
+    - m_Text: A
       m_Image: {fileID: 0}
-    - m_Text: B (Hard(Mute), Easy, Hard(Sound))
+    - m_Text: B
       m_Image: {fileID: 0}
-    - m_Text: C (Hard(Sound), Hard(Mute), Easy)
+    - m_Text: C
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8309,10 +8311,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'There are...
-
-
-    If you are ready, please press any of arrow keys to continue.'
+  m_Text: "There are four games in this experiment. After you have finished one game,
+    please rest for 5 minutes before continue. \n\nIf you are ready, please press
+    space bar to continue."
 --- !u!222 &1049340233
 CanvasRenderer:
   m_ObjectHideFlags: 0

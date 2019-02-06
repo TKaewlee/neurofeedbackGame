@@ -21,7 +21,7 @@ public class timeController : MonoBehaviour
     public Dropdown difficultDropdown;
     public static string difficult;
     public static int difficultIndex;
-    private List<string> difficultyOptions_withoutNF = new List<string> { "easy(no asteroid)", "easy (has asteroid)", "hard (with sfx)", "hard (without sfx)"};
+    private List<string> difficultyOptions_withoutNF = new List<string> { "easy(no asteroid)", "easy (with sfx)", "easy (without sfx)", "hard (with sfx)", "hard (without sfx)"};
     private List<string> difficultyOptions_NFwithSlider = new List<string> { "-" };
     private List<string> difficultyOptions_NFwithMovingObj = new List<string> { "easy", "hard" };
     public Dropdown sequenceDropdown;
@@ -77,7 +77,7 @@ public class timeController : MonoBehaviour
     private int timeCntDwn = 5;
     private float timeStartCntDwn;
 
-    private int[,] sequenceSet = { { 1, 2, 3 }, { 3, 1, 2 }, { 2, 3, 1 } };
+    private int[,] sequenceSet = { { 1, 2, 3, 4 }, { 3, 1, 2, 4 }, { 2, 3, 1, 4 } };
     private int sequenceCnt;
 
     // Use this for initialization
@@ -276,7 +276,12 @@ public class timeController : MonoBehaviour
 
     IEnumerator WaitForKeysToMultiGame()
     {
-        while (!(Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)))
+        /*while (!(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
+        {
+            
+        }*/
+        //while (!(Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)))
+        while (!(Input.GetKeyUp(KeyCode.Space)))
         {
             yield return null;
         }
@@ -406,29 +411,29 @@ public class timeController : MonoBehaviour
         instructionCanvas.gameObject.SetActive(false);
         
         modeName = "without NF";
-        timeSet = 15 + timeCntDwn; //300 + timeCntDwn
-        timeFixation = 5; //120
+        timeSet =  360 + timeCntDwn; //300 + timeCntDwn
+        timeFixation = 0; //120
 
         multiSceneCnt++;
-        if (multiSceneCnt <= 3)
+        if (multiSceneCnt <= 4)
         {
             difficultIndex = sequenceSet[sequenceIndex, multiSceneCnt - 1];
             Time.timeScale = 1;
             timeStart = Time.time;
             isTimeSet = true;
-            isFixation = true;
-            isFixationSet = true;
+            isFixation = false; //true
+            isFixationSet = false; //true
             isContinue = true;
             isStart = true;
             isStartGame = true;
             isCountDownSet = true;
-            if (multiSceneCnt < 3)
+            if (multiSceneCnt < 4)
             {
-                waitText.text = "If you are ready, please press any of arrow keys to continue.";
+                waitText.text = "If you are ready, please press space bar to continue.";
             }
             else
             {
-                waitText.text = "Thank you for your participation.\nPlease press any of arrow keys to continue.";
+                waitText.text = "Thank you for your participation.\nPlease press space bar to continue.";
             }
         }
         else

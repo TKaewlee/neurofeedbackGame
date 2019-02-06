@@ -135,7 +135,7 @@ public class SpaceController : MonoBehaviour
                     {
                         if (isPlayAudio == false)
                         {
-                            if (timeController.modeName == "without NF" && timeController.difficultIndex == 3) //hard (without sound)
+                            if (timeController.modeName == "without NF" && (timeController.difficultIndex == 2 || timeController.difficultIndex == 4)) //hard (without sound)
                             {
                                 AudioListener.volume = 0;
                             }
@@ -164,11 +164,12 @@ public class SpaceController : MonoBehaviour
                             switch(timeController.difficultIndex)
                             {
                                 case 1:
+                                case 2:
                                     tmpHazardsSpeed = -5;
                                     tmpRewardsSpeed = -5;
                                     break;
-                                case 2:
                                 case 3:
+                                case 4:
                                     tmpHazardsSpeed = -15;
                                     tmpRewardsSpeed = -15;
                                     break;
