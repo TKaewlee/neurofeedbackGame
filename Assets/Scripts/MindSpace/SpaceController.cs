@@ -16,6 +16,7 @@ public class SpaceController : MonoBehaviour
     public float spawnWait; // 1.5
     public float startWait; // 0.5
     public float waveWait;  // 0.8
+    public Canvas maskCanvas;
 
     public static int mindSpaceScore = 0;
     public Text scoreText;
@@ -63,6 +64,7 @@ public class SpaceController : MonoBehaviour
     private AudioSource audioSource;
     public AudioClip backgroundAudio;
     private static bool isPlayAudio;
+    private static bool isMaskAppear;
 
     private int countObject;
     private int tmpHazardsSpeed;
@@ -199,6 +201,20 @@ public class SpaceController : MonoBehaviour
                         {
                             feedbackThreshold = 0.5f;
                         }
+
+                        if(timeController.modeName == "Working Memory")
+                        {
+                            hazardCount = 1;
+                            tmpHazardsSpeed = -5;
+                            for (countObject = 0; countObject < hazards.Length; countObject++)
+                            {
+                                hazards[countObject].GetComponent<Mover>().speed = tmpHazardsSpeed;
+                            }
+                            spawnWait = 0;
+                            startWait = 1;
+                            waveWait = 6;
+
+                        }
                         // print("Send to tempData");
                         timeController.isStartGame = false; // comment out if not connect to G.Tec
                         timeStart = timeController.timeStart;
@@ -325,7 +341,11 @@ public class SpaceController : MonoBehaviour
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(hazard, spawnPosition, spawnRotation);
                 asteroidAppearTime.Add(read2UDP.timeTempChanged);
-                //print("Asteriod time: " + Time.time);
+                print("Asteriod time: " + Time.time);
+                if (timeController.modeName == "Working Memory")
+                {
+                    RandMaskCanvas();
+                }
                 yield return new WaitForSeconds(spawnWait);
             }
             yield return new WaitForSeconds(waveWait);
@@ -377,6 +397,20 @@ public class SpaceController : MonoBehaviour
                 RewardWaves();
             }
         }
+    }
+
+    private void RandMaskCanvas()
+    {
+        if (Random.value > 0.5)
+        {
+            isMaskAppear = true;
+        }
+        else
+        {
+            isMaskAppear = false;
+        }
+        print(isMaskAppear);
+        maskCanvas.gameObject.SetActive(isMaskAppear);
     }
 
     private void RestartGame()

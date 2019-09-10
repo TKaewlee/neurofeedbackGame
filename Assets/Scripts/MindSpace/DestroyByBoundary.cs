@@ -6,5 +6,6 @@ public class DestroyByBoundary : MonoBehaviour
 {
 	void OnTriggerExit(Collider other) {
 		Destroy(other.gameObject);
+        print("Detroy object: " + Time.time);
 	}
 }

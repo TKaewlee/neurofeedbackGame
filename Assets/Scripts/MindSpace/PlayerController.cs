@@ -42,14 +42,14 @@ public class PlayerController : MonoBehaviour
 			GetComponent<Rigidbody>().position = new Vector3( 0.0f, 0.0f, 0.0f );			
 		}
 
-        if (Input.GetButton("Fire1") && Time.time > nextFire)
-        {
-            //gameController.minusScore(5);
-            nextFire = Time.time + fireRate;
-            // GameObject clone = 
-            Instantiate(shot, shotSpawn.position, shotSpawn.rotation); //as GameObject;
-            GetComponent<AudioSource>().Play();
-        }
+        //if (Input.GetButton("Fire1") && Time.time > nextFire)
+        //{
+        //    //gameController.minusScore(5);
+        //    nextFire = Time.time + fireRate;
+        //    // GameObject clone = 
+        //    Instantiate(shot, shotSpawn.position, shotSpawn.rotation); //as GameObject;
+        //    GetComponent<AudioSource>().Play();
+        //}
     }
 
 	void FixedUpdate ()

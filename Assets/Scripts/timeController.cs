@@ -24,6 +24,7 @@ public class timeController : MonoBehaviour
     private List<string> difficultyOptions_withoutNF = new List<string> { "easy(no asteroid)", "easy (with sfx)", "easy (without sfx)", "hard (with sfx)", "hard (without sfx)"};
     private List<string> difficultyOptions_NFwithSlider = new List<string> { "-" };
     private List<string> difficultyOptions_NFwithMovingObj = new List<string> { "easy", "hard" };
+    private List<string> difficultyOptions_WorkingMemory = new List<string> { "-" };
     public Dropdown sequenceDropdown;
     private int sequenceIndex;
 
@@ -303,6 +304,12 @@ public class timeController : MonoBehaviour
                 break;
             case 2:
                 difficultDropdown.AddOptions(difficultyOptions_NFwithMovingObj);
+                break;
+            case 3:
+                difficultDropdown.AddOptions(difficultyOptions_WorkingMemory);
+                break;
+            default:
+                difficultDropdown.AddOptions(difficultyOptions_withoutNF);
                 break;
         }
         
