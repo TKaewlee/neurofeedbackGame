@@ -38,6 +38,8 @@ public class timeController : MonoBehaviour
     //public Button multipleGameContinue;
     public Button multipleStartButton;
     public Button multipleBackButton;
+    public Button advancedSettingOkButton;
+    public Button advancedSettingButton;
 
     public static float timeStart = 0;
 
@@ -68,6 +70,7 @@ public class timeController : MonoBehaviour
     public static bool isFixationSet = false;
     public static bool isCountDown = false;
     public static bool isCountDownSet = true;
+    public static bool isAdvancedSettingSave = false;
 
     public GameObject[] hazards;
     public GameObject[] rewards;
@@ -92,6 +95,8 @@ public class timeController : MonoBehaviour
         backButton.onClick.AddListener(() => onBack());
         promptYes.onClick.AddListener(onPromptYes);
         promptNo.onClick.AddListener(onPromptNo);
+
+        advancedSettingOkButton.onClick.AddListener(advancedSettingFlag);
 
         modeDropdown.onValueChanged.AddListener(delegate {
             actionDropdownValueChangedMode(modeDropdown);
@@ -298,18 +303,23 @@ public class timeController : MonoBehaviour
         {
             case 0:
                 difficultDropdown.AddOptions(difficultyOptions_withoutNF);
+                advancedSettingButton.interactable = false;
                 break;
             case 1:
                 difficultDropdown.AddOptions(difficultyOptions_NFwithSlider);
+                advancedSettingButton.interactable = false;
                 break;
             case 2:
                 difficultDropdown.AddOptions(difficultyOptions_NFwithMovingObj);
+                advancedSettingButton.interactable = false;
                 break;
             case 3:
                 difficultDropdown.AddOptions(difficultyOptions_WorkingMemory);
+                advancedSettingButton.interactable = true;
                 break;
             default:
                 difficultDropdown.AddOptions(difficultyOptions_withoutNF);
+                advancedSettingButton.interactable = false;
                 break;
         }
         
@@ -409,6 +419,11 @@ public class timeController : MonoBehaviour
             settingCanvas.gameObject.SetActive(true);
         }
         confirmBackCanvas.gameObject.SetActive(false);
+    }
+
+    public void advancedSettingFlag()
+    {
+        isAdvancedSettingSave = true;
     }
 
     public void multiGameControl()

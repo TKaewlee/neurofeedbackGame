@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class DestroyByBoundary : MonoBehaviour 
 {
-	void OnTriggerExit(Collider other) {
-		Destroy(other.gameObject);
-        print("Detroy object: " + Time.time);
-	}
+    void OnTriggerExit(Collider other) {
+        Destroy(other.gameObject);
+        //print("Detroy object: " + Time.time);
+        if (other.tag == "Asteroid")
+        {
+            PlayerController.isMissAsteroid = true;
+        }
+    }
 }

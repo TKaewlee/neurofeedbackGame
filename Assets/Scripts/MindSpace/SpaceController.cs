@@ -17,6 +17,7 @@ public class SpaceController : MonoBehaviour
     public float startWait; // 0.5
     public float waveWait;  // 0.8
     public Canvas maskCanvas;
+    public Image maskPanel;
 
     public static int mindSpaceScore = 0;
     public Text scoreText;
@@ -69,6 +70,24 @@ public class SpaceController : MonoBehaviour
     private int countObject;
     private int tmpHazardsSpeed;
     private int tmpRewardsSpeed;
+
+    /* Advanced Setting */
+    public InputField asteroidSpeedInput;
+    public InputField spaceShipMaxSpeedInput;
+    public InputField trialIntervalInput;
+    public InputField maskAppearRatioInput;
+    public InputField maskSizeInput;
+    public InputField asteroidSizeInput;
+    public Toggle addShotCheckbox;
+    public InputField maxShotInput;
+    //public InputField fixationInput;
+
+    private float asteroidDuration;
+    private const float timeSpeedSlope = -0.3f;
+    private const float timeIntercept = 6.1f;
+    private static float maskAppearRatio;
+    private int maxShot;
+    private const int scoreValue = 10;
 
     void Start()
     {
@@ -204,15 +223,25 @@ public class SpaceController : MonoBehaviour
 
                         if(timeController.modeName == "Working Memory")
                         {
-                            hazardCount = 1;
-                            tmpHazardsSpeed = -5;
-                            for (countObject = 0; countObject < hazards.Length; countObject++)
+                            if (timeController.isAdvancedSettingSave)
                             {
-                                hazards[countObject].GetComponent<Mover>().speed = tmpHazardsSpeed;
+                                SetAdvancedSettingParameter();
+                                timeController.isAdvancedSettingSave = false;
                             }
+                            else
+                            {
+                                DefaultAdvancedSettingParameter();
+                            }
+
+                            //if (isMissAsteroid)
+                            //{
+                            //    MinusScore(scoreValue);
+                            //    isMissAsteroid = false;
+                            //}
+
+                            hazardCount = 1;
                             spawnWait = 0;
                             startWait = 1;
-                            waveWait = 6;
 
                         }
                         // print("Send to tempData");
@@ -313,6 +342,63 @@ public class SpaceController : MonoBehaviour
         }
     }
 
+    private void SetAdvancedSettingParameter()
+    {
+        RectTransform maskPanelRectTrans;
+        SetGameObjectSpeed(hazards, int.Parse(asteroidSpeedInput.text) * (-1));
+        PlayerController.speed = float.Parse(spaceShipMaxSpeedInput.text);
+        SetWaveWaitTime(float.Parse(trialIntervalInput.text), int.Parse(asteroidSpeedInput.text));
+        maskAppearRatio = float.Parse(maskAppearRatioInput.text);
+        maskPanelRectTrans = maskPanel.GetComponent<RectTransform>();
+        maskPanelRectTrans.localScale = new Vector3(maskPanelRectTrans.localScale.x, float.Parse(maskSizeInput.text), maskPanelRectTrans.localScale.z);
+        SetGameObjectSize(hazards, int.Parse(asteroidSizeInput.text));
+        if(addShotCheckbox.isOn)
+        {
+            if (maxShotInput.text == "")
+            {
+                maxShot = 100;
+            }
+            else
+            {
+                maxShot = int.Parse(maxShotInput.text);
+            }
+        }
+    }
+    private void DefaultAdvancedSettingParameter()
+    {
+        RectTransform maskPanelRectTrans;
+        SetGameObjectSpeed(hazards, -5);
+        PlayerController.speed = 10;
+        SetWaveWaitTime(1.5f, -5);
+        maskAppearRatio = 0.5f;
+        maskPanelRectTrans = maskPanel.GetComponent<RectTransform>();
+        maskPanelRectTrans.localScale = new Vector3(maskPanelRectTrans.localScale.x, 0.35f, maskPanelRectTrans.localScale.z);
+        SetGameObjectSize(hazards, 3);
+        maxShot = 100;
+    }
+
+    private void SetGameObjectSpeed(GameObject[] setObject, int setSpeed)
+    {
+        for (countObject = 0; countObject < setObject.Length; countObject++)
+        {
+            setObject[countObject].GetComponent<Mover>().speed = setSpeed;
+        }
+    }
+
+    private void SetWaveWaitTime(float intervalTime, int asteroidSpeed)
+    {
+        asteroidDuration = timeSpeedSlope * asteroidSpeed + timeIntercept;
+        waveWait = asteroidDuration + intervalTime;
+    }
+
+    private void SetGameObjectSize(GameObject[] setObject, int setSize)
+    {
+        for (countObject = 0; countObject < setObject.Length; countObject++)
+        {
+            setObject[countObject].GetComponent<Transform>().localScale = new Vector3(setSize, setSize, setSize);
+        }
+    }
+
     /*private void actionDropdownValueChanged(Dropdown actionTarget)
     {
         timeController.difficultIndex = actionTarget.value;
@@ -401,7 +487,7 @@ public class SpaceController : MonoBehaviour
 
     private void RandMaskCanvas()
     {
-        if (Random.value > 0.5)
+        if (Random.value <= maskAppearRatio)
         {
             isMaskAppear = true;
         }

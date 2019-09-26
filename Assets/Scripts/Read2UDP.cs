@@ -147,8 +147,10 @@ public class Read2UDP : MonoBehaviour
 	void OnDisable ()
 	{ 
 		onRecieve = false;
-		if (receiveThread != null)
-			receiveThread.Abort ();
+        if (receiveThread != null)
+        {
+            receiveThread.Abort();
+        }
 		client.Close ();
 		client1.Close ();			
 		print("close all");

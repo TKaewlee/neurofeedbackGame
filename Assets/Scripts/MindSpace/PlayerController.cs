@@ -10,13 +10,14 @@ public class Boundary
 
 public class PlayerController : MonoBehaviour 
 {
-	public float speed;
+	public static float speed = 10;
 	public float tilt;
 	public Boundary boundary;
 
     public GameObject shot;
     public Transform shotSpawn;
     public float fireRate;
+    public static bool isMissAsteroid = false;
 
     private float nextFire;
 
@@ -42,14 +43,20 @@ public class PlayerController : MonoBehaviour
 			GetComponent<Rigidbody>().position = new Vector3( 0.0f, 0.0f, 0.0f );			
 		}
 
-        //if (Input.GetButton("Fire1") && Time.time > nextFire)
-        //{
-        //    //gameController.minusScore(5);
-        //    nextFire = Time.time + fireRate;
-        //    // GameObject clone = 
-        //    Instantiate(shot, shotSpawn.position, shotSpawn.rotation); //as GameObject;
-        //    GetComponent<AudioSource>().Play();
-        //}
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire)
+        {
+            //gameController.minusScore(5);
+            nextFire = Time.time + fireRate;
+            // GameObject clone = 
+            Instantiate(shot, shotSpawn.position, shotSpawn.rotation); //as GameObject;
+            GetComponent<AudioSource>().Play();
+        }
+
+        if (isMissAsteroid == true)
+        {
+            gameController.MinusScore(10);
+            isMissAsteroid = false;
+        }
     }
 
 	void FixedUpdate ()
