@@ -65,7 +65,7 @@ public class SpaceController : MonoBehaviour
     private AudioSource audioSource;
     public AudioClip backgroundAudio;
     private static bool isPlayAudio;
-    private static bool isMaskAppear;
+    private static bool isMaskAppear = false;
 
     private int countObject;
     private int tmpHazardsSpeed;
@@ -123,6 +123,7 @@ public class SpaceController : MonoBehaviour
         AddDistance();
         UpdateScore();
         StartCoroutine(SpawnWaves());
+        maskCanvas.gameObject.SetActive(false);
     }
 
     void Update()
@@ -232,12 +233,6 @@ public class SpaceController : MonoBehaviour
                             {
                                 DefaultAdvancedSettingParameter();
                             }
-
-                            //if (isMissAsteroid)
-                            //{
-                            //    MinusScore(scoreValue);
-                            //    isMissAsteroid = false;
-                            //}
 
                             hazardCount = 1;
                             spawnWait = 0;
@@ -516,6 +511,7 @@ public class SpaceController : MonoBehaviour
         slideCanvas.alpha = 0;
         DestroyObjectswithTag("Asteroid");
         DestroyObjectswithTag("Reward");
+        maskCanvas.gameObject.SetActive(false);
     }
 
     private void DestroyObjectswithTag(string tag)
