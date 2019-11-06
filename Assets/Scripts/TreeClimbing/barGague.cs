@@ -41,7 +41,7 @@ public class barGague : MonoBehaviour {
 	void Update () {
 		if(timeController.isSaving)
 		{
-			Alpha = read2UDP.dataTempChanged;
+			Alpha = read2UDP.betaDataTempChanged;
 			// dataAvgChanged.Add(Alpha);
             a = (Alpha-baseline)/Mathf.Abs(threshold-baseline);
 			if(a < 0){a = 0;} else if (a > 1){a = 1;}

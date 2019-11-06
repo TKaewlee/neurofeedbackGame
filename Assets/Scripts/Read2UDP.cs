@@ -25,22 +25,26 @@ public class Read2UDP : MonoBehaviour
 {
 
 	//Ports
-	public int portLocal = 8000;
-	public int portLocal1 = 8001;
+	public int portLocal = 8000; //Beta
+	public int portLocal1 = 8001; //Time
+    public int portLocal2 = 8002; //Theta
 
 	// Create necessary UdpClient objects
 	UdpClient client;
 	UdpClient client1;
+    UdpClient client2;
 
 	// Receiving Thread
 	Thread receiveThread;
 	private bool onRecieve = true;
 
 	private float timeshift = 0;
-	public float dataTempChanged;
+	public float betaDataTempChanged;
 	public float timeTempChanged;
-	private static List<float> dataChanged = new List<float>();
+    public float thetaDataTempChanged;
+	private static List<float> betaDataChanged = new List<float>();
 	private static List<float> timeChanged = new List<float>();
+    private static List<float> thetaDataChanged = new List<float>();
 	public static Dictionary<string, string> tempData = new Dictionary<string, string>();
 	
 
@@ -61,6 +65,7 @@ public class Read2UDP : MonoBehaviour
 		// Create local client
 		client = new UdpClient (portLocal);
 		client1 = new UdpClient (portLocal1);
+        client2 = new UdpClient(portLocal2);
 
 		// local endpoint define (where messages are received)
 		// Create a new thread for reception of incoming messages
@@ -76,12 +81,15 @@ public class Read2UDP : MonoBehaviour
 	{
 		do {
 			try {
-				IPEndPoint IP8000 = new IPEndPoint (IPAddress.Any, portLocal);
-				IPEndPoint IP8001 = new IPEndPoint (IPAddress.Any, portLocal1);
-				byte[] data = client.Receive (ref IP8000);
-				byte[] data1 = client1.Receive (ref IP8001);
-				dataTempChanged = (float)BitConverter.ToDouble(data, 0);
+				IPEndPoint IP8000 = new IPEndPoint(IPAddress.Any, portLocal);
+				IPEndPoint IP8001 = new IPEndPoint(IPAddress.Any, portLocal1);
+                IPEndPoint IP8002 = new IPEndPoint(IPAddress.Any, portLocal2);
+				byte[] data = client.Receive(ref IP8000);
+				byte[] data1 = client1.Receive(ref IP8001);
+                byte[] data2 = client2.Receive(ref IP8002);
+                betaDataTempChanged = (float)BitConverter.ToDouble(data, 0);
 				timeTempChanged = (float)BitConverter.ToDouble(data1, 0);
+                thetaDataTempChanged = (float)BitConverter.ToDouble(data2, 0);
 				
 				if(timeController.isStart == true && timeController.isFixationSet == false)
 				{
@@ -112,8 +120,9 @@ public class Read2UDP : MonoBehaviour
 					if (timeController.isSaving)
 					{
 						timeChanged.Add(timeTempChanged);
-						dataChanged.Add(dataTempChanged);
-					}
+						betaDataChanged.Add(betaDataTempChanged);
+                        thetaDataChanged.Add(thetaDataTempChanged);
+                    }
 				}
                 
                 if (timeController.isOnSave == true)
@@ -122,7 +131,8 @@ public class Read2UDP : MonoBehaviour
 					{
                         tempData["stop"] = timeTempChanged.ToString("f2");
                         tempData["time"] = DataController.GameDataController.getAppendString(timeChanged);
-                        tempData["data"] = DataController.GameDataController.getAppendString(dataChanged);
+                        tempData["beta"] = DataController.GameDataController.getAppendString(betaDataChanged);
+                        tempData["theta"] = DataController.GameDataController.getAppendString(thetaDataChanged);
 
                         print(">> Start Saving");
 						DataController.GameDataController.updateGamePath();
@@ -131,8 +141,9 @@ public class Read2UDP : MonoBehaviour
 						DataController.GameDataController.clearData();
 
 						timeChanged.Clear();
-						dataChanged.Clear();
-						timeController.isOnSave = false;
+						betaDataChanged.Clear();
+                        thetaDataChanged.Clear();
+                        timeController.isOnSave = false;
 						tempData.Clear();
 					}
 				}
@@ -150,7 +161,8 @@ public class Read2UDP : MonoBehaviour
 		if (receiveThread != null)
 			receiveThread.Abort ();
 		client.Close ();
-		client1.Close ();			
+		client1.Close ();
+        client2.Close();
 		print("close all");
 	}
 }

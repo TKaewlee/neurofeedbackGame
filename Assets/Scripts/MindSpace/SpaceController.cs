@@ -31,7 +31,8 @@ public class SpaceController : MonoBehaviour
     public Material[] matObject;
 
     private Read2UDP read2UDP;
-    private float data;
+    private float betaData;
+    private float thetaData;
 
     public float a;
 
@@ -212,9 +213,10 @@ public class SpaceController : MonoBehaviour
                     }
                     else
                     {
-                        data = read2UDP.dataTempChanged;
+                        betaData = read2UDP.betaDataTempChanged;
+                        thetaData = read2UDP.thetaDataTempChanged;
                         // dataAvgChanged.Add(Alpha);
-                        a = (data - baseline) / (Mathf.Abs(threshold - baseline));
+                        a = (betaData - baseline) / (Mathf.Abs(threshold - baseline));
                         if (a < 0) { a = 0; } else if (a > 1) { a = 1; }
 
                         //print(">> " + numOverThreshold + " - " + percentOver * timeDuration * Fs);

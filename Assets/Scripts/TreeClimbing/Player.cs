@@ -59,7 +59,7 @@ public class Player : MonoBehaviour {
 	void Update () {
 		if(timeController.isSaving)
 		{
-			Alpha = read2UDP.dataTempChanged;
+			Alpha = read2UDP.betaDataTempChanged;
 			dataAvgChanged.Add(Alpha);
             a=1-((baseline-Alpha)/threshold);
 			if (!isAlive){ return; }

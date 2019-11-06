@@ -7,14 +7,20 @@ using UnityEngine.UI;               // ui objects
 public class ColorCtrl : MonoBehaviour {
 
 	public Material matObject;
-	public float Alpha = 1.0f, a;
-	private float baseAlpha = 10.0f;
+    public float Beta = 1.0f;
+    public float Theta = 1.0f;
+    public float a;
+	//private float baseAlpha = 10.0f;
 	// public KeyCode changeCol;
 	private Read2UDP read2UDP;
 
 	private static List<float> dataAvgChanged = new List<float>();
-	private float dataAvg;
-	public Text baselineSetText;
+	private static List<float> betaDataAvgChanged = new List<float>();
+    private static List<float> thetaDataAvgChanged = new List<float>();
+    private float betaDataAvg;
+    private float thetaDataAvg;
+    private float tbrDataAvg;
+    public Text baselineSetText;
 	public InputField baselineInputField;
 	public Text thresholdSetText;
 	public InputField thresholdInputField;
@@ -41,21 +47,25 @@ public class ColorCtrl : MonoBehaviour {
 	void Update () {
 		if(timeController.isSaving)
 		{
-			Alpha = read2UDP.dataTempChanged;
-			dataAvgChanged.Add(Alpha);
+            Beta = read2UDP.betaDataTempChanged;
+            Theta = read2UDP.thetaDataTempChanged;
+            betaDataAvgChanged.Add(Beta);
+            thetaDataAvgChanged.Add(Theta);
 			if(timeController.modeName == "Threshold")
 			{
 				// a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;
-				a = 1-((Alpha - baseAlpha)/10);
+				/*a = 1-((Alpha - baseAlpha)/10);
 				if(a < 0){a = 0;} else if (a > 1){a = 1;}
-				matObject.color = new Color(0f, 0f, 0f, a);
+				matObject.color = new Color(0f, 0f, 0f, a);*/
 			}
 		}
 		else
 		{	
 			if(timeController.isFinish)
 			{
-				dataAvg = dataAvgChanged.Average();
+                betaDataAvg = betaDataAvgChanged.Average();
+                thetaDataAvg = thetaDataAvgChanged.Average();
+                tbrDataAvg = thetaDataAvg / thetaDataAvg;
 				if(timeController.modeName == "Baseline")
 				{
 					if(baselineInputField.text != "")
@@ -65,8 +75,8 @@ public class ColorCtrl : MonoBehaviour {
 					}
 					else
 					{
-						baselineSetText.text = "Baseline     : " + dataAvg.ToString();
-						GameControl.currentBaselineAvg = dataAvg;
+						baselineSetText.text = "Baseline     : " + tbrDataAvg.ToString();
+						GameControl.currentBaselineAvg = tbrDataAvg;
 					}
 					
 				}
@@ -79,15 +89,16 @@ public class ColorCtrl : MonoBehaviour {
 					}
 					else
 					{
-						thresholdSetText.text = "Threshold : " + dataAvg.ToString();
-						GameControl.currentThresholdAvg = dataAvg;
+						thresholdSetText.text = "Threshold : " + tbrDataAvg.ToString();
+						GameControl.currentThresholdAvg = tbrDataAvg;
 					}
 				}
 
-				Read2UDP.tempData["average"] = dataAvg.ToString();
-				
-				dataAvgChanged.Clear();
-				timeController.isFinish = false;	
+				Read2UDP.tempData["average"] = tbrDataAvg.ToString();
+
+                betaDataAvgChanged.Clear();
+                thetaDataAvgChanged.Clear();
+                timeController.isFinish = false;	
 			}
 		}
 	}
