@@ -14,7 +14,6 @@ public class ColorCtrl : MonoBehaviour {
 	// public KeyCode changeCol;
 	private Read2UDP read2UDP;
 
-	private static List<float> dataAvgChanged = new List<float>();
 	private static List<float> betaDataAvgChanged = new List<float>();
     private static List<float> thetaDataAvgChanged = new List<float>();
     private float betaDataAvg;
