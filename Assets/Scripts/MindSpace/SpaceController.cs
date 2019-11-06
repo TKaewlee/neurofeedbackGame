@@ -62,6 +62,14 @@ public class SpaceController : MonoBehaviour
     private static List<int> moveTrigger = new List<int>();
     private static List<float> moveEnd = new List<float>();
 
+    private static List<float> asteroidDetroyTime = new List<float>();
+    private static List<int> asteroidDetroyTrigger = new List<int>();
+
+    private static List<int> maskTrigger = new List<int>();
+    private static List<float> maskTriggerTime = new List<float>();
+
+    private static List<float> shotTime = new List<float>();
+
     private AudioSource audioSource;
     public AudioClip backgroundAudio;
     private static bool isPlayAudio;
@@ -78,9 +86,9 @@ public class SpaceController : MonoBehaviour
     public InputField maskAppearRatioInput;
     public InputField maskSizeInput;
     public InputField asteroidSizeInput;
-    public Toggle addShotCheckbox;
-    public InputField maxShotInput;
-    //public InputField fixationInput;
+    //public Toggle addShotCheckbox;
+    //public InputField maxShotInput;
+    public InputField fixationInput;
 
     private float asteroidDuration;
     private const float timeSpeedSlope = -0.3f;
@@ -147,11 +155,17 @@ public class SpaceController : MonoBehaviour
                 }
                 else
                 {
-                    if (Input.GetButtonDown("Horizontal")) { moveTrigger.Add(1); moveTime.Add(read2UDP.timeTempChanged); }
-                    if (Input.GetButtonUp("Horizontal")) { moveEnd.Add(read2UDP.timeTempChanged); }
+                    if (Input.GetKeyDown(KeyCode.LeftArrow)) { moveTrigger.Add(1); moveTime.Add(read2UDP.timeTempChanged); Debug.Log("Left"); }
+                    if (Input.GetKeyDown(KeyCode.LeftArrow)) { moveEnd.Add(read2UDP.timeTempChanged); }
 
-                    if (Input.GetButtonDown("Vertical")) { moveTrigger.Add(2); moveTime.Add(read2UDP.timeTempChanged); }
-                    if (Input.GetButtonUp("Vertical")) { moveEnd.Add(read2UDP.timeTempChanged); }
+                    if (Input.GetKeyDown(KeyCode.RightArrow)) { moveTrigger.Add(2); moveTime.Add(read2UDP.timeTempChanged); Debug.Log("Right"); }
+                    if (Input.GetKeyDown(KeyCode.RightArrow)) { moveEnd.Add(read2UDP.timeTempChanged); }
+
+                    if (Input.GetKeyDown(KeyCode.UpArrow)) { moveTrigger.Add(3); moveTime.Add(read2UDP.timeTempChanged); Debug.Log("Up"); }
+                    if (Input.GetKeyDown(KeyCode.UpArrow)) { moveEnd.Add(read2UDP.timeTempChanged); }
+
+                    if (Input.GetKeyDown(KeyCode.DownArrow)) { moveTrigger.Add(4); moveTime.Add(read2UDP.timeTempChanged); Debug.Log("Down"); }
+                    if (Input.GetKeyDown(KeyCode.DownArrow)) { moveEnd.Add(read2UDP.timeTempChanged); }
 
                     if (timeController.isStartGame == true)
                     {
@@ -320,7 +334,12 @@ public class SpaceController : MonoBehaviour
                     Read2UDP.tempData["movetrigger"] = DataController.GameDataController.getAppendString(moveTrigger);
                     Read2UDP.tempData["moveEnd"] = DataController.GameDataController.getAppendString(moveEnd);
                     Read2UDP.tempData["asteroidappeartime"] = DataController.GameDataController.getAppendString(asteroidAppearTime);
+                    Read2UDP.tempData["asteroiddetroytime"] = DataController.GameDataController.getAppendString(asteroidDetroyTime);
+                    Read2UDP.tempData["asteroiddetroytrigger"] = DataController.GameDataController.getAppendString(asteroidDetroyTrigger);
                     Read2UDP.tempData["rewardappeartime"] = DataController.GameDataController.getAppendString(rewardAppearTime);
+                    Read2UDP.tempData["masktriggertime"] = DataController.GameDataController.getAppendString(maskTriggerTime);
+                    Read2UDP.tempData["masktrigger"] = DataController.GameDataController.getAppendString(maskTrigger);
+                    Read2UDP.tempData["shottime"] = DataController.GameDataController.getAppendString(shotTime);
                     Read2UDP.tempData["score"] = mindSpaceScore.ToString();
 
                     gameTime.Clear();
@@ -347,7 +366,7 @@ public class SpaceController : MonoBehaviour
         maskPanelRectTrans = maskPanel.GetComponent<RectTransform>();
         maskPanelRectTrans.localScale = new Vector3(maskPanelRectTrans.localScale.x, float.Parse(maskSizeInput.text), maskPanelRectTrans.localScale.z);
         SetGameObjectSize(hazards, int.Parse(asteroidSizeInput.text));
-        if(addShotCheckbox.isOn)
+        /*if(addShotCheckbox.isOn)
         {
             if (maxShotInput.text == "")
             {
@@ -357,7 +376,7 @@ public class SpaceController : MonoBehaviour
             {
                 maxShot = int.Parse(maxShotInput.text);
             }
-        }
+        }*/
     }
     private void DefaultAdvancedSettingParameter()
     {
@@ -480,16 +499,33 @@ public class SpaceController : MonoBehaviour
         }
     }
 
+    public void asteroidDetroyRecord(int trigger)
+    {
+        asteroidDetroyTime.Add(read2UDP.timeTempChanged);
+        asteroidDetroyTrigger.Add(trigger);
+        //Debug.Log("Detroy by " + trigger.ToString());
+    }
+
+    public void shotRecord()
+    {
+        shotTime.Add(read2UDP.timeTempChanged);
+        //Debug.Log("Shot!!");
+    }
+
     private void RandMaskCanvas()
     {
         if (Random.value <= maskAppearRatio)
         {
             isMaskAppear = true;
+            maskTrigger.Add(1);
+            
         }
         else
         {
             isMaskAppear = false;
+            maskTrigger.Add(0);
         }
+        maskTriggerTime.Add(read2UDP.timeTempChanged);
         print(isMaskAppear);
         maskCanvas.gameObject.SetActive(isMaskAppear);
     }

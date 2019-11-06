@@ -50,12 +50,14 @@ public class PlayerController : MonoBehaviour
             // GameObject clone = 
             Instantiate(shot, shotSpawn.position, shotSpawn.rotation); //as GameObject;
             GetComponent<AudioSource>().Play();
+            gameController.shotRecord();
         }
 
         if (isMissAsteroid == true)
         {
             gameController.MinusScore(10);
             isMissAsteroid = false;
+            gameController.asteroidDetroyRecord(1); //Destroyed by boundary (Missed asteroid)
         }
     }
 

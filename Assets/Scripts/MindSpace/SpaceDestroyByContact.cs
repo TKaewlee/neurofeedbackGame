@@ -33,13 +33,15 @@ public class SpaceDestroyByContact : MonoBehaviour
 		{
 			Instantiate(playerExplosion, other.transform.position, other.transform.rotation); 
 			gameController.MinusScore (scoreValue);
-			// gameController.GameOver ();
-		}
+            gameController.asteroidDetroyRecord(2); //Destroyed by player (Hit by player)
+            // gameController.GameOver ();
+        }
 
         if (other.tag == "Bolt")
         {
             //Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
             gameController.MinusScore(scoreValue * (-1));
+            gameController.asteroidDetroyRecord(3); //Detroyed by bolt
             Destroy(other.gameObject);
             // gameController.GameOver ();
         }
