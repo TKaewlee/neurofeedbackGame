@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 public class timeController : MonoBehaviour
 {
-
     public CanvasGroup settingCanvas;
     public CanvasGroup confirmBackCanvas;
     public CanvasGroup fixationCanvas;
@@ -26,6 +25,7 @@ public class timeController : MonoBehaviour
     private List<string> difficultyOptions_NFwithMovingObj = new List<string> { "easy", "hard" };
     public Dropdown sequenceDropdown;
     private int sequenceIndex;
+    public InputField FeedbackThresholdField;
 
     public Button startButton;
     public static bool isContinue;
@@ -140,12 +140,12 @@ public class timeController : MonoBehaviour
 
                     if (Time.time - timeStart < timeFixation | Time.time - timeStart > timeSet - timeFixation)
                     {
-                        fixationCanvas.alpha = 1;
+                        fixationCanvas.gameObject.SetActive(true);
                         isFixing = true;
                     }
                     else
                     {
-                        fixationCanvas.alpha = 0;
+                        fixationCanvas.gameObject.SetActive(false);
                         isFixing = false;
                     }
 
@@ -209,7 +209,11 @@ public class timeController : MonoBehaviour
                             countDownCanvas.alpha = 0;
                             isCountDown = false;
                         }
-                    }  
+                    }
+                    else
+                    {
+                        fixationCanvas.gameObject.SetActive(true);
+                    }
                 }
                 //print("time: " + Time.time + " | " + timeStart + " | " + timeSet);
                 if (Time.time - timeStart > timeSet)
@@ -244,7 +248,7 @@ public class timeController : MonoBehaviour
         Debug.Log("onSetting");
         Time.timeScale = 0;
         isContinue = false;
-        fixationCanvas.alpha = 0;
+        fixationCanvas.gameObject.SetActive(false);
         settingCanvas.gameObject.SetActive(true);
         isSaving = false;
         isFinish = true;
@@ -261,7 +265,7 @@ public class timeController : MonoBehaviour
         isOnSave = true;
         isFixing = false;
 
-        fixationCanvas.alpha = 0;
+        fixationCanvas.gameObject.SetActive(false);
         totalScoreText.text = SpaceController.mindSpaceScore.ToString();
         waitCanvas.gameObject.SetActive(true);
         StartCoroutine(WaitForKeysToMultiGame());
@@ -297,12 +301,15 @@ public class timeController : MonoBehaviour
         {
             case 0:
                 difficultDropdown.AddOptions(difficultyOptions_withoutNF);
+                FeedbackThresholdField.interactable = false;
                 break;
             case 1:
                 difficultDropdown.AddOptions(difficultyOptions_NFwithSlider);
+                FeedbackThresholdField.interactable = true;
                 break;
             case 2:
                 difficultDropdown.AddOptions(difficultyOptions_NFwithMovingObj);
+                FeedbackThresholdField.interactable = true;
                 break;
         }
         

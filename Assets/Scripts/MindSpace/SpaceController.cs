@@ -5,10 +5,10 @@ using UnityEngine.UI;               // ui objects
 
 public class SpaceController : MonoBehaviour
 {
-
     public GameObject[] hazards;
     public int hazardsSpeed;
     public GameObject[] rewards;
+    public GameObject[] rewards_selected;
     public int rewardsSpeed;
     public Vector3 SpawnValues;
     public int configHazardCount;
@@ -33,6 +33,7 @@ public class SpaceController : MonoBehaviour
     private Read2UDP read2UDP;
     private float betaData;
     private float thetaData;
+    private float tbrData;
 
     public float a;
 
@@ -68,6 +69,9 @@ public class SpaceController : MonoBehaviour
     private int countObject;
     private int tmpHazardsSpeed;
     private int tmpRewardsSpeed;
+
+    private static float tempAsteroidPositionX = 0f;
+    private static float tempRewardPositionX = 0f;
 
     void Start()
     {
@@ -215,8 +219,9 @@ public class SpaceController : MonoBehaviour
                     {
                         betaData = read2UDP.betaDataTempChanged;
                         thetaData = read2UDP.thetaDataTempChanged;
+                        tbrData = thetaData / betaData;
                         // dataAvgChanged.Add(Alpha);
-                        a = (betaData - baseline) / (Mathf.Abs(threshold - baseline));
+                        a = (tbrData - baseline) / (Mathf.Abs(threshold - baseline));
                         if (a < 0) { a = 0; } else if (a > 1) { a = 1; }
 
                         //print(">> " + numOverThreshold + " - " + percentOver * timeDuration * Fs);
@@ -307,8 +312,12 @@ public class SpaceController : MonoBehaviour
 
     private void RewardWaves()
     {
-        GameObject reward = rewards[Random.Range(0, rewards.Length)];
-        Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
+        GameObject reward = rewards_selected[Random.Range(0, rewards_selected.Length)];
+        do
+        {
+            tempRewardPositionX = Random.Range(-SpawnValues.x, SpawnValues.x);
+        } while (tempAsteroidPositionX - 0.01 >= tempRewardPositionX && tempAsteroidPositionX + 0.01 <= tempRewardPositionX);
+        Vector3 spawnPosition = new Vector3(tempRewardPositionX, SpawnValues.y, SpawnValues.z);
         Quaternion spawnRotation = Quaternion.Euler(90, 0, 0);
         Instantiate(reward, spawnPosition, spawnRotation);
         rewardAppearTime.Add(read2UDP.timeTempChanged);
@@ -323,7 +332,8 @@ public class SpaceController : MonoBehaviour
             for (int i = 0; i < hazardCount; i++)
             {
                 GameObject hazard = hazards[Random.Range(0, hazards.Length)];
-                Vector3 spawnPosition = new Vector3(Random.Range(-SpawnValues.x, SpawnValues.x), SpawnValues.y, SpawnValues.z);
+                tempAsteroidPositionX = Random.Range(-SpawnValues.x, SpawnValues.x);
+                Vector3 spawnPosition = new Vector3(tempAsteroidPositionX, SpawnValues.y, SpawnValues.z);
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(hazard, spawnPosition, spawnRotation);
                 asteroidAppearTime.Add(read2UDP.timeTempChanged);
