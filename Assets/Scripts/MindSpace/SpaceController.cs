@@ -348,7 +348,12 @@ public class SpaceController : MonoBehaviour
                     moveTrigger.Clear();
                     moveEnd.Clear();
                     asteroidAppearTime.Clear();
+                    asteroidDetroyTime.Clear();
+                    asteroidDetroyTrigger.Clear();
                     rewardAppearTime.Clear();
+                    maskTriggerTime.Clear();
+                    maskTrigger.Clear();
+                    shotTime.Clear();
                     timeController.isFinish = false;
                 }
                 RestartGame();
