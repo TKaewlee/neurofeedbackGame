@@ -43,22 +43,30 @@ public class PlayerController : MonoBehaviour
 			GetComponent<Rigidbody>().position = new Vector3( 0.0f, 0.0f, 0.0f );			
 		}
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire)
+        if (timeController.modeName == "Working Memory")
         {
-            //gameController.minusScore(5);
-            nextFire = Time.time + fireRate;
-            // GameObject clone = 
-            Instantiate(shot, shotSpawn.position, shotSpawn.rotation); //as GameObject;
-            GetComponent<AudioSource>().Play();
-            gameController.shotRecord();
-        }
+            if (gameController.isShot == false)
+            {
+                if (Input.GetKeyDown(KeyCode.Space) && Time.time > nextFire)
+                {
+                    //gameController.minusScore(5);
+                    nextFire = Time.time + fireRate;
+                    // GameObject clone = 
+                    Instantiate(shot, shotSpawn.position, shotSpawn.rotation); //as GameObject;
+                    GetComponent<AudioSource>().Play();
+                    gameController.shotRecord();
+                    gameController.isShot = true;
+                }
+            }
 
-        if (isMissAsteroid == true)
-        {
-            gameController.MinusScore(10);
-            isMissAsteroid = false;
-            gameController.asteroidDetroyRecord(1); //Destroyed by boundary (Missed asteroid)
+            if (isMissAsteroid == true)
+            {
+                gameController.MinusScore(10);
+                isMissAsteroid = false;
+                gameController.asteroidDetroyRecord(1); //Destroyed by boundary (Missed asteroid)
+            }
         }
+        
     }
 
 	void FixedUpdate ()

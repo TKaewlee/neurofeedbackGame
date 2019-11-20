@@ -87,7 +87,7 @@ public class SpaceController : MonoBehaviour
     public InputField maskSizeInput;
     public InputField asteroidSizeInput;
     //public Toggle addShotCheckbox;
-    //public InputField maxShotInput;
+    public InputField maxShotInput;
     public InputField fixationInput;
 
     private float asteroidDuration;
@@ -96,6 +96,7 @@ public class SpaceController : MonoBehaviour
     private static float maskAppearRatio;
     private int maxShot;
     private const int scoreValue = 10;
+    public bool isShot = false;
 
     void Start()
     {
@@ -250,7 +251,7 @@ public class SpaceController : MonoBehaviour
 
                             hazardCount = 1;
                             spawnWait = 0;
-                            startWait = 1;
+                            startWait = 2;
 
                         }
                         // print("Send to tempData");
@@ -371,16 +372,13 @@ public class SpaceController : MonoBehaviour
         maskPanelRectTrans = maskPanel.GetComponent<RectTransform>();
         maskPanelRectTrans.localScale = new Vector3(maskPanelRectTrans.localScale.x, float.Parse(maskSizeInput.text), maskPanelRectTrans.localScale.z);
         SetGameObjectSize(hazards, int.Parse(asteroidSizeInput.text));
-        /*if(addShotCheckbox.isOn)
+        /*if (maxShotInput.text == "")
         {
-            if (maxShotInput.text == "")
-            {
-                maxShot = 100;
-            }
-            else
-            {
-                maxShot = int.Parse(maxShotInput.text);
-            }
+            maxShot = 100;
+        }
+        else
+        {
+            maxShot = int.Parse(maxShotInput.text);
         }*/
     }
     private void DefaultAdvancedSettingParameter()
@@ -449,6 +447,7 @@ public class SpaceController : MonoBehaviour
                 print("Asteriod time: " + Time.time);
                 if (timeController.modeName == "Working Memory")
                 {
+                    isShot = false;
                     RandMaskCanvas();
                 }
                 yield return new WaitForSeconds(spawnWait);
