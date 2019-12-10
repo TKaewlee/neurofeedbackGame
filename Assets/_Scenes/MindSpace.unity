@@ -950,7 +950,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 4c3865b2ac420cd46a9cde6ab468d016, type: 2}
   a: 1
   Fs: 256
-  percentOver: 0.01
+  percentOver: 2
   feedbackThresholdInputField: {fileID: 2134264151}
   timeDuration: 1
   trigger: 0
@@ -963,6 +963,7 @@ MonoBehaviour:
   asteroidSizeInput: {fileID: 587923804}
   maxShotInput: {fileID: 1044614667}
   fixationInput: {fileID: 1928356434}
+  isShot: 0
 --- !u!4 &26453372
 Transform:
   m_ObjectHideFlags: 0
@@ -11783,7 +11784,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -19541,7 +19542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
