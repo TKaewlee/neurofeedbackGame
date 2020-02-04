@@ -9,16 +9,15 @@ public class ColorCtrl : MonoBehaviour {
 	public Material matObject;
     public float Beta = 1.0f;
     public float Theta = 1.0f;
-    public float a;
-	//private float baseAlpha = 10.0f;
-	// public KeyCode changeCol;
-	private Read2UDP read2UDP;
+    private List<float> BetaList = new List<float>();
+    private List<float> ThetaList = new List<float>();
+    
+    private Read2UDP read2UDP;
 
-	private static List<float> betaDataAvgChanged = new List<float>();
-    private static List<float> thetaDataAvgChanged = new List<float>();
-    private float betaDataAvg;
+	private float betaDataAvg;
     private float thetaDataAvg;
     private float tbrDataAvg;
+    
     public Text baselineSetText;
 	public InputField baselineInputField;
 	public Text thresholdSetText;
@@ -48,9 +47,11 @@ public class ColorCtrl : MonoBehaviour {
 		{
             Beta = read2UDP.betaDataTempChanged;
             Theta = read2UDP.thetaDataTempChanged;
-            betaDataAvgChanged.Add(Beta);
-            thetaDataAvgChanged.Add(Theta);
-			if(timeController.modeName == "Threshold")
+            BetaList.Add(Beta);
+            ThetaList.Add(Theta);
+
+            
+            if (timeController.modeName == "Threshold")
 			{
 				// a = (Alpha-baseline)/(difficult*(threshold-baseline)) + offset;
 				/*a = 1-((Alpha - baseAlpha)/10);
@@ -62,10 +63,11 @@ public class ColorCtrl : MonoBehaviour {
 		{	
 			if(timeController.isFinish)
 			{
-                betaDataAvg = betaDataAvgChanged.Average();
-                thetaDataAvg = thetaDataAvgChanged.Average();
-                tbrDataAvg = thetaDataAvg / thetaDataAvg;
-				if(timeController.modeName == "Baseline")
+                betaDataAvg = BetaList.Average();
+                thetaDataAvg = ThetaList.Average();
+                tbrDataAvg = thetaDataAvg / betaDataAvg;
+                
+                if (timeController.modeName == "Baseline")
 				{
 					if(baselineInputField.text != "")
 					{
@@ -93,10 +95,10 @@ public class ColorCtrl : MonoBehaviour {
 					}
 				}
 
-				Read2UDP.tempData["average"] = tbrDataAvg.ToString();
+				Read2UDP.tempData["avgTBR"] = tbrDataAvg.ToString();
 
-                betaDataAvgChanged.Clear();
-                thetaDataAvgChanged.Clear();
+                BetaList.Clear();
+                ThetaList.Clear();
                 timeController.isFinish = false;	
 			}
 		}

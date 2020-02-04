@@ -38,7 +38,7 @@ public class Read2UDP : MonoBehaviour
 	Thread receiveThread;
 	private bool onRecieve = true;
 
-	private float timeshift = 0;
+	private float timeshift;
 	public float betaDataTempChanged;
 	public float timeTempChanged;
     public float thetaDataTempChanged;
@@ -46,10 +46,11 @@ public class Read2UDP : MonoBehaviour
 	private static List<float> timeChanged = new List<float>();
     private static List<float> thetaDataChanged = new List<float>();
 	public static Dictionary<string, string> tempData = new Dictionary<string, string>();
-	
+    
 
-	// start from Unity3d
-	public void Start ()
+
+    // start from Unity3d
+    public void Start ()
 	{
         print("Read2UDP start");
 		Init ();
@@ -84,14 +85,17 @@ public class Read2UDP : MonoBehaviour
 				IPEndPoint IP8000 = new IPEndPoint(IPAddress.Any, portLocal);
 				IPEndPoint IP8001 = new IPEndPoint(IPAddress.Any, portLocal1);
                 IPEndPoint IP8002 = new IPEndPoint(IPAddress.Any, portLocal2);
-				byte[] data = client.Receive(ref IP8000);
+                byte[] data = client.Receive(ref IP8000);
 				byte[] data1 = client1.Receive(ref IP8001);
                 byte[] data2 = client2.Receive(ref IP8002);
                 betaDataTempChanged = (float)BitConverter.ToDouble(data, 0);
 				timeTempChanged = (float)BitConverter.ToDouble(data1, 0);
                 thetaDataTempChanged = (float)BitConverter.ToDouble(data2, 0);
-				
-				if(timeController.isStart == true && timeController.isFixationSet == false)
+                
+
+
+
+                if (timeController.isStart == true && timeController.isFixationSet == false)
 				{
 					tempData["date"] = DateTime.Now.ToString();
 					if(timeController.isTimeSet == true)
@@ -116,7 +120,7 @@ public class Read2UDP : MonoBehaviour
 				
 				if (timeTempChanged >= timeshift)
 				{
-					timeshift = timeTempChanged + 1;
+                    timeshift = timeTempChanged + 0.02f; //0.02f: 1s receives 50 data, if deleted, 1s receives 256data
 					if (timeController.isSaving)
 					{
 						timeChanged.Add(timeTempChanged);
@@ -130,9 +134,9 @@ public class Read2UDP : MonoBehaviour
 					if(timeController.isFinish == false)
 					{
                         tempData["stop"] = timeTempChanged.ToString("f2");
-                        tempData["time"] = DataController.GameDataController.getAppendString(timeChanged);
-                        tempData["beta"] = DataController.GameDataController.getAppendString(betaDataChanged);
-                        tempData["theta"] = DataController.GameDataController.getAppendString(thetaDataChanged);
+                        //tempData["time"] = DataController.GameDataController.getAppendString(timeChanged); //save data
+                        //tempData["beta"] = DataController.GameDataController.getAppendString(betaDataChanged);
+                        //tempData["theta"] = DataController.GameDataController.getAppendString(thetaDataChanged);
 
                         print(">> Start Saving");
 						DataController.GameDataController.updateGamePath();
@@ -147,7 +151,8 @@ public class Read2UDP : MonoBehaviour
 						tempData.Clear();
 					}
 				}
-			} catch (Exception err) {
+			}
+            catch (Exception err) {
 				print (err.ToString ());	
 			}
 		}while (onRecieve);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.UI;               // ui objects
 
 public class SpaceController : MonoBehaviour
@@ -34,19 +35,24 @@ public class SpaceController : MonoBehaviour
     private float betaData;
     private float thetaData;
     private float tbrData;
+    private float tbr2sAvg;
+    private List<float> tbrList = new List<float>();
 
     public float a;
+    //public float aAvg;
+    //private List<float> aList = new List<float>();
+    //private static List<float> aAvg = new List<float>();
 
     private float baseline;
     private float threshold;
 
-    public int Fs = 256;
-    public float percentOver = 0.01f;
-    private int numOverThreshold = 0;
+    public float Fs; //Van changed
+    public float percentUnder = 1.0f; //Van changed
+    private int numUnderThreshold = 0; //Van changed
 
     public InputField feedbackThresholdInputField;
     private float feedbackThreshold;
-    public float timeDuration = 1;
+    public float timeDuration = 2; //Van changed
 
     private float timeStart = 0;
 
@@ -75,6 +81,7 @@ public class SpaceController : MonoBehaviour
 
     void Start()
     {
+        //Fs = 1 / Time.deltaTime;
         baseline = GameControl.currentBaselineAvg;
         threshold = GameControl.currentThresholdAvg;
 
@@ -111,8 +118,6 @@ public class SpaceController : MonoBehaviour
 
     void Update()
     {
-        //print(timeController.isContinue+" "+timeController.isFixing+" "+timeController.isStartGame);
-        //if ((timeController.isFixation == false || (timeController.isFixation == true && timeController.isFixationSet == false)) && timeController.isCountDownSet == false)
         if (timeController.isCountDownSet == false)
         {
             if (timeController.isContinue == true)
@@ -202,7 +207,7 @@ public class SpaceController : MonoBehaviour
                         }
                         else
                         {
-                            feedbackThreshold = 0.5f;
+                            feedbackThreshold = baseline; //Van changed
                         }
                         // print("Send to tempData");
                         timeController.isStartGame = false; // comment out if not connect to G.Tec
@@ -219,29 +224,27 @@ public class SpaceController : MonoBehaviour
                     {
                         betaData = read2UDP.betaDataTempChanged;
                         thetaData = read2UDP.thetaDataTempChanged;
+                        //tbrData = 0;
                         tbrData = thetaData / betaData;
-                        // dataAvgChanged.Add(Alpha);
-                        a = (tbrData - baseline) / (Mathf.Abs(threshold - baseline));
-                        if (a < 0) { a = 0; } else if (a > 1) { a = 1; }
-
-                        //print(">> " + numOverThreshold + " - " + percentOver * timeDuration * Fs);
-                        if (Time.time - timeStart <= timeDuration)
+                        //if (thetaData < 100)
+                        
+                        tbrList.Add(tbrData);
+                        a = tbrData - feedbackThreshold;
+                                              
+                        //Van changed
+                        if (Time.time - timeStart >= timeDuration)
                         {
-                            if (a > feedbackThreshold)
-                            {
-                                numOverThreshold += 1;
-                            }
-                        }
-                        else
-                        {
-                            if (numOverThreshold >= percentOver * timeDuration * Fs)
+                            tbr2sAvg = tbrList.Average();
+                            
+                            if (tbr2sAvg <= feedbackThreshold)
                             {
                                 RewardWaves();
+                                //numUnderThreshold += 1;
                             }
-                            numOverThreshold = 0;
+                            tbrList.Clear();
                             timeStart = Time.time;
                         }
-
+                        
                         if (timeController.modeName == "NF with slider")
                         {
                             slideCanvas.alpha = 1;
@@ -251,15 +254,16 @@ public class SpaceController : MonoBehaviour
                         }
                         else if (timeController.modeName == "NF with moving object")
                         {
-                            if (timeController.difficult == "easy")
+                            if (timeController.difficult == "easy") //not using //Van noted
                             {
                                 centerSlideCanvas.alpha = 0.8f * (1 - a);
                             }
                             else
                             {
+                                if (a > 0) { a = 0; } else if (a <= 0) { a = 1; } //Van changed
                                 for (int i = 0; i < matObject.Length; i++)
                                 {
-                                    matObject[i].color = new Color(1f, 1f, 1f, a);
+                                    matObject[i].color = new Color(1f, 1f, 1f, a); //Rock transparency
                                     matObject[i].SetFloat("_Metallic", a);
                                 }
                             }

@@ -804,9 +804,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 4c3865b2ac420cd46a9cde6ab468d016, type: 2}
   a: 1
   Fs: 256
-  percentOver: 0.01
+  percentUnder: 1
   feedbackThresholdInputField: {fileID: 2134264151}
-  timeDuration: 1
+  timeDuration: 2
   trigger: 0
   backgroundAudio: {fileID: 8300000, guid: 7b04c59dd84f14039b601e1abbe7b884, type: 3}
 --- !u!4 &26453372
